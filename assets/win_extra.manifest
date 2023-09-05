@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 2763316215
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: block.obstacle
+      Dependencies: {}
+    Info_1:
+      Name: pants1.obstacle
+      Dependencies: {}
+    Info_2:
+      Name: pants2.obstacle
+      Dependencies: {}
+    Info_3:
+      Name: shirt1.obstacle
+      Dependencies: {}
+    Info_4:
+      Name: shirt2.obstacle
+      Dependencies: {}
