@@ -80,10 +80,13 @@ class a_star(Node):
         (테스트) pose가 (-8,-4)라면 맵의 중앙에 위치하게 된다. 따라서 map_point_x,y 는 map size의 절반인 (175,175)가 된다.
         pose가 (-16.75,12.75) 라면 맵의 시작점에 위치하게 된다. 따라서 map_point_x,y는 (0,0)이 된다.
         '''
-        map_point_x= int((x+16.75) * 20)
-        map_point_y= int((y-12.75) * 20)
+        # map_point_x= int((x+16.75) * 20)
+        # map_point_y= int((y-12.75) * 20)
         
-        return [map_point_x,map_point_y]
+        map_point_x = int((x+16.75)*175/8.75)
+        map_point_y = int((y+12.75)*175/8.75)
+
+        return map_point_x,map_point_y
 
 
     def grid_cell_to_pose(self,grid_cell):
@@ -96,8 +99,11 @@ class a_star(Node):
         grid cell이 (350,350)라면 맵의 제일 끝 좌측 상단에 위치하게 된다. 따라서 pose로 변환하게 되면 맵의 좌측 상단인 (0.75,6.25)가 된다.
         '''
 
-        x=(grid_cell[0]-175) * 0.05 -8
-        y=(grid_cell[1]-175) * 0.05 -4
+        # x=(grid_cell[0]-175) * 0.05 -8
+        # y=(grid_cell[1]-175) * 0.05 -4
+
+        x = grid_cell[0]/20-16.75
+        y = grid_cell[1]/20-12.75
 
         return [x,y]
 
@@ -120,6 +126,10 @@ class a_star(Node):
             '''             
             goal_x=msg.pose.position.x
             goal_y=msg.pose.position.y
+            goal_cell= self.pose_to_grid_cell(goal_x, goal_y)
+            # self.goal 출력해보면 (328,223) 이렇게 나온다.
+            self.goal = list(goal_cell)
+            print("goal좌표 : {}".format(self.goal))
             # goal_w = msg.pose.orientation.w
             if goal_y==100.0 and goal_x==100.0:
                 self.final_path.reverse()
