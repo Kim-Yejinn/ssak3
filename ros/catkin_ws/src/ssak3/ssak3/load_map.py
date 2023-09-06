@@ -77,8 +77,8 @@ class loadMap(Node):
 
         self.f = open(full_path, 'r')
 
-        line = self.f.readlines()
-        line_data = line[0].split()
+        line = self.f.readline()
+        line_data = line.split()
 
         for num, data in enumerate(line_data):
             self.map_data[num] = int(data)
