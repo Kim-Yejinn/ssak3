@@ -124,27 +124,27 @@ class a_star(Node):
             self.goal = list(goal_cell)
             print("goal좌표 : {}".format(self.goal))
             # goal_w = msg.pose.orientation.w
-            if goal_y==100.0 and goal_x==100.0:
-                self.final_path.reverse()
-                print("돌아가기!")
-                self.global_path_msg = Path()
-                self.global_path_msg.header.frame_id = 'map'
-                if self.final_path != None:
-                    for grid_cell in self.final_path:
-                        tmp_pose = PoseStamped()
-                        waypoint_x, waypoint_y = self.grid_cell_to_pose(
-                            grid_cell)
-                        tmp_pose.pose.position.x = waypoint_x
-                        tmp_pose.pose.position.y = waypoint_y
-                        tmp_pose.pose.orientation.w = 1.0
-                        self.global_path_msg.poses.append(tmp_pose)
+            # if goal_y==100.0 and goal_x==100.0:
+            #     self.final_path.reverse()
+            #     print("돌아가기!")
+            #     self.global_path_msg = Path()
+            #     self.global_path_msg.header.frame_id = 'map'
+            #     if self.final_path != None:
+            #         for grid_cell in self.final_path:
+            #             tmp_pose = PoseStamped()
+            #             waypoint_x, waypoint_y = self.grid_cell_to_pose(
+            #                 grid_cell)
+            #             tmp_pose.pose.position.x = waypoint_x
+            #             tmp_pose.pose.position.y = waypoint_y
+            #             tmp_pose.pose.orientation.w = 1.0
+            #             self.global_path_msg.poses.append(tmp_pose)
 
-                    print("메세지 생성 종료")
-                    if len(self.final_path) != 0:
-                        self.a_star_pub.publish(self.global_path_msg)
-                        print("메세지 전송 완료")
-                        return
-            goal_cell=self.pose_to_grid_cell(goal_x, goal_y)
+            #         print("메세지 생성 종료")
+            #         if len(self.final_path) != 0:
+            #             self.a_star_pub.publish(self.global_path_msg)
+            #             print("메세지 전송 완료")
+            #             return
+            # goal_cell=self.pose_to_grid_cell(goal_x, goal_y)
 
             if goal_cell[0] <= 350 and goal_cell[1] <= 350:
                 self.goal = [goal_cell[0], goal_cell[1]]
@@ -241,7 +241,7 @@ class a_star(Node):
                         # 현재 상태의 비용 (출발지 -> 현재)
                         g = self.cost[current[0]][current[1]] + self.dCost[i]
                         # 현재 상태에서 다음 상태로 이동할 때 휴리스틱 함수(현재 -> 목적지)
-                        h = self.heuristic(next, self.goal)
+                        h = self.heuristic(current, next)
                         f = g + h
 
                         # 만약, 다음에 저장된 값이 지금보다 작다면
