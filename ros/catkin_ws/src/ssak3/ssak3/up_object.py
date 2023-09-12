@@ -33,7 +33,7 @@ class up_object(Node):
             else:
                 print("들수있는 상태가 아닌데?")
         else:
-            print("상태못받아옴")
+            print("터틀봇 상태못받아옴")
 
         self.control_msg.control_mode = 1
         self.control_msg.put_distance = 0.0
