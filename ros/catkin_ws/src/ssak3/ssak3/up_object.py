@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 
 from ssafy_msgs.msg import TurtlebotStatus, HandControl
-from std_msgs.msg import Int16
+# from std_msgs.msg import Int16
 
 
 class up_object(Node):
