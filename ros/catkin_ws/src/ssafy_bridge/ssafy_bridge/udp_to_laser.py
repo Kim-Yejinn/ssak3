@@ -50,8 +50,8 @@ class PCPublisher(Node):
             
             self.pose_msg = Float32MultiArray()                
             self.pose_msg.data = aux_data.astype(np.float32).tolist()       
-            self.pc_msg.range_min = self.pose_msg.data[0] #x
-            self.pc_msg.scan_time=self.pose_msg.data[1]   #y
+            self.pc_msg.range_min = self.pose_msg.data[0]+5 #x
+            self.pc_msg.scan_time=self.pose_msg.data[1]-10  #y
             self.pc_msg.time_increment=self.pose_msg.data[2] #heading
 
             self.publisher_laser.publish(self.pc_msg)
