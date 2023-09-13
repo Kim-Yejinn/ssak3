@@ -48,12 +48,10 @@ class PointList(Node):
         return [x,y]
 
 
-# 위 메시지를 메시지 유형으로 등록하고, 메시지 파일을 생성합니다.
 
 def main(args=None):
     rclpy.init(args=args)
     point_pub = PointList()
-    ## spin 함수는 노드가 죽지않게 계속 대기상태를 만들어 놓는 함수입니다. spin을 삭제하면 minimal_publisher가 생성되고 바로 main 함수가 끝나게 됩니다.
     rclpy.spin(point_pub)
     point_pub.destroy_node()
     rclpy.shutdown()
