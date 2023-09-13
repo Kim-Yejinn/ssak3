@@ -55,6 +55,7 @@ class followTheCarrot(Node):
         self.max_lfd=1.0
 
         self.cur_pose_msg = PoseStamped()
+        self.pub_flag = False
 
     def timer_callback(self):
 
@@ -71,6 +72,7 @@ class followTheCarrot(Node):
                 # 로봇이 경로에서 떨어진 거리를 나타내는 변수
                 lateral_error= sqrt(pow(self.path_msg.poses[0].pose.position.x-robot_pose_x,2)+pow(self.path_msg.poses[0].pose.position.y-robot_pose_y,2))
                 print(robot_pose_x,robot_pose_y,lateral_error)
+                self.pub_flag = True
                 '''
                 로직 4. 로봇이 주어진 경로점과 떨어진 거리(lateral_error)와 로봇의 선속도를 이용해 전방주시거리 설정
                 '''
@@ -140,9 +142,11 @@ class followTheCarrot(Node):
                 print("no found forward point")
                 self.cmd_msg.linear.x=0.0
                 self.cmd_msg.angular.z=0.0
-                self.cur_pose_msg.pose.position.x = self.odom_msg.pose.pose.position.x
-                self.cur_pose_msg.pose.position.y = self.odom_msg.pose.pose.position.y
-                self.current_position_pub.publish(self.cur_pose_msg)
+                if(self.pub_flag==True):
+                    self.cur_pose_msg.pose.position.x = self.odom_msg.pose.pose.position.x
+                    self.cur_pose_msg.pose.position.y = self.odom_msg.pose.pose.position.y
+                    self.current_position_pub.publish(self.cur_pose_msg)
+                    self.pub_flag = False
 
             
             self.cmd_pub.publish(self.cmd_msg)

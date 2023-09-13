@@ -39,7 +39,6 @@ class PointList(Node):
         # print('동작 gird : {}'.format(self.goal_pose_msg))
         self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point)
         self.goal_pub.publish(self.goal_pose_msg)
-        # self.point_cnt = 2
 
 
 
