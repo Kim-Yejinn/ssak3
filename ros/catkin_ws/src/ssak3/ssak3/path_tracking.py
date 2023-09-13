@@ -1,7 +1,6 @@
 import rclpy
 from rclpy.node import Node
-
-from geometry_msgs.msg import Twist,Point,Point32
+from geometry_msgs.msg import Twist,Point,Point32,PoseStamped
 from ssafy_msgs.msg import TurtlebotStatus
 from squaternion import Quaternion
 from nav_msgs.msg import Odometry,Path
@@ -32,6 +31,7 @@ class followTheCarrot(Node):
         self.status_sub = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.status_callback,10)
         self.path_sub = self.create_subscription(Path,'/local_path',self.path_callback,10)
         self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback,10)
+        self.current_position_pub = self.create_publisher(PoseStamped, 'cur_pose', 1)
 
         # 로직 1. 제어 주기 및 타이머 설정
         time_period=0.05 
@@ -54,6 +54,8 @@ class followTheCarrot(Node):
         self.min_lfd=0.1
         self.max_lfd=1.0
 
+        self.cur_pose_msg = PoseStamped()
+        self.pub_flag = False
 
     def timer_callback(self):
 
@@ -70,6 +72,7 @@ class followTheCarrot(Node):
                 # 로봇이 경로에서 떨어진 거리를 나타내는 변수
                 lateral_error= sqrt(pow(self.path_msg.poses[0].pose.position.x-robot_pose_x,2)+pow(self.path_msg.poses[0].pose.position.y-robot_pose_y,2))
                 print(robot_pose_x,robot_pose_y,lateral_error)
+                self.pub_flag = True
                 '''
                 로직 4. 로봇이 주어진 경로점과 떨어진 거리(lateral_error)와 로봇의 선속도를 이용해 전방주시거리 설정
                 '''
@@ -139,6 +142,11 @@ class followTheCarrot(Node):
                 print("no found forward point")
                 self.cmd_msg.linear.x=0.0
                 self.cmd_msg.angular.z=0.0
+                if(self.pub_flag==True):
+                    self.cur_pose_msg.pose.position.x = self.odom_msg.pose.pose.position.x
+                    self.cur_pose_msg.pose.position.y = self.odom_msg.pose.pose.position.y
+                    self.current_position_pub.publish(self.cur_pose_msg)
+                    self.pub_flag = False
 
             
             self.cmd_pub.publish(self.cmd_msg)

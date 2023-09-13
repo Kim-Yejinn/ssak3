@@ -15,6 +15,7 @@ class PointList(Node):
         super().__init__('point_pub')
         self.odom_sub = self.create_subscription(Odometry,'odom',self.odom_callback,50)
         self.goal_pub = self.create_publisher(PoseStamped,'goal_pose',10)
+        self.goal_sub = self.create_subscription(PoseStamped,'cur_pose',self.cur_callback,1)
 
         self.odom_msg=Odometry()
 
@@ -31,11 +32,14 @@ class PointList(Node):
     def odom_callback(self,msg):
         self.is_odom=True
         self.odom_msg=msg
-        if self.is_odom == True and self.point_cnt == 0:
-            print('동작 gird : {}'.format(self.goal_pose_msg))
-            self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point)
-            self.goal_pub.publish(self.goal_pose_msg)
-            self.point_cnt = 2
+        # if self.is_odom == True and self.point_cnt == 0:
+    
+    def cur_callback(self, msg):
+        print('현재 위치 : {}'.format(msg))
+        # print('동작 gird : {}'.format(self.goal_pose_msg))
+        self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point)
+        self.goal_pub.publish(self.goal_pose_msg)
+
 
 
 def main(args=None):
