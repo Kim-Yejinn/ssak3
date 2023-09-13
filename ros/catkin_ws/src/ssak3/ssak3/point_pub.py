@@ -23,6 +23,7 @@ class PointList(Node):
 
         self.goal_pose_msg.header.frame_id = 'map'
         self.grid_cell_point = []
+        # 여러 경로들을 설정 나중에 세탁물을 발견했을 때 경로를 추가하여 이동
         self.grid_cell_point.append([184.0, 224.0])
         self.grid_cell_point.append([248.0, 74.0])
 
