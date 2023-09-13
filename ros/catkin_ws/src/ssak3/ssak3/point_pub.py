@@ -1,9 +1,14 @@
-# 예시 메시지 유형 정의
-# 여러 개의 좌표 포인트를 포함하는 메시지
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry
+
+# 자꾸 모듈을 못가져와서 path설정 해줌
+import sys
+sys.path.append('C:/Users/SSAFY/Desktop/project/S09P22B201/ros/catkin_ws/src/ssak3/ssak3')
+
+from a_star import a_star
+
 
 class PointList(Node):
     def __init__(self):
@@ -13,40 +18,24 @@ class PointList(Node):
 
         self.odom_msg=Odometry()
 
-        self.map_size_x=350
-        self.map_size_y=350
-        self.map_resolution= 0.05
-        self.map_offset_x=-8.75-8 
-        self.map_offset_y=-8.75-4 
-
         self.goal_pose_msg = PoseStamped()
 
         self.goal_pose_msg.header.frame_id = 'map'
-        self.grid_cell_point = [184.0, 224.4]
+        self.grid_cell_point = [184.0, 224.0]
 
         self.is_odom = False
         self.point_cnt = 0
+
+        self.a_star_instance = a_star()
 
     def odom_callback(self,msg):
         self.is_odom=True
         self.odom_msg=msg
         if self.is_odom == True and self.point_cnt == 0:
             print('동작 gird : {}'.format(self.goal_pose_msg))
-            self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.grid_cell_to_pose(self.grid_cell_point)
+            self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point)
             self.goal_pub.publish(self.goal_pose_msg)
             self.point_cnt = 2
-
-    def grid_cell_to_pose(self,grid_cell):
-
-        x = 0
-        y = 0
-        
-        x=(grid_cell[0] * self.map_resolution) + self.map_offset_x
-        y=(grid_cell[1] * self.map_resolution) + self.map_offset_y
-
-        
-        return [x,y]
-
 
 
 def main(args=None):
