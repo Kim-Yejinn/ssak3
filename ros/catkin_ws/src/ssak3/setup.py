@@ -27,6 +27,7 @@ setup(
             'a_star_local_path = ssak3.a_star_local_path:main',
             'path_pub = ssak3.path_pub:main',
             'path_tracking = ssak3.path_tracking:main',
+            'point_pub = ssak3.point_pub:main',
         ],
     },
 )
