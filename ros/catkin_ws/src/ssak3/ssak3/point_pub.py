@@ -22,7 +22,9 @@ class PointList(Node):
         self.goal_pose_msg = PoseStamped()
 
         self.goal_pose_msg.header.frame_id = 'map'
-        self.grid_cell_point = [184.0, 224.0]
+        self.grid_cell_point = []
+        self.grid_cell_point.append([184.0, 224.0])
+        self.grid_cell_point.append([248.0, 74.0])
 
         self.is_odom = False
         self.point_cnt = 0
@@ -37,8 +39,10 @@ class PointList(Node):
     def cur_callback(self, msg):
         print('현재 위치 : {}'.format(msg))
         # print('동작 gird : {}'.format(self.goal_pose_msg))
-        self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point)
-        self.goal_pub.publish(self.goal_pose_msg)
+        if len(self.grid_cell_point) > 0:
+            self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point[0])
+            self.goal_pub.publish(self.goal_pose_msg)
+            self.grid_cell_point.pop(0)
 
 
 
