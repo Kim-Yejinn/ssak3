@@ -1,7 +1,6 @@
 import rclpy
 from rclpy.node import Node
-
-from geometry_msgs.msg import Twist,Point,Point32
+from geometry_msgs.msg import Twist,Point,Point32,PoseStamped
 from ssafy_msgs.msg import TurtlebotStatus
 from squaternion import Quaternion
 from nav_msgs.msg import Odometry,Path
@@ -32,6 +31,7 @@ class followTheCarrot(Node):
         self.status_sub = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.status_callback,10)
         self.path_sub = self.create_subscription(Path,'/local_path',self.path_callback,10)
         self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback,10)
+        self.current_position_pub = self.create_publisher(PoseStamped, 'cur_pose', 1)
 
         # 로직 1. 제어 주기 및 타이머 설정
         time_period=0.05 
@@ -54,6 +54,7 @@ class followTheCarrot(Node):
         self.min_lfd=0.1
         self.max_lfd=1.0
 
+        self.cur_pose_msg = PoseStamped()
 
     def timer_callback(self):
 
@@ -139,6 +140,9 @@ class followTheCarrot(Node):
                 print("no found forward point")
                 self.cmd_msg.linear.x=0.0
                 self.cmd_msg.angular.z=0.0
+                self.cur_pose_msg.pose.position.x = self.odom_msg.pose.pose.position.x
+                self.cur_pose_msg.pose.position.y = self.odom_msg.pose.pose.position.y
+                self.current_position_pub.publish(self.cur_pose_msg)
 
             
             self.cmd_pub.publish(self.cmd_msg)
