@@ -28,6 +28,8 @@ setup(
             'path_pub = ssak3.path_pub:main',
             'path_tracking = ssak3.path_tracking:main',
             'point_pub = ssak3.point_pub:main',
+            'up_object = ssak3.up_object:main',
+            'slam = ssak3.slam:main',
         ],
     },
 )
