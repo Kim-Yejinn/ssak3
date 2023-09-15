@@ -8,6 +8,7 @@ from nav_msgs.msg import Odometry,OccupancyGrid,MapMetaData,Path
 from math import pi,cos,sin
 from collections import deque
 from queue import PriorityQueue
+import time
 
 
 # a_star 노드는  OccupancyGrid map을 받아 grid map 기반 최단경로 탐색 알고리즘을 통해 로봇이 목적지까지 가는 경로를 생성하는 노드입니다.
@@ -58,6 +59,8 @@ class a_star(Node):
         self.dx = [-1,0,0,1,-1,-1,1,1]
         self.dy = [0,1,-1,0,-1,1,-1,1]
         self.dCost = [1,1,1,1,1.414,1.414,1.414,1.414]
+
+        self.node_cnt = 0
 
 
     def grid_update(self):
@@ -178,7 +181,9 @@ class a_star(Node):
                 print(start_grid_cell[1])
                 if self.grid[start_grid_cell[0]][start_grid_cell[1]] ==0  and self.grid[self.goal[0]][self.goal[1]] ==0  and start_grid_cell != self.goal :
                     print("search")
+                    start_time = time.time()
                     self.dijkstra(start_grid_cell)
+                    end_time = time.time()
                 
                 
 
@@ -194,6 +199,9 @@ class a_star(Node):
             
                 if len(self.final_path)!=0 :
                     print("send map")
+                    print('연산 횟수 : {}'.format(self.node_cnt))
+                    print('패스 길이 : {}'.format(len(self.final_path)))
+                    print('수행 시간 : {:.5f}'.format(end_time - start_time))
                     self.a_star_pub.publish(self.global_path_msg)
                 else:
                     print("error map")
@@ -202,10 +210,11 @@ class a_star(Node):
     def heuristic(self, start, goal):
         x1, y1 = start
         x2, y2 = goal
-        return abs(x1 - x2) + abs(y1 - y2)
+        return abs(x1 - x2) + abs(y1 - y2) # Manhattan
 
 
     def dijkstra(self,start):
+        self.node_cnt = 0
 
 
         Q = PriorityQueue()
@@ -215,8 +224,9 @@ class a_star(Node):
         self.cost[start[0]][start[1]] = 1
         found = False
 
-
+        
         while not Q.empty():
+            self.node_cnt += 1
             
             if found:
                 break
@@ -241,7 +251,7 @@ class a_star(Node):
                         # 현재 상태의 비용 (출발지 -> 현재)
                         g = self.cost[current[0]][current[1]] + self.dCost[i]
                         # 현재 상태에서 다음 상태로 이동할 때 휴리스틱 함수(현재 -> 목적지)
-                        h = self.heuristic(current, next)
+                        h = self.heuristic(current, self.goal)
                         f = g + h
 
                         # 만약, 다음에 저장된 값이 지금보다 작다면
