@@ -24,8 +24,15 @@ class PointList(Node):
         self.goal_pose_msg.header.frame_id = 'map'
         self.grid_cell_point = []
         # 여러 경로들을 설정 나중에 세탁물을 발견했을 때 경로를 추가하여 이동
-        self.grid_cell_point.append([184.0, 224.0])
-        self.grid_cell_point.append([248.0, 74.0])
+        # 거실과 부엌을 탐색하는 경로 설정
+        self.grid_cell_point.append([149.0, 151.0])
+        self.grid_cell_point.append([134.0, 232.0])
+        self.grid_cell_point.append([193.0, 228.0])
+        self.grid_cell_point.append([198.0, 127.0])
+        self.grid_cell_point.append([213.0, 74.0])
+        self.grid_cell_point.append([149.0, 50.0])
+        self.grid_cell_point.append([166.0, 159.0])
+        self.grid_cell_point.append([149.0, 98.0])
 
         self.is_odom = False
         self.point_cnt = 0
