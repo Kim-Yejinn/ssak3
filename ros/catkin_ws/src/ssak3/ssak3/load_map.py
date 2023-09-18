@@ -42,7 +42,7 @@ class loadMap(Node):
         self.map_size_x=350 
         self.map_size_y=350
         self.map_resolution=0.05
-        self.map_offset_x=-8-8.75
+        self.map_offset_x=-8-8.75-3.58
         self.map_offset_y=-4-8.75
         self.map_data = [0 for i in range(self.map_size_x*self.map_size_y)]
         

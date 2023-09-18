@@ -9,7 +9,7 @@ from nav_msgs.msg import Odometry,Path,OccupancyGrid,MapMetaData
 from math import pi,cos,sin,sqrt
 import tf2_ros
 import os
-import slam.utils as utils
+import ssak3.utils as utils
 import numpy as np
 import cv2
 import time
@@ -33,7 +33,7 @@ params_map = {
     "MAP_RESOLUTION": 0.05,
     "OCCUPANCY_UP": 0.02,
     "OCCUPANCY_DOWN": 0.01,
-    "MAP_CENTER": (0, 0),
+    "MAP_CENTER": (-8.0, 10.0),
     "MAP_SIZE": (17.5, 17.5),
     "MAP_FILENAME": 'test.png',
     "MAPVIS_RESIZE_SCALE": 2.0
@@ -132,7 +132,7 @@ class Mapping:
         self.map_resolution = params_map["MAP_RESOLUTION"]
         self.map_size = np.array(params_map["MAP_SIZE"]) / self.map_resolution
         self.map_center = params_map["MAP_CENTER"]
-        self.map = np.ones((self.map_size[0].astype(int), self.map_size[1].astype(int)))*0.5
+        self.map = np.ones((self.map_size[0].astype(np.int), self.map_size[1].astype(np.int)))*0.5
         self.occu_up = params_map["OCCUPANCY_UP"]
         self.occu_down = params_map["OCCUPANCY_DOWN"]
         self.map_filename = params_map["MAP_FILENAME"]
@@ -162,8 +162,8 @@ class Mapping:
 
         ### Original Plot
         for i in range(laser_global.shape[1]):
-            p1 = np.array([pose_x, pose_y]).reshape(-1).astype(int)
-            p2 = np.array([laser_global_x[i], laser_global_y[i]]).astype(int)
+            p1 = np.array([pose_x, pose_y]).reshape(-1).astype(np.int)
+            p2 = np.array([laser_global_x[i], laser_global_y[i]]).astype(np.int)
             # print(p1)
             # print(p2)
             line_iter = createLineIterator(p1, p2, self.map)
@@ -171,8 +171,8 @@ class Mapping:
             if (line_iter.shape[0] == 0):
                 continue
         
-            avail_x = line_iter[:, 0].astype(int)
-            avail_y = line_iter[:, 1].astype(int)
+            avail_x = line_iter[:, 0].astype(np.int)
+            avail_y = line_iter[:, 1].astype(np.int)
         
             # Empty
             self.map[avail_y[:-1], avail_x[:-1]] = self.map[avail_y[:-1], avail_x[:-1]] + self.occu_down
@@ -180,7 +180,7 @@ class Mapping:
             # Occupied
             self.map[avail_y[-1], avail_x[-1]] = self.map[avail_y[-1], avail_x[-1]] - self.occu_up
 
-        # self.show_pose_and_points(pose, laser_global)        
+        self.show_pose_and_points(pose, laser_global)        
 
     def __del__(self):
         self.save_map(())
@@ -200,7 +200,7 @@ class Mapping:
         laser_global_y =  (laser_global[1, :] - self.map_center[1] + (self.map_size[1]*self.map_resolution)/2) / self.map_resolution
 
         for i in range(laser_global.shape[1]):
-            (l_x, l_y) = np.array([laser_global_x[i], laser_global_y[i]]).astype(int)
+            (l_x, l_y) = np.array([laser_global_x[i], laser_global_y[i]]).astype(np.int)
             center = (l_x, l_y)
             cv2.circle(map_bgr, center, 1, (0,255,0), -1)
 
@@ -221,8 +221,8 @@ class Mapper(Node):
         super().__init__('Mapper')
         
         # 로직 1 : publisher, subscriber, msg 생성
-        # self.subscription = self.create_subscription(LaserScan,'/scan',self.scan_callback,10)
-        self.subscription = self.create_subscription(LaserScan,'/scan',self.scan_callback,qos_profile=qos_profile_sensor_data)
+        self.subscription = self.create_subscription(LaserScan,'/scan',self.scan_callback,10)
+        # self.subscription = self.create_subscription(LaserScan,'/scan',self.scan_callback,qos_profile=qos_profile_sensor_data)
         self.map_pub = self.create_publisher(OccupancyGrid, '/map', 1)
         self.odom_sub = self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
         self.imu_sub = self.create_subscription(Imu,'/imu', self.imu_callback, 10)
@@ -301,7 +301,7 @@ class Mapper(Node):
             print("pose   ", pose_x, pose_y, heading)
 
             Distance = np.array(msg.ranges)
-            Distance[np.isinf(Distance)] = 0
+            # Distance[np.isinf(Distance)] = 0
             # print(Distance)
             x = Distance * np.cos(np.linspace(0, 2 * np.pi, 360))
             y = Distance * np.sin(np.linspace(0, 2 * np.pi, 360))

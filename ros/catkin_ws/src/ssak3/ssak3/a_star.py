@@ -50,8 +50,8 @@ class a_star(Node):
         self.map_size_x=350
         self.map_size_y=350
         self.map_resolution= 0.05
-        self.map_offset_x=-8.75-8 # -7-8.75
-        self.map_offset_y=-8.75-4 # 10 - 8.75
+        self.map_offset_x=-8.75-8-3.58 # -7-8.75
+        self.map_offset_y=-4-8.75 # 10 - 8.75
     
         self.GRIDSIZE=350 
 
