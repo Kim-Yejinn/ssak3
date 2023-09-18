@@ -20,7 +20,7 @@ ros/catkin_ws/build/*/colcon_command_prefix_setup_py.bat.env
 !ros/catkin_ws/src/ssafy_msgs/CMakeLists.txt
 !map.txt
 !test.txt
-
+!requirements.txt
 # Ignore backend Gradle project
 /backend/.gradle/
 /backend/build/
