@@ -60,11 +60,11 @@ params_cam = {
     "ROLL": 0
 }
 
-def show_images(image_out):
+def visualize_images(image_out):
     results.display(render=True)
     winname = 'laundry detect'
     cv2.imshow(winname, image_out)
-    cv2.waitKey(1)
+    # cv2.waitKey(1)
 
 # ROS에서 받아온 이미지 데이터를 OpenCV 형식으로 변환하고, 전역 변수에 저장
 def img_callback(msg):
@@ -88,7 +88,7 @@ def scan_callback(msg):
         y.reshape([-1, 1]),
         z.reshape([-1, 1])
     ], axis=1)
-    is_scan = True
+
 
 # ROS에서 받아온 IMU 데이터를 처리하여 로봇의 방향을 나타내는 Yaw 각도를 추출하고, 전역 변수에 저장
 def imu_callback(msg):
@@ -97,7 +97,7 @@ def imu_callback(msg):
 
     is_imu =True
     imu_q= Quaternion(msg.orientation.w,msg.orientation.x,msg.orientation.y,msg.orientation.z)
-    _,_,robot_yaw = imu_q.to_euler()
+    robot_roll, robot_pitch, robot_yaw = imu_q.to_euler()
 
 # ROS에서 받아온 터틀봇의 상태 메시지를 처리하여 터틀봇의 위치 정보를 추출하고, 전역 변수에 저장 
 def status_callback(msg):
@@ -144,17 +144,13 @@ def transformMTX_bot2map():
 # 라이다 좌표계를 로봇 좌표계로 변환하는 함수
 def transform_lidar2bot(xyz_p):
     global RT_Lidar2Bot
-
     xyz_p = np.matmul(xyz_p, RT_Lidar2Bot.T)
-    
     return xyz_p
 
 # 로봇 좌표계를 map(global)에서의 좌표계로 변환하는 함수
 def transform_bot2map(xyz_p):
     global RT_Bot2Map
-
     xyz_p = np.matmul(xyz_p, RT_Bot2Map.T)
-    
     return xyz_p
 
 def main(args=None):
@@ -189,12 +185,13 @@ def main(args=None):
     g_node = rclpy.create_node('laundry_detector')
 
     subscription_turtle = g_node.create_subscription(TurtlebotStatus, '/turtlebot_status',status_callback, 10)
-    subscription_img = g_node.create_subscription(CompressedImage, 'camera/image_raw/compressed', img_callback, 3)
-    subscription_scan = g_node.create_subscription(LaserScan, '/scan', scan_callback, 3)
+    subscription_img = g_node.create_subscription(CompressedImage, '/image_jpeg/compressed', img_callback, 10)
+    subscription_scan = g_node.create_subscription(LaserScan, '/scan', scan_callback, 10)
     subscription_imu = g_node.create_subscription(Imu, '/imu', imu_callback, 10)
     publisher_detect = g_node.create_publisher(Detection, "/laundry_detect", 10)
     
     turtlebot_status_msg = TurtlebotStatus()
+    
     
     l2c_trans = LIDAR2CAMTransform(params_cam, params_lidar)
 
@@ -212,12 +209,17 @@ def main(args=None):
 
         if is_img_bgr and is_scan and is_status and is_imu:
 
+            print("hello")
+            print(is_scan)
+
             results = model(img_bgr)
             loc_z = 0.0
-            xyz_p = xyz[np.where(xyz[:, 0] >= 0)]
-            xyz_c = l2c_trans.transform_lidar2cam(xyz_p)
-            xy_i = l2c_trans.project_pts2img(xyz_c, False)
+            xyz_p = xyz[np.where(xyz[:, 0] >= 0)] #
+            xyz_c = l2c_trans.transform_lidar2cam(xyz_p) #라이다 포인트의 좌표를 카메라 이미지 좌표로 변환한 후 반환 
+            xy_i = l2c_trans.project_pts2img(xyz_c, False)# 그 반환한 값을 2D 이미지 좌표로 프로젝션한다. 
             xyii = np.concatenate([xy_i, xyz_p], axis = 1)
+
+            print(results.pandas().xyxy[0])
 
             RT_Lidar2Bot = transformMTX_lidar2bot(params_lidar, params_bot)
             RT_Bot2Map = transformMTX_bot2map()
@@ -263,12 +265,25 @@ def main(args=None):
 
                         cx = int(x + (w / 2))
                         cy = int(y + (h / 2))
+                        print(x)
+                        print(y)
+                        print(w)
+                        print(h)
+                        print("xyii")
+                        print(xyii)
 
-                        xyv = xyii[np.logical_and(xyii[:, 0] >= cx - (w / 2 * 0.7), xyii[:, 0] <= cx + (w / 2 * 0.7)), :]
-                        xyv = xyv[np.logical_and(xyv[:, 1] >= y, xyv[:, 1] <= y + h), :]
+                        # xyv = xyii[np.logical_and(xyii[:, 0] >= cx - (w / 2 * 0.7), xyii[:, 0] <= cx + (w / 2 * 0.7)), :]
+                        xyv = xyii[np.logical_and(xyii[:, 0] >= x - 10, xyii[:, 0] <= x + w + 10), :]
+                        # xyv = xyv[np.logical_and(xyv[:, 1] >= y - 10, xyv[:, 1] <= y + h+ 10), :]
+                        print("xyv")
+                        print(xyv)
 
                         ostate = np.median(xyv, axis=0)
                         
+                        print("ostate")
+                        print(ostate)
+
+
                         relative_x = ostate[2]
                         relative_y = ostate[3]
                         relative_z = ostate[4]
@@ -283,58 +298,45 @@ def main(args=None):
 
                         ostate_list.append(object_global_pose)
 
+                        print("이게 좌표일까?")
+                        print(object_global_pose[0])
+                        print(object_global_pose[1])
+                        print(object_global_pose[2])
+
+
+
                         detections.x.append(x2)
                         detections.y.append(y2)
                         detections.distance.append(relative_x)
                         detections.cx.append(cx)
                         detections.cy.append(cy)
-                        detections.name.append(info.name[K])
+                        detections.name.append(info.name[k])
+
+                        print(detections.x)
+                        print(detections.y)
+                        print(detections.distance)
+                        print(detections.cx)
+                        print(detections.cy)
+                        print(detections.name)
 
                 publisher_detect.publish(detections)
+            # image_process = draw_pts_img(image_process, xy_i[:, 0].astype(np.int32), xy_i[:, 1].astype(np.int32))
+            # # visualize_images(image_process)
+            # results.display(render=True)
+            # winname = 'laundry detect'
+            # cv2.imshow(winname, image_process)
 
-            image_process = draw_pts_img(image_process, xy_i[:, 0].astype(np.int32), xy_i[:, 1].astype(np.int32))
+        # results.display(render=True)
+        # winname = 'Vehicle Detection'
+        # cv2.imshow(winname, results.imgs[0])
+        cv2.waitKey(1)
 
-            # visualize_images(image_process)
-            results.display(render=True)
-            winname = 'Vehicle Detection'
-            cv2.imshow(winname, results.imgs[0])
-            cv2.waitKey(1)
-
-
-
-        g_node.destroy_node()
-        rclpy.shutdown()
+    g_node.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
 
-
-
-
-
-# def odom_callback(msg):
-#     global odom_msg
-#     global loc_x,loc_y,loc_z
-#     global is_odom
-#     is_odom = True
-#     # pose_x = odom_msg.pose.pose.position.x
-#     # pose_y = odom_msg.pose.pose.position.y
-#     loc_x = msg.pose.pose.position.x
-#     loc_y = msg.pose.pose.position.y
-#     loc_z = 0.0
-#     odom_msg = msg
-
-# def timer_callback(self):
-
-#         if self.img_bgr is not None:
-
-#             self.detect_human(self.img_bgr)
-
-#             # 로직 8 : bbox msg 송신s
-#             self.bbox_pub_.publish(self.bbox_msg)
-
-#         else:
-#             pass
 
 
 
