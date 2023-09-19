@@ -26,8 +26,6 @@ _colcon_prefix_chain_powershell_source_script "C:\dev\ros2-windows\local_setup.p
 _colcon_prefix_chain_powershell_source_script "C:\dev\ros2-windows\\local_setup.ps1"
 _colcon_prefix_chain_powershell_source_script "C:\Users\SSAFY\Desktop\project\S09P22B201\ros\catkin_ws\install\\local_setup.ps1"
 
-
-
 # source this prefix
 $env:COLCON_CURRENT_PREFIX=(Split-Path $PSCommandPath -Parent)
 _colcon_prefix_chain_powershell_source_script "$env:COLCON_CURRENT_PREFIX\local_setup.ps1"
