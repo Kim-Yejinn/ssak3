@@ -2,13 +2,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-user_name = "ssafy"
+user_name = "root"
 user_password = "ssafy"
 db_host = "127.0.0.1"
 db_name = "testssak3"
 
 
-SQLALCHEMY_DATABASE_URL = 'mysql://%s:%s@%s/%s?charset=utf8' % (
+DATABASE_URL = 'mysql+pymysql://%s:%s@%s/%s?charset=utf8' % (
     user_name,
     user_password,
     db_host,
@@ -16,9 +16,8 @@ SQLALCHEMY_DATABASE_URL = 'mysql://%s:%s@%s/%s?charset=utf8' % (
 )
 
 ENGINE = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    encodings = "utf-8",
-    echo = True
+    DATABASE_URL,
+    echo=True
 )
 
 session = sessionmaker(autocommit=False,
