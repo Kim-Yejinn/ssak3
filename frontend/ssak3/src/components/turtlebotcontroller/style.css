@@ -1,0 +1,21 @@
+/* 터틀봇 등록돼있는 상태 css */
+
+.controllerContainer {
+    position: relative;
+    width: 393px;
+    height: 852px;
+    background-color: #FFFFFF;
+}
+
+.turtlebotName {
+    position: center;
+    width: 100%;
+    height: 33px;
+    left: 34px;
+    top: 33px;
+
+    font-style: normal;
+    font-weight: 700px;
+    font-size: 25px;
+    line-height: 33px;
+}

@@ -1,8 +1,14 @@
-import TestComponent from './components/test/TestComponent';
-import './App.css';
+import React, { useState } from "react";
+import TurtlebotController from "./components/turtlebotcontroller/index.js";
 
+import './App.css';
+// import { useState } from 'react';
 function App() {
-  return <TestComponent />;
+  return (
+  <div className='App'>
+    <TurtlebotController />
+  </div>
+  );
 }
 
 export default App;
