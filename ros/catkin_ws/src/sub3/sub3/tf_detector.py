@@ -427,7 +427,7 @@ def scan_callback(msg):
     ], axis=1)
 
 def main(args=None):
-    model = torch.hub.load('C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\yolov5', 'custom', path='C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\model\\ssak3.pt', source = 'local', force_reload = True)  # 상대 경로
+    model = torch.hub.load('C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\yolov5', 'custom', path='C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\model\\best.pt', source = 'local', force_reload = True)  # 상대 경로
     global g_node
 
     rclpy.init(args=args)
