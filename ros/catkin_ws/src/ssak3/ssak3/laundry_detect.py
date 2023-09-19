@@ -20,7 +20,8 @@ from squaternion import Quaternion
 
 
 
-# 로봇의 위치 정보와 로봇에 달려있는 라이다와 카메라 간의 위치 및 자세 정보 (수정 필요..)
+# 로봇의 위치 정보와 로봇에 달려있는 라이다와 카메라 간의 위치 및 자세 정보
+
 params_bot = {
     "X": 0.0,
     "Y": 0.0,
@@ -38,7 +39,7 @@ params_lidar = {
     "Block_SIZE": int(1206),
     "X": 0, # meter
     "Y": 0,
-    "Z": 0.19,
+    "Z": 0.01,
     "YAW": 0, # deg
     "PITCH": 0,
     "ROLL": 0
@@ -47,35 +48,36 @@ params_lidar = {
 params_cam = {
     "WIDTH": 320,
     "HEIGHT": 240,
-    "FOV": 60,
+    "FOV": 90,
     "localIP": "127.0.0.1",
     "localPort": 1232,
     "Block_SIZE": int(65000),
     "X": 0.,
     "Y": 0,
-    "Z":  0.8,
-    "YAW": 0,
+    "Z":  1,
+    "YAW": 50,
     "PITCH": 0.0,
     "ROLL": 0
 }
 
+def show_images(image_out):
+    results.display(render=True)
+    winname = 'laundry detect'
+    cv2.imshow(winname, image_out)
+    cv2.waitKey(1)
+
 # ROS에서 받아온 이미지 데이터를 OpenCV 형식으로 변환하고, 전역 변수에 저장
 def img_callback(msg):
     global img_bgr
-    global origin_img
     global is_img_bgr
-
-    origin_img = msg.data
     is_img_bgr = True
     np_arr = np.frombuffer(msg.data, np.uint8)
     img_bgr = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-    img_bgr = cv2.resize(img_bgr, (320, 240))
 
 # ROS에서 받아온 라이다 스캔 데이터를 3D좌표로 변환하고, 전역 변수에 저장
 def scan_callback(msg):
     global xyz
     global is_scan
-
     is_scan = True
     R = np.array(msg.ranges)
     x = R*np.cos(np.linspace(0, 2*np.pi, 360))
@@ -157,8 +159,18 @@ def transform_bot2map(xyz_p):
 
 def main(args=None):
 
-    model = torch.hub.load('로컬yolo위치', 'custom', 'pt파일위치', force_reload = True)
+    os_file_path = os.path.abspath(__file__)
+    full_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
+                                        'src\\ssak3\\yolov5')
+    local_yolov5_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
+                                        'src\\ssak3\\model\\ssak3.pt')
+    # pkg_path = os.getcwd()
+    # folder_name = 'yolov5'
+    # full_path = os.path.join(pkg_path, folder_name)
+    # model = torch.hub.load(full_path, 'custom', path = local_yolov5_path, source = 'local', force_reload = True)
+    model = torch.hub.load('C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\yolov5', 'custom', path='C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\model\\ssak3.pt', source = 'local', force_reload = True)
     
+    global g_node
     global is_img_bgr
     global is_scan
     global is_imu
@@ -174,7 +186,7 @@ def main(args=None):
     global loc_z
 
     rclpy.init(args=args)
-    g_node = rcply.create_node('laundry_detector')
+    g_node = rclpy.create_node('laundry_detector')
 
     subscription_turtle = g_node.create_subscription(TurtlebotStatus, '/turtlebot_status',status_callback, 10)
     subscription_img = g_node.create_subscription(CompressedImage, 'camera/image_raw/compressed', img_callback, 3)
@@ -211,8 +223,9 @@ def main(args=None):
             RT_Bot2Map = transformMTX_bot2map()
 
             info = results.pandas().xyxy[0]
-            info_result = info[info['confidence'] > 0.75].to_numpy()
-            boxes_detect = info[info['confidence'] > 0.75][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
+            info_result = info[info['confidence'] > 0.3].to_numpy()
+            boxes_detect = info[info['confidence'] > 0.3][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
+            image_process = np.squeeze(results.render())
 
             if len(info_result) == 0:
                 detections.x = []
@@ -281,7 +294,13 @@ def main(args=None):
 
             image_process = draw_pts_img(image_process, xy_i[:, 0].astype(np.int32), xy_i[:, 1].astype(np.int32))
 
-            visualize_images(image_process)
+            # visualize_images(image_process)
+            results.display(render=True)
+            winname = 'Vehicle Detection'
+            cv2.imshow(winname, results.imgs[0])
+            cv2.waitKey(1)
+
+
 
         g_node.destroy_node()
         rclpy.shutdown()

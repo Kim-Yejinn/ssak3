@@ -30,6 +30,8 @@ setup(
             'point_pub = ssak3.point_pub:main',
             'up_object = ssak3.up_object:main',
             'slam = ssak3.slam:main',
+            'laundry = ssak3.laundry_detect:main',
+            'ex_calib = ssak3.ex_calib:main'
         ],
     },
 )
