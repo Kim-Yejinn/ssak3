@@ -166,7 +166,7 @@ def main(args=None):
     # folder_name = 'yolov5'
     # full_path = os.path.join(pkg_path, folder_name)
     # model = torch.hub.load(full_path, 'custom', path = local_yolov5_path, source = 'local', force_reload = True)
-    model = torch.hub.load('C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\yolov5', 'custom', path='C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\model\\ssak3.pt', source = 'local', force_reload = True)
+    model = torch.hub.load('C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\yolov5', 'custom', path='C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\model\\best2.pt', source = 'local', force_reload = True)
     
     global g_node
     global is_img_bgr
