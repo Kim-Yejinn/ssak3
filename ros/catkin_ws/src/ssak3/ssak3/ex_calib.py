@@ -29,9 +29,9 @@ params_cam = {
     "Block_SIZE": int(65000),
     "X": 0, # meter
     "Y": 0,
-    "Z": 1,
+    "Z": 0.8,
     "YAW": 0, # deg
-    "PITCH": 50,
+    "PITCH": 40,
     "ROLL": 0
 }
 

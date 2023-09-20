@@ -58,7 +58,7 @@ params_cam = {
     "Y": 0,
     "Z":  0.8,
     "YAW": 0,
-    "PITCH": 50,
+    "PITCH": 40,
     "ROLL": 0
 }
 
