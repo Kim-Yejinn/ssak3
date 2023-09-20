@@ -53,7 +53,7 @@ params_cam = {
     "FOV": 90,
     "localIP": "127.0.0.1",
     "localPort": 1232,
-    "Block_SIZE": int(65000),
+    "Block_SIZE": int(65535),
     "X": 0.,
     "Y": 0,
     "Z":  0.8,
