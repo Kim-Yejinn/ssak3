@@ -135,8 +135,8 @@ class followTheCarrot(Node):
                     self.cmd_msg.linear.x=out_vel
                     self.cmd_msg.angular.z=out_rad_vel         
 
-                    if self.collision==True:
-                        self.cmd_msg.linear.x=0.0           
+                    # if self.collision==True:
+                    #     self.cmd_msg.linear.x=0.0           
            
             else :
                 print("no found forward point")
