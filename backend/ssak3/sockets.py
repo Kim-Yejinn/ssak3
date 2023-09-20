@@ -23,5 +23,10 @@ async def my_event(sid, data):
 
 @sio_server.on('test')
 async def handle_test(sid, data):
-    print("tt")
+    print("back 테스트(back/ros to back)")
     print(data)
+
+@sio_server.on('testros')
+async def ros_test(sid, data):
+    print("ros 테스트(back to ros)")
+    await sio_server.emit('testcallback', "ros TEST")

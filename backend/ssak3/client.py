@@ -1,6 +1,9 @@
 import socketio
 import asyncio
 
+
+# client 테스트 코드
+
 sio_client = socketio.AsyncClient()
 
 
@@ -18,8 +21,7 @@ async def disconnect():
 # 테스트 코드
 async def main():
     await sio_client.connect(url='http://localhost:8000', socketio_path='socket.io')
-    await sio_client.emit('test', 'Hello from client')
     await sio_client.disconnect()
 
-
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
