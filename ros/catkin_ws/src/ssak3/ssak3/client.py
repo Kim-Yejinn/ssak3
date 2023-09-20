@@ -20,7 +20,7 @@ def aircon_on(data):
 
 
 # 서버 연결
-sio.connect('http://127.0.0.1:8000/socket.io')
+sio.connect('http://127.0.0.1:8000')
 
 # 데이터 송신
 sio.emit('test','TEST')
