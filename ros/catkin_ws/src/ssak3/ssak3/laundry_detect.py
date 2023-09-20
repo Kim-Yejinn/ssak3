@@ -10,8 +10,12 @@ import base64
 from ssak3.ex_calib import *
 from rclpy.node import Node
 
+import sys
+sys.path.append('C:/Users/SSAFY/Desktop/project/S09P22B201/ros/catkin_ws/src/ssak3/ssak3')
+from a_star import a_star
+
 from sensor_msgs.msg import CompressedImage, LaserScan, Imu
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist,PoseStamped
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Int32
 from ssafy_msgs.msg import TurtlebotStatus, Detection
@@ -19,9 +23,7 @@ from ssafy_msgs.msg import TurtlebotStatus, Detection
 from squaternion import Quaternion
 
 
-
 # 로봇의 위치 정보와 로봇에 달려있는 라이다와 카메라 간의 위치 및 자세 정보
-
 params_bot = {
     "X": 0.0,
     "Y": 0.0,
@@ -54,9 +56,9 @@ params_cam = {
     "Block_SIZE": int(65000),
     "X": 0.,
     "Y": 0,
-    "Z":  1,
-    "YAW": 50,
-    "PITCH": 0.0,
+    "Z":  0.8,
+    "YAW": 0,
+    "PITCH": 50,
     "ROLL": 0
 }
 
@@ -159,7 +161,7 @@ def main(args=None):
     full_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
                                         'src\\ssak3\\yolov5')
     local_yolov5_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
-                                        'src\\ssak3\\model\\ssak3.pt')
+                                        'src\\ssak3\\model\\ssak3v2.pt')
     # pkg_path = os.getcwd()
     # folder_name = 'yolov5'
     # full_path = os.path.join(pkg_path, folder_name)
@@ -190,6 +192,10 @@ def main(args=None):
     subscription_imu = g_node.create_subscription(Imu, '/imu', imu_callback, 10)
     publisher_detect = g_node.create_publisher(Detection, "/laundry_detect", 10)
     
+    publisher_goal_pub = g_node.create_publisher(PoseStamped,'goal_pose',10)
+    a_star_instance = a_star()
+    goal_pose_msg = PoseStamped()
+
     turtlebot_status_msg = TurtlebotStatus()
     
     
@@ -265,23 +271,23 @@ def main(args=None):
 
                         cx = int(x + (w / 2))
                         cy = int(y + (h / 2))
-                        print(x)
-                        print(y)
-                        print(w)
-                        print(h)
-                        print("xyii")
-                        print(xyii)
+                        # print(x)
+                        # print(y)
+                        # print(w)
+                        # print(h)
+                        # print("xyii")
+                        # print(xyii)
 
                         # xyv = xyii[np.logical_and(xyii[:, 0] >= cx - (w / 2 * 0.7), xyii[:, 0] <= cx + (w / 2 * 0.7)), :]
                         xyv = xyii[np.logical_and(xyii[:, 0] >= x - 10, xyii[:, 0] <= x + w + 10), :]
                         # xyv = xyv[np.logical_and(xyv[:, 1] >= y - 10, xyv[:, 1] <= y + h+ 10), :]
-                        print("xyv")
-                        print(xyv)
+                        # print("xyv")
+                        # print(xyv)
 
                         ostate = np.median(xyv, axis=0)
                         
-                        print("ostate")
-                        print(ostate)
+                        # print("ostate")
+                        # print(ostate)
 
 
                         relative_x = ostate[2]
@@ -298,10 +304,10 @@ def main(args=None):
 
                         ostate_list.append(object_global_pose)
 
-                        print("이게 좌표일까?")
-                        print(object_global_pose[0])
-                        print(object_global_pose[1])
-                        print(object_global_pose[2])
+                        # print("이게 좌표일까?")
+                        # print(object_global_pose[0])
+                        # print(object_global_pose[1])
+                        # print(object_global_pose[2])
 
 
 
@@ -312,14 +318,22 @@ def main(args=None):
                         detections.cy.append(cy)
                         detections.name.append(info.name[k])
 
-                        print(detections.x)
-                        print(detections.y)
-                        print(detections.distance)
-                        print(detections.cx)
-                        print(detections.cy)
-                        print(detections.name)
-
+                #         print(detections.x)
+                #         print(detections.y)
+                #         print(detections.distance)
+                #         print(detections.cx)
+                #         print(detections.cy)
+                #         print(detections.name)
+                # print("detections.x")
+                
+                print(detections.x)
+                print(detections.y)
                 publisher_detect.publish(detections)
+                # 임시로 하드코딩 어떻게 넣어야하는지 모르겠음
+                goal_pose_msg.pose.position.x = -4.8482074
+                goal_pose_msg.pose.position.y = 9.5741376
+                publisher_goal_pub.publish(goal_pose_msg)
+
             # image_process = draw_pts_img(image_process, xy_i[:, 0].astype(np.int32), xy_i[:, 1].astype(np.int32))
             # # visualize_images(image_process)
             # results.display(render=True)
