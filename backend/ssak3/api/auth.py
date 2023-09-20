@@ -1,18 +1,24 @@
-from fastapi import APIRouter, HTTPException
-from fastapi import Depends
+import os
+from datetime import datetime, timedelta
+
+from fastapi import APIRouter, HTTPException, Depends
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from starlette import status
 from passlib.context import CryptContext
+from jose import JWTError, jwt
 
 from models.auth import auth
-from db.db import session
+from db.db import get_db
 
 router = APIRouter(prefix="/auth")
 
+ACCESS_TOKEN_TIME = os.getenv("ACCESS_TOKEN_EXPIRE_TIME")
+REFRESH_TOKEN_TIME = os.getenv("REFRESH_TOKEN_EXPIRE_TIME")
+
 pw_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 @router.post("/sign-up", status_code=status.HTTP_200_OK)
-def signUp(id: str, name: str, password: str):
-    db = session()
+def signUp(id: str, name: str, password: str, db: Session = Depends(get_db)):
     try:
         exist_user = db.query(auth).filter(auth.id == id).first()
         if(exist_user):
@@ -29,3 +35,34 @@ def signUp(id: str, name: str, password: str):
     finally:
         db.close()
 
+
+
+@router.post("/log-in", status_code=status.HTTP_200_OK)
+def logIn(id: str, password: str, db: Session = Depends(get_db)):
+    exist_user = db.query(auth).filter(auth.id == id).first()
+    if not (exist_user):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="사용자를 찾을 수 없습니다.")
+
+    # pw_wrong = pw_context.verify(password, exist_user.password)
+    # print(pw_wrong)
+    if not (pw_context.verify(password, exist_user.password)):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="비밀번호를 잘못 입력하셨습니다.")
+
+    atk_time = datetime.utcnow() + timedelta(minutes=int(ACCESS_TOKEN_TIME))
+    rtk_time = datetime.utcnow() + timedelta(minutes=int(REFRESH_TOKEN_TIME))
+    secret_key = os.getenv("SECRET_KEY")
+    algorithm = os.getenv("JWT_ALGORITHM")
+
+    atk_data = {
+        "sub": id,
+        "exp": atk_time
+    }
+    access_token = jwt.encode(atk_data, secret_key, algorithm)
+
+    rtk_data = {
+        "sub": id,
+        "exp": rtk_time
+    }
+    refresh_token = jwt.encode(rtk_data, secret_key, algorithm)
+
+    return {"accessToken": access_token, "refreshToken": refresh_token}
