@@ -279,10 +279,10 @@ def main(args=None):
                         # print(xyii)
 
                         # xyv = xyii[np.logical_and(xyii[:, 0] >= cx - (w / 2 * 0.7), xyii[:, 0] <= cx + (w / 2 * 0.7)), :]
-                        xyv = xyii[np.logical_and(xyii[:, 0] >= x - 10, xyii[:, 0] <= x + w + 10), :]
-                        # xyv = xyv[np.logical_and(xyv[:, 1] >= y - 10, xyv[:, 1] <= y + h+ 10), :]
-                        # print("xyv")
-                        # print(xyv)
+                        xyv = xyii[np.logical_and(xyii[:, 0] >= x, xyii[:, 0] <= x + w), :]
+                        xyv = xyv[np.logical_and(xyv[:, 1] >= y, xyv[:, 1] <= y + h), :]
+                        print("xyv")
+                        print(xyv)
 
                         ostate = np.median(xyv, axis=0)
                         
