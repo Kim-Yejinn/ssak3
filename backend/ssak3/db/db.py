@@ -2,10 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-user_name = "ssafy101"
-user_password = "ssafy101"
-db_host = "j9b201.p.ssafy.io"
-db_name = "ssak3"
+user_name = "root"
+user_password = "ssafy"
+db_host = "127.0.0.1"
+db_name = "testssak3"
 
 
 DATABASE_URL = 'mysql+pymysql://%s:%s@%s/%s?charset=utf8' % (
