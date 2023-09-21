@@ -65,10 +65,6 @@ params_cam = {
 }
 
 def visualize_images(image_out):
-<<<<<<< HEAD
-=======
-    # results.display(render=True)
->>>>>>> 34c245b (fix: 세탁물 검출 수정 [S09P22B201-136])
     winname = 'laundry detect'
     cv2.imshow(winname, image_out)
 
