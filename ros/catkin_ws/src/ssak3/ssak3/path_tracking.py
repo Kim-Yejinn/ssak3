@@ -135,8 +135,8 @@ class followTheCarrot(Node):
                     self.cmd_msg.linear.x=out_vel
                     self.cmd_msg.angular.z=out_rad_vel         
 
-                    # if self.collision==True:
-                    #     self.cmd_msg.linear.x=0.0           
+                    if self.collision==True:
+                        self.cmd_msg.linear.x=0.0           
            
             else :
                 print("no found forward point")
@@ -181,9 +181,12 @@ class followTheCarrot(Node):
             for waypoint in self.path_msg.poses :
                 for lidar_point in pcd_msg.points :
                     distance = sqrt(pow(waypoint.pose.position.x-lidar_point.x,2)+pow(waypoint.pose.position.y-lidar_point.y,2))
-                    if distance < 0.04 :
+                    if distance < 0.01 :
+                        print('lidar : {}'.format(lidar_point))
+                        print('path : {}'.format(waypoint))
+                        print('distance : {}'.format(distance))
                         self.collision=True
-                        print('collision')
+                        # print('collision')
             
             self.is_lidar=True
 
