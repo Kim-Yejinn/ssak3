@@ -161,7 +161,7 @@ def main(args=None):
     full_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
                                         'src\\ssak3\\yolov5')
     local_yolov5_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
-                                        'src\\ssak3\\model\\best2.pt')
+                                        'src\\ssak3\\model\\best_final.pt')
     model = torch.hub.load(full_path, 'custom', path = local_yolov5_path, source = 'local', force_reload = True)
     
     global g_node
@@ -226,8 +226,8 @@ def main(args=None):
             RT_Bot2Map = transformMTX_bot2map()
 
             info = results.pandas().xyxy[0]
-            info_result = info[info['confidence'] > 0.8].to_numpy()
-            boxes_detect = info[info['confidence'] > 0.8][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
+            info_result = info[info['confidence'] > 0.65].to_numpy()
+            boxes_detect = info[info['confidence'] > 0.65][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
             image_process = np.squeeze(results.render())
             if len(info_result) == 0:
                 pass
