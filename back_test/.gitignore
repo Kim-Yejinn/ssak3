@@ -1,0 +1,9 @@
+.idea
+myapi.db
+*.pyc
+__pycache__
+migrations
+alembic.ini
+.env
+logs
+.deta
