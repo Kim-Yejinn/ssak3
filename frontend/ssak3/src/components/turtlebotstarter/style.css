@@ -7,6 +7,16 @@
     background: #FFFFFF;
 }
 
+/* nav title*/
+.title{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    font-family: 'Lexend';
+    top: 20px;
+}
+
 /* Group - off */
 
 .groupOff{
@@ -17,28 +27,42 @@
     top: 162px;
 }
 
-/* groupOffFrame */
-.groupOffFrame{
+/* Unstar frame */
+.unstarFrame{
     position: absolute;
-    width: 163.11px;
-    height: 190.66px;
+    width: 143.11px;
+    height: 170.66px;
     left: 200.1px;
     top: 162px;
-
+    padding: 10px;
     background: #E4E3E3;
-    border-radius: 17.7358px;
+    border-radius: 10px;
 }
 
-/* Star Frame */
+/* Star frame */
 .starFrame{
     position: absolute;
-    width: 163.31px;
-    height: 172.04px;
+    width: 143.31px;
+    height: 170.66px;
     left: 28px;
     top: 162px;
-
+    padding: 10px;
     background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
     border-radius: 10px;
+}
+/* Starframe shadow*/
+
+.starFrameShadow{
+    position: absolute;
+    width: 147.47px;
+    height: 132.13px;
+    left: 50.17px;
+    top: 210.77px;
+
+    background: #1B1B1B;
+    opacity: 0.5;
+    filter: blur(23.9434px);
+    border-radius: 17.7358px;
 }
 
 /* groupOffType */
@@ -46,8 +70,8 @@
     position: absolute;
     width: 95.77px;
     height: 19px;
-    left: 224.87px;
-    top: 235.6px;
+    left: 24.77px;
+    top: 73.6px;
 
     font-family: 'Lexend';
     font-style: normal;
@@ -61,12 +85,12 @@
 
 
 /* Off - TEXT */
-.groupOffText{
+.offText{
     position: absolute;
     width: 26.69px;
     height: 19px;
-    left: 224.81px;
-    top: 313.64px;
+    left: 24.77px;
+    bottom: 20.02px;
 
     font-family: 'Lexend';
     font-style: normal;
@@ -79,12 +103,12 @@
 }
 
 /* On - TEXT*/
-.unstarText{
+.unstarOnText{
     position: absolute;
     width: 23.72px;
     height: 19px;
-    left: 52.71px;
-    top: 498.98px;
+    left: 24.77px;
+    bottom: 20.02px;
 
     font-family: 'Lexend';
     font-style: normal;
@@ -95,13 +119,11 @@
 
     color: #000000;
 }
-/* Shirts */
-.starText{
+/* starOnText */
+.starOnText{
     position: absolute;
-    width: 71.26px;
-    height: 19px;
-    left: 52.74px;
-    top: 235.6px;
+    left: 24.77px;
+    bottom: 20.02px;
 
     font-family: 'Lexend';
     font-style: normal;
@@ -109,38 +131,74 @@
     font-size: 15.0755px;
     line-height: 19px;
     /* identical to box height, or 124% */
-
+    
     color: #FFFFFF;
 }
-/* Logo Background*/
-.logoBackground{
-    position: absolute;
-    width: 44.48px;
-    height: 39.91px;
-    left: 224.81px;
-    top: 179.74px;
 
-    background: #DADADA;
+/* logo frame */
+.logoFrame{
+    position: absolute;
+    width: 44.484px;
+    height: 39.906px;
+    top: 20px;
+    left: 24.71px;
+    flex-shrink: 0;
+    /* fill: #DADADA; */
+    border-radius: 30px;
+    background-color: #DADADA;
 }
 
 /* Toggle */
-.toggle{
+.toggleOn{
     position: absolute;
-    width: 47.45px;
-    height: 22.75px;
-    left: 295.99px;
-    top: 311.87px;
+    width: 18.75px;
+    height: 18.75px;
+    right: 10%;
+    top: 9%;
+    display: flex;
+    align-items: center;
+    background-color: #FFFFFF;
+    border-radius: 15px;
 }
 
+.toggleOff{
+    position: absolute;
+    width: 18.75px;
+    height: 18.75px;
+    left: 10%;
+    top: 9%;
+    display: flex;
+    align-items: center;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+}
+.starToggleOn{
+    position: absolute;
+    width: 18.75px;
+    height: 18.75px;
+    right: 10%;
+    top: 9%;
+    background-color: #FF8A00;
+    border-radius: 15px;
+}
+
+.starToggleOff{
+    position: absolute;
+    width: 18.75px;
+    height: 18.75px;
+    left: 10%;
+    top: 9%;
+    background-color: #FF8A00;
+    border-radius: 15px;
+}
 
 /* Toggle off - background */
 .toggleOffBg{
     position: absolute;
     width: 47.45px;
     height: 22.75px;
-    left: 295.99px;
-    top: 311.87px;
-
+    right: 22.77px;
+    bottom: 16.02px;
     background: #D6D6D6;
     border-radius: 17.7358px;
 }
@@ -149,19 +207,20 @@
     position: absolute;
     width: 47.51px;
     height: 22.75px;
-    left: 124.01px;
-    top: 293.25px;
+    right: 22.77px;
+    bottom: 16.02px;
 
     background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
-    
+    border: 1.77358px solid #FF8A00;
+    border-radius: 10px;
 }
 /* Toggle on - background */
 .toggleOnBg{
     position: absolute;
     width: 47.45px;
     height: 22.75px;
-    left: 123.89px;
-    top: 497.21px;
+    right: 22.77px;
+    bottom: 16.02px;
 
     background: #000000;
     border-radius: 17.7358px;
@@ -170,22 +229,10 @@
     position: absolute;
     width: 47.45px;
     height: 22.75px;
-    left: 123.89px;
-    top: 497.21px;
+    right: 22.77px;
+    bottom: 16.02px;
 
     background: #000000;
-    border: 1.77358px solid #FF8A00;
-    border-radius: 10px;
-}
-/* Toggle off */
-.toggleOff{
-    position: absolute;
-    width: 19.77px;
-    height: 17.74px;
-    left: 299.94px;
-    top: 314.53px;
-
-    background: #FFFFFF;
     border: 1.77358px solid #FF8A00;
     border-radius: 10px;
 }
@@ -195,9 +242,10 @@
     position: absolute;
     width: 44.54px;
     height: 39.91px;
-    left: 52.74px;
-    top: 179.74px;
+    top: 20px;
+    left: 24.71px;
 
+    border-radius: 30px;
     background: #2E2E2E;
 }
 
@@ -237,21 +285,6 @@
     color: #000000;
 }
 
-/* shadow */
-.shadow{
-    position: absolute;
-    width: 147.47px;
-    height: 132.13px;
-    left: 50.17px;
-    top: 210.77px;
-
-    background: #1B1B1B;
-    opacity: 0.5;
-    filter: blur(23.9434px);
-    border-radius: 17.7358px;
-}
-
-
 /* Start btn */
 .startBtn{
     position: absolute;
@@ -260,35 +293,46 @@
     left: 28px;
     top: 776px;
 
+    color: white;
     background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
     border-radius: 10px;
+
+    display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
 }
 
 /* Star */
 .starBtn{
     position: absolute;
-    width: 19.51px;
-    height: 17.74px;
-    left: 158.36px;
-    top: 179.74px;
+    width: 20px;
+    height: 20px;
+    right: 15px;
+    top: 10px;
+    background: url(../../../public/star.png);
+    background-size: contain; /* 이미지 크기를 비율을 유지하면서 조정합니다. */
+  background-repeat: no-repeat; /* 이미지 반복을 비활성화합니다. */
+  background-position: center; /* 이미지를 가운데 정렬합니다. */
 }
 
 .unStarBtn{
     position: absolute;
-    width: 19.51px;
-    height: 17.74px;
-    left: 158.36px;
-    top: 179.74px;
+    width: 20px;
+    height: 20px;
+    right: 15px;
+    top: 10px;
+    background: url(../../../public/unstar.png);
+    background-size: contain; /* 이미지 크기를 비율을 유지하면서 조정합니다. */
+  background-repeat: no-repeat; /* 이미지 반복을 비활성화합니다. */
+  background-position: center; /* 이미지를 가운데 정렬합니다. */
 }
 
 
 /* Title */
-.title{
+.unstarTitle{
     position: absolute;
-    width: 95.77px;
-    height: 19px;
-    left: 150px;
-    top: 28px;
+    left: 24.77px;
+    top: 73.6px;
 
     font-family: 'Lexend';
     font-style: normal;
@@ -296,19 +340,14 @@
     font-size: 15.0755px;
     line-height: 19px;
     /* identical to box height, or 124% */
-    text-align: center;
 
     color: #000000;
 }
 
-
-/* Start btn text */
-.startBtnText{
+.starTitle{
     position: absolute;
-    width: 95.77px;
-    height: 19px;
-    left: 150px;
-    top: 792px;
+    left: 24.77px;
+    top: 73.6px;
 
     font-family: 'Lexend';
     font-style: normal;
@@ -316,11 +355,9 @@
     font-size: 15.0755px;
     line-height: 19px;
     /* identical to box height, or 124% */
-    text-align: center;
 
     color: #FFFFFF;
 }
-
 
 /* Control icon (뒤로가기, 홈 버튼, 추가 버튼) */
 .controlBtnIcon{
