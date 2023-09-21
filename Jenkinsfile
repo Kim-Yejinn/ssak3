@@ -22,7 +22,7 @@ pipeline {
         stage('Docker container delete') {
             steps {
                 script {
-                    def containerNames = ['back', 'front']
+                    def containerNames = ['back', 'front', 'nginx']
 
                     for (String containerName in containerNames) {
                         sh "docker stop ${containerName}"
@@ -35,7 +35,7 @@ pipeline {
         stage('Docker image delete') {
             steps {
                 script {
-                    def imageNames = ['test-backend', 'test-frontend']
+                    def imageNames = ['test-backend', 'test-frontend', 'nginx']
 
                     for (String imageName in imageNames) {
                         sh "docker rmi ${imageName}"
