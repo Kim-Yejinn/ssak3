@@ -1,11 +1,15 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
+from dotenv import load_dotenv
 
-user_name = "root"
-user_password = "ssafy"
-db_host = "127.0.0.1"
-db_name = "testssak3"
+load_dotenv()
+
+user_name = os.getenv("db_user_name")
+user_password = os.getenv("db_user_password")
+db_host = os.getenv("db_host")
+db_name = os.getenv("db_name")
 
 
 DATABASE_URL = 'mysql+pymysql://%s:%s@%s/%s?charset=utf8' % (
@@ -20,8 +24,15 @@ ENGINE = create_engine(
     echo=True
 )
 
-session = sessionmaker(autocommit=False,
+SessionLocal = sessionmaker(autocommit=False,
                        autoflush=False,
                        bind=ENGINE)
 
 Base = declarative_base()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
