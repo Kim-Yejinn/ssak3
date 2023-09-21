@@ -6,6 +6,7 @@ services:
     container_name: back
     build:
       context: backend/.
+      dockerfile: Dockerfile
     ports:
       - 8080:8000
     environment:
@@ -13,6 +14,7 @@ services:
     volumes:
       - ./backend:/workspace
       - ./assets:/assets
+    tty: true
 
   frontend:
     image: test-frontend:latest
@@ -27,6 +29,7 @@ services:
     volumes:
       - ./frontend:/workspace
       - ./assets:/assets
+    tty: true
 
   nginx:
     image: nginx:latest
