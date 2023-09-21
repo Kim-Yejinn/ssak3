@@ -1,5 +1,5 @@
 /* 터틀봇 제어 - 바로시작 */
-.main{
+.controlContainer{
     position: relative;
     width: 393px;
     height: 852px;
@@ -27,6 +27,18 @@
 
     background: #E4E3E3;
     border-radius: 17.7358px;
+}
+
+/* Star Frame */
+.starFrame{
+    position: absolute;
+    width: 163.31px;
+    height: 172.04px;
+    left: 28px;
+    top: 162px;
+
+    background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
+    border-radius: 10px;
 }
 
 /* groupOffType */
@@ -67,7 +79,7 @@
 }
 
 /* On - TEXT*/
-.groupOnText{
+.unstarText{
     position: absolute;
     width: 23.72px;
     height: 19px;
@@ -83,8 +95,25 @@
 
     color: #000000;
 }
-/* clothes - background */
-.clothesBg{
+/* Shirts */
+.starText{
+    position: absolute;
+    width: 71.26px;
+    height: 19px;
+    left: 52.74px;
+    top: 235.6px;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15.0755px;
+    line-height: 19px;
+    /* identical to box height, or 124% */
+
+    color: #FFFFFF;
+}
+/* Logo Background*/
+.logoBackground{
     position: absolute;
     width: 44.48px;
     height: 39.91px;
@@ -115,6 +144,17 @@
     background: #D6D6D6;
     border-radius: 17.7358px;
 }
+/* Startoggle off - background*/
+.starToggleOffBg{
+    position: absolute;
+    width: 47.51px;
+    height: 22.75px;
+    left: 124.01px;
+    top: 293.25px;
+
+    background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
+    
+}
 /* Toggle on - background */
 .toggleOnBg{
     position: absolute;
@@ -126,6 +166,17 @@
     background: #000000;
     border-radius: 17.7358px;
 }
+.starToggleOnBg{
+    position: absolute;
+    width: 47.45px;
+    height: 22.75px;
+    left: 123.89px;
+    top: 497.21px;
+
+    background: #000000;
+    border: 1.77358px solid #FF8A00;
+    border-radius: 10px;
+}
 /* Toggle off */
 .toggleOff{
     position: absolute;
@@ -135,860 +186,200 @@
     top: 314.53px;
 
     background: #FFFFFF;
+    border: 1.77358px solid #FF8A00;
+    border-radius: 10px;
 }
 
-/* HK Studio */
-
-position: absolute;
-width: 164.88px;
-height: 172.04px;
-left: 200.1px;
-top: 365.96px;
-
-
-
-/* Rectangle 9 */
-
-position: absolute;
-width: 164.88px;
-height: 172.04px;
-left: 200.1px;
-top: 365.96px;
-
-background: #E4E3E3;
-border-radius: 17.7358px;
-
-
-/* Towel */
-
-position: absolute;
-width: 95.77px;
-height: 19px;
-left: 224.87px;
-top: 439.57px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 600;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-
-color: #000000;
-
-
-
-/* Off */
-
-position: absolute;
-width: 26.98px;
-height: 19px;
-left: 225.08px;
-top: 498.98px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 500;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-
-color: #7D7D7D;
-
-
-
-/* Ellipse 7 */
-
-position: absolute;
-width: 44.97px;
-height: 39.91px;
-left: 225.08px;
-top: 383.7px;
-
-background: #DADADA;
-
-
-/* Group 13 */
-
-position: absolute;
-width: 47.97px;
-height: 22.75px;
-left: 297.03px;
-top: 497.21px;
-
-
-
-/* Rectangle 8 */
-
-position: absolute;
-width: 47.97px;
-height: 22.75px;
-left: 297.03px;
-top: 497.21px;
-
-background: #D6D6D6;
-border-radius: 17.7358px;
-
-
-/* Ellipse 5 */
-
-position: absolute;
-width: 19.99px;
-height: 17.74px;
-left: 301.03px;
-top: 499.87px;
-
-background: #FFFFFF;
-
-
-/* Air Conditionar */
-
-position: absolute;
-width: 163.11px;
-height: 190.66px;
-left: 28px;
-top: 347.34px;
-
-filter: drop-shadow(0px 3.54717px 3.54717px rgba(0, 0, 0, 0.25));
-
-
-/* Rectangle 8 */
-
-position: absolute;
-width: 163.11px;
-height: 190.66px;
-left: 28px;
-top: 347.34px;
-
-background: #E4E3E3;
-border-radius: 17.7358px;
-
-
-/* Socks */
-
-position: absolute;
-width: 99.84px;
-height: 19px;
-left: 52.71px;
-top: 420.94px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 600;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-
-color: #000000;
-
-
-
-
-
-
-/* Ellipse 6 */
-
-position: absolute;
-width: 44.48px;
-height: 39.91px;
-left: 52.71px;
-top: 365.08px;
-
-background: #DADADA;
-
-
-/* Group 12 */
-.
-position: absolute;
-width: 47.45px;
-height: 22.75px;
-left: 123.89px;
-top: 497.21px;
-
-filter: drop-shadow(0px 3.54717px 3.54717px rgba(0, 0, 0, 0.25));
-
-
-/* Rectangle 8 */
-
-position: absolute;
-width: 47.45px;
-height: 22.75px;
-left: 123.89px;
-top: 497.21px;
-
-background: #000000;
-border-radius: 17.7358px;
-
-
-/* Ellipse 5 */
-
-position: absolute;
-width: 19.77px;
-height: 17.74px;
-left: 147.61px;
-top: 499.87px;
-
-background: #FFFFFF;
-
-
-/* Air Conditionar */
-
-position: absolute;
-width: 163.11px;
-height: 190.66px;
-left: 28px;
-top: 347.34px;
-
-filter: drop-shadow(0px 3.54717px 3.54717px rgba(0, 0, 0, 0.25));
-
-
-/* Rectangle 8 */
-
-position: absolute;
-width: 163.11px;
-height: 190.66px;
-left: 28px;
-top: 347.34px;
-
-background: #E4E3E3;
-box-shadow: inset -13.3019px -8.86792px 21.283px rgba(0, 0, 0, 0.07), inset 13.3019px 6.20755px 21.283px rgba(247, 247, 247, 0.89);
-border-radius: 17.7358px;
-
-
-/* Rectangle 9 */
-
-position: absolute;
-width: 163.11px;
-height: 190.66px;
-left: 28px;
-top: 347.34px;
-
-background: #E4E3E3;
-border-radius: 17.7358px;
-
-
-/* Socks */
-
-position: absolute;
-width: 99.84px;
-height: 19px;
-left: 52.71px;
-top: 420.94px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 600;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-
-color: #000000;
-
-
-
-/* On */
-
-position: absolute;
-width: 23.72px;
-height: 19px;
-left: 52.71px;
-top: 498.98px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 500;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-
-color: #000000;
-
-
-
-/* Ellipse 6 */
-
-position: absolute;
-width: 44.48px;
-height: 39.91px;
-left: 52.71px;
-top: 365.08px;
-
-background: #DADADA;
-
-
-/* Group 12 */
-
-position: absolute;
-width: 47.45px;
-height: 22.75px;
-left: 123.89px;
-top: 497.21px;
-
-filter: drop-shadow(0px 3.54717px 3.54717px rgba(0, 0, 0, 0.25));
-
-
-
-
-
-/* Ellipse 5 */
-
-position: absolute;
-width: 19.77px;
-height: 17.74px;
-left: 147.61px;
-top: 499.87px;
-
-background: #FFFFFF;
-
-
-/* Group 29 */
-
-position: absolute;
-width: 169.64px;
-height: 180.91px;
-left: 28px;
-top: 162px;
-
-
+/*  Star logo frame*/
+.starLogoFrame{
+    position: absolute;
+    width: 44.54px;
+    height: 39.91px;
+    left: 52.74px;
+    top: 179.74px;
+
+    background: #2E2E2E;
+}
+
+/* Star logo */
+.starLogo{
+    position: absolute;
+    width: 71.26px;
+    height: 19px;
+    left: 52.74px;
+    top: 235.6px;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15.0755px;
+    line-height: 19px;
+    /* identical to box height, or 124% */
+
+    color: #FFFFFF;
+}
+
+/* Unstar logo */
+.unstarLogo{
+    position: absolute;
+    width: 95.77px;
+    height: 19px;
+    left: 224.87px;
+    top: 439.57px;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15.0755px;
+    line-height: 19px;
+    /* identical to box height, or 124% */
+
+    color: #000000;
+}
 
 /* shadow */
+.shadow{
+    position: absolute;
+    width: 147.47px;
+    height: 132.13px;
+    left: 50.17px;
+    top: 210.77px;
 
-position: absolute;
-width: 147.47px;
-height: 132.13px;
-left: 50.17px;
-top: 210.77px;
-
-background: #1B1B1B;
-opacity: 0.5;
-filter: blur(23.9434px);
-border-radius: 17.7358px;
-
-
-/* Lighting */
-
-position: absolute;
-width: 163.31px;
-height: 172.04px;
-left: 28px;
-top: 162px;
+    background: #1B1B1B;
+    opacity: 0.5;
+    filter: blur(23.9434px);
+    border-radius: 17.7358px;
+}
 
 
+/* Start btn */
+.startBtn{
+    position: absolute;
+    width: 337px;
+    height: 50px;
+    left: 28px;
+    top: 776px;
 
-/* Rectangle 6 */
-
-position: absolute;
-width: 163.31px;
-height: 172.04px;
-left: 28px;
-top: 162px;
-
-background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
-border-radius: 10px;
-
-
-/* Shirts */
-
-position: absolute;
-width: 71.26px;
-height: 19px;
-left: 52.74px;
-top: 235.6px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 600;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-
-color: #FFFFFF;
-
-
-
-/* On */
-
-position: absolute;
-width: 23.75px;
-height: 19px;
-left: 52.74px;
-top: 295.02px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 500;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-
-color: #FFFFFF;
-
-
-
-/* Ellipse 4 */
-
-position: absolute;
-width: 44.54px;
-height: 39.91px;
-left: 52.74px;
-top: 179.74px;
-
-background: #2E2E2E;
-
-
-/* Group 10 */
-
-position: absolute;
-width: 47.51px;
-height: 22.75px;
-left: 124.01px;
-top: 293.25px;
-
-
-
-/* Rectangle 8 */
-
-position: absolute;
-width: 47.51px;
-height: 22.75px;
-left: 124.01px;
-top: 293.25px;
-
-background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
-border: 1.77358px solid #FF8A00;
-border-radius: 10px;
-
-
-/* Ellipse 5 */
-
-position: absolute;
-width: 19.79px;
-height: 17.74px;
-left: 147.76px;
-top: 295.91px;
-
-background: #FF8A00;
-
-
-/* Group */
-
-position: absolute;
-left: 16.95%;
-right: 78.44%;
-top: 22.35%;
-bottom: 77.52%;
-
-
-
-/* Vector */
-
-position: absolute;
-left: 21.23%;
-right: 78.44%;
-top: 22.35%;
-bottom: 77.52%;
-
-background: #FFFFFF;
-
-
-/* Vector */
-
-position: absolute;
-left: 16.95%;
-right: 82.73%;
-top: 22.35%;
-bottom: 77.52%;
-
-background: #FFFFFF;
-
-
-/* Rectangle 7 */
-
-position: absolute;
-width: 337px;
-height: 50px;
-left: 28px;
-top: 776px;
-
-background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
-border-radius: 10px;
-
+    background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
+    border-radius: 10px;
+}
 
 /* Star */
+.starBtn{
+    position: absolute;
+    width: 19.51px;
+    height: 17.74px;
+    left: 158.36px;
+    top: 179.74px;
+}
+
+.unStarBtn{
+    position: absolute;
+    width: 19.51px;
+    height: 17.74px;
+    left: 158.36px;
+    top: 179.74px;
+}
+
+
+/* Title */
+.title{
+    position: absolute;
+    width: 95.77px;
+    height: 19px;
+    left: 150px;
+    top: 28px;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15.0755px;
+    line-height: 19px;
+    /* identical to box height, or 124% */
+    text-align: center;
+
+    color: #000000;
+}
+
+
+/* Start btn text */
+.startBtnText{
+    position: absolute;
+    width: 95.77px;
+    height: 19px;
+    left: 150px;
+    top: 792px;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15.0755px;
+    line-height: 19px;
+    /* identical to box height, or 124% */
+    text-align: center;
+
+    color: #FFFFFF;
+}
+
+
+/* Control icon (뒤로가기, 홈 버튼, 추가 버튼) */
+.controlBtnIcon{
+    position: absolute;
+    width: 23px;
+    height: 23px;
+    left: 28px;
+    top: 26px;
+}
+
+/* Control box */
+.controlBtnBox{
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 336px;
+    top: 706px;
+
+    background: rgba(28, 29, 34, 0.08);
+}
+
+/* menuOn */
+
+.menuOn{
+    position: absolute;
+    width: 95.77px;
+    height: 19px;
+    left: 28px;
+    top: 115px;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15.0755px;
+    line-height: 19px;
+    /* identical to box height, or 124% */
+    text-align: center;
+
+    color: #000000;
+}
+
+
+/* menuOff */
+.menuOff{
+    position: absolute;
+    width: 95.77px;
+    height: 19px;
+    left: 148px;
+    top: 115px;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15.0755px;
+    line-height: 19px;
+    /* identical to box height, or 124% */
+    text-align: center;
+
+    color: #7D7D7D;
+}
 
-position: absolute;
-width: 19.51px;
-height: 17.74px;
-left: 158.36px;
-top: 179.74px;
 
-
-
-/* Iconly/Bold/Star */
-
-position: absolute;
-left: 8.33%;
-right: 8.33%;
-top: 10.41%;
-bottom: 10.42%;
-
-
-
-/* Star */
-
-position: absolute;
-left: 8.33%;
-right: 8.33%;
-top: 10.41%;
-bottom: 10.42%;
-
-
-
-/* Vector */
-
-position: absolute;
-left: 8.33%;
-right: 8.33%;
-top: 10.41%;
-bottom: 10.42%;
-
-background: #FF8A00;
-border-radius: 7.98113px;
-
-
-/* Vector */
-
-position: absolute;
-width: 26.6px;
-height: 16.85px;
-left: 61.7px;
-top: 190.38px;
-
-background: #FFFFFF;
-border: 0.886792px solid #FFFFFF;
-
-
-/* Vector */
-
-position: absolute;
-width: 19.51px;
-height: 21.28px;
-left: calc(50% - 19.51px/2 + 50.54px);
-top: calc(50% - 21.28px/2 - 225.87px);
-
-background: #000000;
-border: 0.886792px solid #000000;
-
-
-/* Vector */
-
-position: absolute;
-left: 16.38%;
-right: 78.21%;
-top: 43.58%;
-bottom: 53.3%;
-
-background: #000000;
-
-
-/* image 55 */
-
-position: absolute;
-width: 22.17px;
-height: 22.17px;
-left: 237.28px;
-top: 392.57px;
-
-background: url(image.png);
-
-
-/* Smart TV */
-
-position: absolute;
-width: 163px;
-height: 170.15px;
-left: 28px;
-top: 554px;
-
-
-
-/* Rectangle 7 */
-
-position: absolute;
-width: 163px;
-height: 170.15px;
-left: 28px;
-top: 554px;
-
-background: #E4E3E3;
-border-radius: 17.7242px;
-
-
-/* Under Wear */
-
-position: absolute;
-width: 95.71px;
-height: 37.22px;
-left: 52.81px;
-top: 619.58px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 600;
-font-size: 15.0655px;
-line-height: 19px;
-/* or 124% */
-
-color: #000000;
-
-
-
-/* Off */
-
-position: absolute;
-width: 26.67px;
-height: 16.62px;
-left: 52.7px;
-top: 689.33px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 500;
-font-size: 15.0655px;
-line-height: 19px;
-/* or 124% */
-
-color: #7D7D7D;
-
-
-
-/* Ellipse 5 */
-
-position: absolute;
-width: 44.45px;
-height: 35.61px;
-left: 52.7px;
-top: 569.83px;
-
-background: #DADADA;
-
-
-/* Group 11 */
-
-position: absolute;
-width: 47.42px;
-height: 20.3px;
-left: 123.83px;
-top: 687.75px;
-
-
-
-/* Rectangle 8 */
-
-position: absolute;
-width: 47.42px;
-height: 20.3px;
-left: 123.83px;
-top: 687.75px;
-
-background: #D6D6D6;
-border-radius: 17.7242px;
-
-
-/* Ellipse 5 */
-
-position: absolute;
-width: 19.76px;
-height: 15.83px;
-left: 127.78px;
-top: 690.12px;
-
-background: #FFFFFF;
-
-
-/* image 57 */
-
-position: absolute;
-width: 27.47px;
-height: 23.04px;
-left: 61.68px;
-top: 576.16px;
-
-background: url(image.png);
-
-
-/* 터틀봇 제어 */
-
-position: absolute;
-width: 95.77px;
-height: 19px;
-left: 150px;
-top: 28px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 600;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-text-align: center;
-
-color: #000000;
-
-
-
-/* 주행하기 */
-
-position: absolute;
-width: 95.77px;
-height: 19px;
-left: 150px;
-top: 792px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 600;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-text-align: center;
-
-color: #FFFFFF;
-
-
-
-/* Frame */
-
-position: absolute;
-width: 23px;
-height: 23px;
-left: 28px;
-top: 26px;
-
-
-
-/* Vector */
-
-position: absolute;
-left: 35.94%;
-right: 35.94%;
-top: 21.88%;
-bottom: 21.88%;
-
-border: 2.15625px solid #000000;
-
-
-/* Frame */
-
-position: absolute;
-width: 23px;
-height: 23px;
-left: 340px;
-top: 26px;
-
-
-
-/* Vector */
-
-position: absolute;
-left: 12.5%;
-right: 12.5%;
-top: 8.33%;
-bottom: 8.33%;
-
-background: #000000;
-
-
-/* 세탁물 설정 */
-
-position: absolute;
-width: 95.77px;
-height: 19px;
-left: 28px;
-top: 115px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 600;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-text-align: center;
-
-color: #000000;
-
-
-
-/* 스케줄 */
-
-position: absolute;
-width: 95.77px;
-height: 19px;
-left: 148px;
-top: 115px;
-
-font-family: 'Lexend';
-font-style: normal;
-font-weight: 600;
-font-size: 15.0755px;
-line-height: 19px;
-/* identical to box height, or 124% */
-text-align: center;
-
-color: #7D7D7D;
-
-
-
-/* Icon */
-
-position: absolute;
-width: 18px;
-height: 18px;
-left: 336px;
-top: 706px;
-
-
-
-/* Box */
-
-position: absolute;
-width: 18px;
-height: 18px;
-left: 336px;
-top: 706px;
-
-background: rgba(28, 29, 34, 0.08);
-
-
-/* Icon */
-
-position: absolute;
-width: 6px;
-height: 6px;
-left: 342px;
-top: 712px;
-
-opacity: 0.4;
-
-
-/* Vector */
-
-position: absolute;
-width: 6px;
-height: 0px;
-left: 342px;
-top: 715px;
-
-border: 2px solid #1C1D22;
-
-
-/* Vector */
-
-position: absolute;
-width: 6px;
-height: 0px;
-left: 345px;
-top: 712px;
-
-border: 2px solid #1C1D22;
-transform: rotate(90deg);
