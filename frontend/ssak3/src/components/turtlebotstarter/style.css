@@ -380,14 +380,7 @@
 }
 
 /* menuOn */
-
 .menuOn{
-    position: absolute;
-    width: 95.77px;
-    height: 19px;
-    left: 28px;
-    top: 115px;
-
     font-family: 'Lexend';
     font-style: normal;
     font-weight: 600;
@@ -395,19 +388,10 @@
     line-height: 19px;
     /* identical to box height, or 124% */
     text-align: center;
-
     color: #000000;
 }
-
-
 /* menuOff */
 .menuOff{
-    position: absolute;
-    width: 95.77px;
-    height: 19px;
-    left: 148px;
-    top: 115px;
-
     font-family: 'Lexend';
     font-style: normal;
     font-weight: 600;
@@ -417,6 +401,24 @@
     text-align: center;
 
     color: #7D7D7D;
+}
+
+/* setting clothes */
+.set{
+    position: absolute;
+    width: 95.77px;
+    height: 19px;
+    left: 28px;
+    top: 115px;
+}
+
+/* setting schedule */
+.schedule{
+    position: absolute;
+    width: 95.77px;
+    height: 19px;
+    left: 148px;
+    top: 115px;
 }
 
 
