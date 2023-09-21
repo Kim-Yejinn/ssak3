@@ -1,7 +1,7 @@
 # Use an official Node.js runtime as the base image
-FROM node
+FROM node as build
 # Set the working directory in the container
-WORKDIR /workspace
+WORKDIR /app
 # Copy the package.json and package-lock.json files
 COPY package*.json ./
 # Install the dependencies
