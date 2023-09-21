@@ -422,3 +422,52 @@
 }
 
 
+/* scheduler */
+
+/* scheduler container */
+.scheduleBox{
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    top: 162px;
+    height: 100%;
+    border: 2px solid rgba(28, 29, 34, 0.08);
+    border-radius: 10px;
+}
+
+.logCount{
+    position: absolute;
+    left: 19px;
+    top: 25px;
+
+    color: rgba(28, 29, 34, 0.50);
+    font-family: Lexend;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%; /* 14px */
+}
+
+.timeSort{
+    position: absolute;
+    right: 19px;
+    top: 25px;
+
+    color: rgba(28, 29, 34, 0.50);
+    font-family: Lexend;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%; /* 14px */
+}
+
+.cleaningBox{
+    position: relative;
+    width: 90%;
+    left: 5%;
+    top: 70px;
+    margin-bottom: 20px;
+    height: 100px;
+    border: 2px solid rgba(28, 29, 34, 0.08);
+    border-radius: 10px;
+}

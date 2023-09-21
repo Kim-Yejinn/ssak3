@@ -12,7 +12,11 @@ const TurtleBotStarter = () =>{
     return ( 
     <div className="controlContainer">
         <div className="nav">
+            { isSetting ? 
             <div className="title">터틀봇 제어</div>
+            :
+            <div className="title">터틀봇 활동기록</div>
+            }
         </div>
         <div className="menu">
             { isSetting ? 
