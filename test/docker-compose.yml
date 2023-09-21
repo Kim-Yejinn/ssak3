@@ -2,36 +2,30 @@ version: "3"
 
 services:
   backend:
+    image: test-backend:latest
+    container_name: back
     build:
       context: backend/.
-      dockerfile: Dockerfile
-    container_name: back
-    tty: true
     ports:
       - 8080:8000
-    volumes:
-      - ./backend:/app
-      - ./assets:/assets
-    command: uvicorn main:app --host 0.0.0.0 --reload
+    environment:
+      - TZ=Asia/Seoul
 
   frontend:
+    image: test-frontend:latest
+    container_name: front
     build:
       context: frontend/.
       dockerfile: Dockerfile
-    container_name: front
-    tty: true
     ports:
       - 3000:3000
-    volumes:
-      - ./frontend:/app
-      - ./assets:/assets
-    command: npm start
+    depends_on:
+      - backend
 
   nginx:
     image: nginx:latest
     container_name: nginx
+    build: ./.nginx
     ports:
       - 80:80
       - 443:443
-    # depends_on:
-    #   - front
