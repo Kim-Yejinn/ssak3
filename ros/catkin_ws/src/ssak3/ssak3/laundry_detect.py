@@ -42,7 +42,7 @@ params_lidar = {
     "Block_SIZE": int(1206),
     "X": 0, # meter
     "Y": 0,
-    "Z": 0.01,
+    "Z": 0.02,
     "YAW": 0, # deg
     "PITCH": 0,
     "ROLL": 0
@@ -55,6 +55,7 @@ params_cam = {
     "localIP": "127.0.0.1",
     "localPort": 1232,
     "Block_SIZE": int(65535),
+    "UnitBlock_HEIGHT": int(30),
     "X": 0.,
     "Y": 0,
     "Z":  0.8,
@@ -64,6 +65,10 @@ params_cam = {
 }
 
 def visualize_images(image_out):
+<<<<<<< HEAD
+=======
+    # results.display(render=True)
+>>>>>>> 34c245b (fix: 세탁물 검출 수정 [S09P22B201-136])
     winname = 'laundry detect'
     cv2.imshow(winname, image_out)
 
@@ -173,6 +178,7 @@ def main(args=None):
     is_scan = False
     is_imu = False
     is_status = False
+    is_send = False
 
     global loc_x
     global loc_y
@@ -188,7 +194,7 @@ def main(args=None):
     publisher_detect = g_node.create_publisher(Detection, "/laundry_detect", 10)
     
     publisher_goal_pub = g_node.create_publisher(PoseStamped,'goal_pose',10)
-    a_star_instance = a_star()
+    # a_star_instance = a_star()
     goal_pose_msg = PoseStamped()
     turtlebot_status_msg = TurtlebotStatus()
     
@@ -197,19 +203,20 @@ def main(args=None):
     global RT_Lidar2Bot
     global RT_Bot2Map
 
+    time.sleep(1)
     while rclpy.ok():
         
         time.sleep(0.05)
         
-        for _ in range(2):
+        for _ in range(5):
             rclpy.spin_once(g_node)
         
         detections = Detection()
 
         if is_img_bgr and is_scan and is_status and is_imu:
 
-            print("hello")
-            print(is_scan)
+            # print("hello")
+            # print(is_scan)
 
             results = model(img_bgr)
             loc_z = 0.0
@@ -218,7 +225,6 @@ def main(args=None):
             xy_i = l2c_trans.project_pts2img(xyz_c, False)# 그 반환한 값을 2D 이미지 좌표로 프로젝션한다. 
             xyii = np.concatenate([xy_i, xyz_p], axis = 1)
 
-            print(results.pandas().xyxy[0])
 
             RT_Lidar2Bot = transformMTX_lidar2bot(params_lidar, params_bot)
             RT_Bot2Map = transformMTX_bot2map()
@@ -227,16 +233,19 @@ def main(args=None):
             info_result = info[info['confidence'] > 0.8].to_numpy()
             boxes_detect = info[info['confidence'] > 0.8][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
             image_process = np.squeeze(results.render())
-
             if len(info_result) == 0:
+                pass
                 detections.x = []
                 detections.y = []
                 detections.name = []
                 detections.distance = []
                 detections.cx = []
                 detections.cy = []
-                publisher_detect.publish(detections)
+                if is_send == False:
+                    publisher_detect.publish(detections)
+                    is_send = True
             else:
+                print(info_result)
                 all_boxes = []
                 for box in boxes_detect:
                     box_np = np.array(box)
@@ -269,8 +278,11 @@ def main(args=None):
 
                         xyv = xyii[np.logical_and(xyii[:, 0] >= x + (w / 3), xyii[:, 0] <= x + w - (w / 3)), :]
                         xyv = xyv[np.logical_and(xyv[:, 1] >= y, xyv[:, 1] <= y + h), :]
-                        print("xyv")
-                        print(xyv)
+                        if len(xyv) == 0:
+                            continue
+                        else:
+                            print("xyv")
+                            print(xyv)
 
                         ostate = np.median(xyv, axis=0)
                         
