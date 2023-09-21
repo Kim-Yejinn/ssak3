@@ -10,6 +10,9 @@ services:
       - 8080:8000
     environment:
       - TZ=Asia/Seoul
+    volumes:
+      - ./backend:/app
+      - ./assets:/assets
 
   frontend:
     image: test-frontend:latest
@@ -21,6 +24,9 @@ services:
       - 3000:3000
     depends_on:
       - backend
+    volumes:
+      - ./frontend:/app
+      - ./assets:/assets
 
   nginx:
     image: nginx:latest
