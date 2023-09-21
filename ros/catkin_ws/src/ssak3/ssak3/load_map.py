@@ -70,10 +70,14 @@ class loadMap(Node):
         '''
         로직 2. 맵 데이터 읽고, 2차원 행렬로 변환
         '''
-        pkg_path = os.getcwd()
-        folder_name = 'map'
-        file_name = 'map.txt'
-        full_path = os.path.join(pkg_path, folder_name, file_name)
+        # pkg_path = os.getcwd()
+        # folder_name = 'map'
+        # file_name = 'map.txt'
+        # full_path = os.path.join(pkg_path, folder_name, file_name)
+
+        os_file_path = os.path.abspath(__file__)
+        full_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\load_map.py', 
+                                            'src\\ssak3\\map\\map.txt')
 
         self.f = open(full_path, 'r')
 
