@@ -25,8 +25,8 @@ pipeline {
                     def containerNames = ['back', 'front']
 
                     for (String containerName in containerNames) {
-                        sh "sudo docker stop ${containerName}"
-                        sh "sudo docker rm ${containerName}"
+                        sh "docker stop ${containerName}"
+                        sh "docker rm ${containerName}"
                     }
                 }
             }
@@ -38,7 +38,7 @@ pipeline {
                     def imageNames = ['test-backend', 'test-frontend']
 
                     for (String imageName in imageNames) {
-                        sh "sudo docker rmi ${imageName}"
+                        sh "docker rmi ${imageName}"
                     }
                 }
             }
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     dir('test') {
-                        sh 'sudo docker-compose up -d'
+                        sh 'docker-compose up -d'
                     }
                 }
             }
