@@ -6,6 +6,7 @@ import math
 import rclpy
 import time
 import base64
+import array
 
 from ssak3.ex_calib import *
 from rclpy.node import Node
@@ -329,10 +330,14 @@ def main(args=None):
                 print(detections.x)
                 print(detections.y)
                 publisher_detect.publish(detections)
-                # 임시로 하드코딩 어떻게 넣어야하는지 모르겠음
-                goal_pose_msg.pose.position.x = -4.8482074
-                goal_pose_msg.pose.position.y = 9.5741376
-                publisher_goal_pub.publish(goal_pose_msg)
+
+                if not math.isnan(detections.x[0]):
+                    goal_pose_msg.pose.position.x = detections.x[0]
+                    goal_pose_msg.pose.position.y = detections.y[0]
+                    publisher_goal_pub.publish(goal_pose_msg)
+                # goal_pose_msg.pose.position.x = detections.x[0]
+                # goal_pose_msg.pose.position.y = detections.y[0]
+                # publisher_goal_pub.publish(goal_pose_msg)
 
             # image_process = draw_pts_img(image_process, xy_i[:, 0].astype(np.int32), xy_i[:, 1].astype(np.int32))
             # # visualize_images(image_process)
