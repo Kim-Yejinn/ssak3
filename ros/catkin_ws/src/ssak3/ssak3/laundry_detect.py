@@ -6,6 +6,7 @@ import math
 import rclpy
 import time
 import base64
+import array
 
 from ssak3.ex_calib import *
 from rclpy.node import Node
@@ -63,10 +64,8 @@ params_cam = {
 }
 
 def visualize_images(image_out):
-    results.display(render=True)
     winname = 'laundry detect'
     cv2.imshow(winname, image_out)
-    # cv2.waitKey(1)
 
 # ROS에서 받아온 이미지 데이터를 OpenCV 형식으로 변환하고, 전역 변수에 저장
 def img_callback(msg):
@@ -161,12 +160,8 @@ def main(args=None):
     full_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
                                         'src\\ssak3\\yolov5')
     local_yolov5_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
-                                        'src\\ssak3\\model\\ssak3v2.pt')
-    # pkg_path = os.getcwd()
-    # folder_name = 'yolov5'
-    # full_path = os.path.join(pkg_path, folder_name)
-    # model = torch.hub.load(full_path, 'custom', path = local_yolov5_path, source = 'local', force_reload = True)
-    model = torch.hub.load('C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\yolov5', 'custom', path='C:\\Users\\SSAFY\\Desktop\\project\\S09P22B201\\ros\\catkin_ws\\src\\ssak3\\model\\best2.pt', source = 'local', force_reload = True)
+                                        'src\\ssak3\\model\\best2.pt')
+    model = torch.hub.load(full_path, 'custom', path = local_yolov5_path, source = 'local', force_reload = True)
     
     global g_node
     global is_img_bgr
@@ -195,9 +190,7 @@ def main(args=None):
     publisher_goal_pub = g_node.create_publisher(PoseStamped,'goal_pose',10)
     a_star_instance = a_star()
     goal_pose_msg = PoseStamped()
-
     turtlebot_status_msg = TurtlebotStatus()
-    
     
     l2c_trans = LIDAR2CAMTransform(params_cam, params_lidar)
 
@@ -231,8 +224,8 @@ def main(args=None):
             RT_Bot2Map = transformMTX_bot2map()
 
             info = results.pandas().xyxy[0]
-            info_result = info[info['confidence'] > 0.3].to_numpy()
-            boxes_detect = info[info['confidence'] > 0.3][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
+            info_result = info[info['confidence'] > 0.8].to_numpy()
+            boxes_detect = info[info['confidence'] > 0.8][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
             image_process = np.squeeze(results.render())
 
             if len(info_result) == 0:
@@ -258,10 +251,12 @@ def main(args=None):
                         h.astype(np.int32).tolist()
                     ]).T
                     all_boxes.append(bbox)
+
                 all_boxes = np.array(all_boxes)
-                
+
                 ostate_list = []
                 angles = []
+
                 for k, bbox in enumerate(all_boxes):
                     for i in range(bbox.shape[0]):
                         x = int(bbox[i, 0])
@@ -271,25 +266,14 @@ def main(args=None):
 
                         cx = int(x + (w / 2))
                         cy = int(y + (h / 2))
-                        # print(x)
-                        # print(y)
-                        # print(w)
-                        # print(h)
-                        # print("xyii")
-                        # print(xyii)
 
-                        # xyv = xyii[np.logical_and(xyii[:, 0] >= cx - (w / 2 * 0.7), xyii[:, 0] <= cx + (w / 2 * 0.7)), :]
-                        xyv = xyii[np.logical_and(xyii[:, 0] >= x, xyii[:, 0] <= x + w), :]
+                        xyv = xyii[np.logical_and(xyii[:, 0] >= x + (w / 3), xyii[:, 0] <= x + w - (w / 3)), :]
                         xyv = xyv[np.logical_and(xyv[:, 1] >= y, xyv[:, 1] <= y + h), :]
                         print("xyv")
                         print(xyv)
 
                         ostate = np.median(xyv, axis=0)
                         
-                        # print("ostate")
-                        # print(ostate)
-
-
                         relative_x = ostate[2]
                         relative_y = ostate[3]
                         relative_z = ostate[4]
@@ -304,45 +288,27 @@ def main(args=None):
 
                         ostate_list.append(object_global_pose)
 
-                        # print("이게 좌표일까?")
-                        # print(object_global_pose[0])
-                        # print(object_global_pose[1])
-                        # print(object_global_pose[2])
-
-
-
-                        detections.x.append(x2)
-                        detections.y.append(y2)
+                        # detections.x.append(x2)
+                        # detections.y.append(y2)
+                        detections.x.append(object_global_pose[0])
+                        detections.y.append(object_global_pose[1])
                         detections.distance.append(relative_x)
                         detections.cx.append(cx)
                         detections.cy.append(cy)
                         detections.name.append(info.name[k])
 
-                #         print(detections.x)
-                #         print(detections.y)
-                #         print(detections.distance)
-                #         print(detections.cx)
-                #         print(detections.cy)
-                #         print(detections.name)
-                # print("detections.x")
-                
                 print(detections.x)
                 print(detections.y)
                 publisher_detect.publish(detections)
-                # 임시로 하드코딩 어떻게 넣어야하는지 모르겠음
-                goal_pose_msg.pose.position.x = -4.8482074
-                goal_pose_msg.pose.position.y = 9.5741376
-                publisher_goal_pub.publish(goal_pose_msg)
 
-            # image_process = draw_pts_img(image_process, xy_i[:, 0].astype(np.int32), xy_i[:, 1].astype(np.int32))
-            # # visualize_images(image_process)
-            # results.display(render=True)
-            # winname = 'laundry detect'
-            # cv2.imshow(winname, image_process)
+                if not math.isnan(detections.x[0]):
+                    goal_pose_msg.pose.position.x = detections.x[0]
+                    goal_pose_msg.pose.position.y = detections.y[0]
+                    publisher_goal_pub.publish(goal_pose_msg)
 
-        # results.display(render=True)
-        # winname = 'Vehicle Detection'
-        # cv2.imshow(winname, results.imgs[0])
+            image_process = draw_pts_img(image_process, xy_i[:, 0].astype(np.int32), xy_i[:, 1].astype(np.int32))
+            visualize_images(image_process)
+            
         cv2.waitKey(1)
 
     g_node.destroy_node()
