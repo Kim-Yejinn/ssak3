@@ -1,5 +1,6 @@
 import os
 from datetime import datetime, timedelta
+from typing import Tuple
 
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -15,6 +16,23 @@ router = APIRouter(prefix="/auth")
 
 ACCESS_TOKEN_TIME = os.getenv("ACCESS_TOKEN_EXPIRE_TIME")
 REFRESH_TOKEN_TIME = os.getenv("REFRESH_TOKEN_EXPIRE_TIME")
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("JWT_ALGORITHM")
+
+
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/test")
+#
+# def get_current_user(token: str = Depends(oauth2_scheme)): # 토큰 검증
+#     # user = verify_token(token)
+#     payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
+#     userId = payload.get("sub")
+#     print(userId)
+#     return userId
+#
+@router.get("/test")
+async def test():
+    return "하이"
+
 
 pw_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 @router.post("/sign-up", status_code=status.HTTP_200_OK)
@@ -30,39 +48,37 @@ def signUp(id: str, name: str, password: str, db: Session = Depends(get_db)):
         user = auth(id=id, name=name, password=hash_pw)
         db.add(user)
         db.commit()
-        # response = {"statusCode": status.HTTP_200_OK, }
-        # return response
     finally:
         db.close()
 
 
 
 @router.post("/log-in", status_code=status.HTTP_200_OK)
-def logIn(id: str, password: str, db: Session = Depends(get_db)):
-    exist_user = db.query(auth).filter(auth.id == id).first()
+# def logIn(id: str, password: str, db: Session = Depends(get_db)):
+def logIn(
+        form_data: OAuth2PasswordRequestForm = Depends(OAuth2PasswordRequestForm),
+        db: Session = Depends(get_db)
+):
+    exist_user = db.query(auth).filter(auth.id == form_data.username).first()
     if not (exist_user):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="사용자를 찾을 수 없습니다.")
 
-    # pw_wrong = pw_context.verify(password, exist_user.password)
-    # print(pw_wrong)
-    if not (pw_context.verify(password, exist_user.password)):
+    if not (pw_context.verify(form_data.password, exist_user.password)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="비밀번호를 잘못 입력하셨습니다.")
 
     atk_time = datetime.utcnow() + timedelta(minutes=int(ACCESS_TOKEN_TIME))
     rtk_time = datetime.utcnow() + timedelta(minutes=int(REFRESH_TOKEN_TIME))
-    secret_key = os.getenv("SECRET_KEY")
-    algorithm = os.getenv("JWT_ALGORITHM")
 
     atk_data = {
-        "sub": id,
+        "sub": form_data.username,
         "exp": atk_time
     }
-    access_token = jwt.encode(atk_data, secret_key, algorithm)
+    access_token = jwt.encode(atk_data, SECRET_KEY, ALGORITHM)
 
     rtk_data = {
-        "sub": id,
+        "sub": form_data.username,
         "exp": rtk_time
     }
-    refresh_token = jwt.encode(rtk_data, secret_key, algorithm)
+    refresh_token = jwt.encode(rtk_data, SECRET_KEY, ALGORITHM)
 
     return {"accessToken": access_token, "refreshToken": refresh_token}
