@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 
-app = FastAPI(title='Project title',
-            description='Description of your project',
-            openapi_url='/api/openapi.json')
+app = FastAPI()
 
 @app.get("/")
 def read_root():
