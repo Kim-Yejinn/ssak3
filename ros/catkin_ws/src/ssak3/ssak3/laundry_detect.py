@@ -296,23 +296,24 @@ def main(args=None):
 
                         ostate_list.append(object_global_pose)
 
-                        # detections.x.append(x2)
-                        # detections.y.append(y2)
-                        detections.x.append(object_global_pose[0])
-                        detections.y.append(object_global_pose[1])
+                        detections.x.append(x2)
+                        detections.y.append(y2)
+                        # detections.x.append(object_global_pose[0])
+                        # detections.y.append(object_global_pose[1])
                         detections.distance.append(relative_x)
                         detections.cx.append(cx)
                         detections.cy.append(cy)
                         detections.name.append(info.name[k])
-
                 print(detections.x)
                 print(detections.y)
-                publisher_detect.publish(detections)
+                if is_send == False:
+                    publisher_detect.publish(detections)
+                    is_send = True
 
-                if not math.isnan(detections.x[0]):
-                    goal_pose_msg.pose.position.x = detections.x[0]
-                    goal_pose_msg.pose.position.y = detections.y[0]
-                    publisher_goal_pub.publish(goal_pose_msg)
+                # if not math.isnan(detections.x[0]):
+                #     goal_pose_msg.pose.position.x = detections.x[0]
+                #     goal_pose_msg.pose.position.y = detections.y[0]
+                #     publisher_goal_pub.publish(goal_pose_msg)
 
             image_process = draw_pts_img(image_process, xy_i[:, 0].astype(np.int32), xy_i[:, 1].astype(np.int32))
             visualize_images(image_process)
