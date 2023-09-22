@@ -13,7 +13,4 @@ class auth(Base):
     name = Column(String, nullable=False)
     password = Column(String, nullable=False)
 
-# class Token(BaseModel):
-#     access_token: str
-#     refresh_token: str
-#     username: str
+    # turtlebot = relationship("turtlebot")
