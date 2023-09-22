@@ -15,13 +15,13 @@ class up_object(Node):
         time_period=0.05 
         self.timer = self.create_timer(time_period, self.timer_callback)
         
-        print("status_sub".format(self.status_sub))
         
         #이동
         # self.hand_conrtrol_msg = Int16()
 
         self.is_status = False
         self.control_msg = HandControl()
+        self.status_msg = TurtlebotStatus()
 
 
 
@@ -30,15 +30,16 @@ class up_object(Node):
             if self.status_msg.can_lift == True:
                 self.control_msg.control_mode = 2
                 self.control_pub.publish(self.control_msg)
-            else:
-                print("들수있는 상태가 아닌데?")
-        else:
-            print("터틀봇 상태못받아옴")
+        #     else:
+        #         print("들수있는 상태가 아닌데?")
+        # else:
+        #     print("터틀봇 상태못받아옴")
 
         self.control_msg.control_mode = 1
         self.control_msg.put_distance = 0.0
         self.control_msg.put_height = 100.0
         if self.status_msg.can_put == False:
+            # print(f"can put : {self.status_msg}")
             self.control_pub.publish(self.control_msg)
 
         self.control_msg.control_mode = 3
