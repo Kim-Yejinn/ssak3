@@ -12,4 +12,4 @@ RUN pip install --upgrade pip && \
 
 COPY . ./
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0"]
+CMD ["uvicorn", "ssak3.main:app", "--host", "0.0.0.0"]
