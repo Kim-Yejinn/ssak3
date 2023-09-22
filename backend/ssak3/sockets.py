@@ -11,9 +11,11 @@ sio_app = socketio.ASGIApp(
 
 
 @sio_server.event
+
 async def connect(sid, environ, auth = None):
     print("connected!!!")
     pass
+
 @sio_server.event
 async def disconnect(sid):
     print("disconnected!!!")

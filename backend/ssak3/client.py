@@ -16,6 +16,7 @@ async def disconnect():
     print(' disconnected')
 
 
+
 # 테스트 코드
 async def main():
     await sio_client.connect(url='http://localhost:8000', socketio_path='socket.io')

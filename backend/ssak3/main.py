@@ -1,6 +1,8 @@
+
 from fastapi import FastAPI
 import uvicorn
 from sockets import sio_app
+
 
 #
 # from starlette.middleware.base import BaseHTTPMiddleware
@@ -26,7 +28,6 @@ app = FastAPI()
 
 
 app.mount("/", app=sio_app)
-
 
 @app.get("/")
 async def root():
