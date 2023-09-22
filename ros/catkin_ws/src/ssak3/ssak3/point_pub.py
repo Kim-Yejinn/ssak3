@@ -25,14 +25,14 @@ class PointList(Node):
         self.grid_cell_point = []
         # 여러 경로들을 설정 나중에 세탁물을 발견했을 때 경로를 추가하여 이동
         # 거실과 부엌을 탐색하는 경로 설정
-        self.grid_cell_point.append([149.0, 151.0])
-        self.grid_cell_point.append([134.0, 232.0])
-        self.grid_cell_point.append([193.0, 228.0])
-        self.grid_cell_point.append([198.0, 127.0])
-        self.grid_cell_point.append([213.0, 74.0])
-        self.grid_cell_point.append([149.0, 50.0])
-        self.grid_cell_point.append([166.0, 159.0])
-        self.grid_cell_point.append([149.0, 98.0])
+        # self.grid_cell_point.append([149.0, 151.0])
+        # self.grid_cell_point.append([134.0, 232.0])
+        # self.grid_cell_point.append([193.0, 228.0])
+        # self.grid_cell_point.append([198.0, 127.0])
+        # self.grid_cell_point.append([213.0, 74.0])
+        # self.grid_cell_point.append([149.0, 50.0])
+        # self.grid_cell_point.append([166.0, 159.0])
+        # self.grid_cell_point.append([149.0, 98.0])
 
         self.is_odom = False
         self.point_cnt = 0
@@ -40,11 +40,13 @@ class PointList(Node):
         self.a_star_instance = a_star()
 
     def detect_callback(self, msg):
-        print(f'msg : {msg.x[0]} y: {msg.y[0]}')
-        self.grid_cell_point.insert(0, [msg.x[0], msg.y[0]])
-        self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.grid_cell_point[0]
-        self.goal_pub.publish(self.goal_pose_msg)
-        self.grid_cell_point.pop(0)
+        if(len(msg.x) != 0):
+            print(f'msg : {msg}')
+            print(f'msg : {msg.x[0]} y: {msg.y[0]}')
+            self.grid_cell_point.insert(0, [msg.x[0], msg.y[0]])
+            self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.grid_cell_point[0]
+            self.goal_pub.publish(self.goal_pose_msg)
+            self.grid_cell_point.pop(0)
 
     def odom_callback(self,msg):
         self.is_odom=True

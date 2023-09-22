@@ -155,6 +155,11 @@ def transform_bot2map(xyz_p):
     xyz_p = np.matmul(xyz_p, RT_Bot2Map.T)
     return xyz_p
 
+def cur_callback(msg):
+    print(f"msg : {msg}")
+    global is_send
+    is_send = False
+
 def main(args=None):
 
     os_file_path = os.path.abspath(__file__)
@@ -169,6 +174,7 @@ def main(args=None):
     global is_scan
     global is_imu
     global is_status
+    global is_send
 
     is_img_bgr = False
     is_scan = False
@@ -188,6 +194,7 @@ def main(args=None):
     subscription_scan = g_node.create_subscription(LaserScan, '/scan', scan_callback, 10)
     subscription_imu = g_node.create_subscription(Imu, '/imu', imu_callback, 10)
     publisher_detect = g_node.create_publisher(Detection, "/laundry_detect", 10)
+    goal_sub = g_node.create_subscription(PoseStamped,'cur_pose',cur_callback,1)
     
     publisher_goal_pub = g_node.create_publisher(PoseStamped,'goal_pose',10)
     # a_star_instance = a_star()
@@ -208,6 +215,7 @@ def main(args=None):
             rclpy.spin_once(g_node)
         
         detections = Detection()
+        temp_detection = []
 
         if is_img_bgr and is_scan and is_status and is_imu:
 
@@ -237,9 +245,6 @@ def main(args=None):
                 detections.distance = []
                 detections.cx = []
                 detections.cy = []
-                if is_send == False:
-                    publisher_detect.publish(detections)
-                    is_send = True
             else:
                 print(info_result)
                 all_boxes = []
@@ -276,9 +281,9 @@ def main(args=None):
                         xyv = xyv[np.logical_and(xyv[:, 1] >= y, xyv[:, 1] <= y + h), :]
                         if len(xyv) == 0:
                             continue
-                        else:
-                            print("xyv")
-                            print(xyv)
+                        # else:
+                        #     print("xyv")
+                        #     print(xyv)
 
                         ostate = np.median(xyv, axis=0)
                         
@@ -304,11 +309,15 @@ def main(args=None):
                         detections.cx.append(cx)
                         detections.cy.append(cy)
                         detections.name.append(info.name[k])
+                        temp_detection.append([detections.x, detections.y])
                 print(detections.x)
                 print(detections.y)
-                if is_send == False:
-                    publisher_detect.publish(detections)
-                    is_send = True
+                print(f"temp_detection : {temp_detection}")
+                if len(temp_detection) != 0:
+                    print(f'보내기 가능? : {is_send}')
+                    if is_send == False:
+                        publisher_detect.publish(detections)
+                        is_send = True
 
                 # if not math.isnan(detections.x[0]):
                 #     goal_pose_msg.pose.position.x = detections.x[0]
