@@ -11,9 +11,15 @@ sio_app = socketio.ASGIApp(
 
 
 @sio_server.event
-async def connect(sid, environ, auth):
-    print("connected!!!")
 
+async def connect(sid, environ, auth = None):
+    print("connected!!!")
+    pass
+
+@sio_server.event
+async def disconnect(sid):
+    print("disconnected!!!")
+    pass
 
 @sio_server.event
 async def my_event(sid, data):
@@ -25,6 +31,8 @@ async def my_event(sid, data):
 async def handle_test(sid, data):
     print("back 테스트(back/ros to back)")
     print(data)
+    pass
+
 
 @sio_server.on('testros')
 async def ros_test(sid, data):
