@@ -13,7 +13,7 @@ services:
       - TZ=Asia/Seoul
     volumes:
       - ./backend/ssak3:/workspace
-      - ./assets:/assets
+      # - ./backend/ssak3/assets:/assets
     tty: true
 
   frontend:
@@ -28,5 +28,5 @@ services:
       - backend
     volumes:
       - ./frontend/ssak3:/workspace
-      - ./assets:/assets
+      # - ./frontend/ssak3/assets:/assets
     tty: true
