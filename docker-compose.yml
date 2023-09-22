@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  backend:
+    image: backend-ssak3:latest
+    container_name: back
+    build:
+      context: backend/ssak3/.
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8000
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - ./backend/ssak3:/workspace
+      - ./assets:/assets
+    tty: true
+
+  frontend:
+    image: frontend-ssak3:latest
+    container_name: front
+    build:
+      context: frontend/ssak3/.
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/ssak3:/workspace
+      - ./assets:/assets
+    tty: true
