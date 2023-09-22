@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from starlette import status
 from passlib.context import CryptContext
 from jose import JWTError, jwt
+import redis
 
 from models.auth import auth
 from db.db import get_db
@@ -19,19 +20,11 @@ REFRESH_TOKEN_TIME = os.getenv("REFRESH_TOKEN_EXPIRE_TIME")
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("JWT_ALGORITHM")
 
-
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/test")
-#
-# def get_current_user(token: str = Depends(oauth2_scheme)): # 토큰 검증
-#     # user = verify_token(token)
-#     payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
-#     userId = payload.get("sub")
-#     print(userId)
-#     return userId
-#
-@router.get("/test")
-async def test():
-    return "하이"
+REDIS_HOST = os.getenv("REDIS_HOST")
+REDIS_PORT = os.getenv("REDIS_PORT")
+REDIS_DB = os.getenv("REDIS_DATABASE")
+REDIS_PW = os.getenv("REDIS_PASSWORD")
+rd = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB) # redis 연결
 
 
 pw_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -40,8 +33,6 @@ def signUp(id: str, name: str, password: str, db: Session = Depends(get_db)):
     try:
         exist_user = db.query(auth).filter(auth.id == id).first()
         if(exist_user):
-            # status_code=status.HTTP_409_CONFLICT
-            # return {"message": "이미 존재하는 아이디 입니다."}
             raise HTTPException(status_code=status.HTTP_409_CONFLICT,
                                 detail="이미 존재하는 아이디 입니다.") # 중복된 아이디는 예외 던지기
         hash_pw = pw_context.hash(password) # 비밀번호 암호화
@@ -70,15 +61,38 @@ def logIn(
     rtk_time = datetime.utcnow() + timedelta(minutes=int(REFRESH_TOKEN_TIME))
 
     atk_data = {
+        "type": "atk",
         "sub": form_data.username,
         "exp": atk_time
     }
     access_token = jwt.encode(atk_data, SECRET_KEY, ALGORITHM)
 
     rtk_data = {
+        "type": "rtk",
         "sub": form_data.username,
         "exp": rtk_time
     }
     refresh_token = jwt.encode(rtk_data, SECRET_KEY, ALGORITHM)
+    rd.set(form_data.username, refresh_token, int(REFRESH_TOKEN_TIME)*60)
+    print(rd.get(form_data.username))
+
+    return {"accessToken": access_token, "refreshToken": refresh_token}
+
+@router.delete("/log-out", status_code=status.HTTP_200_OK)
+def logOut(id: str):
+    rd.delete(id)
+
+@router.get("/retoken")
+def reToken(id: str):
+    atk_time = datetime.utcnow() + timedelta(minutes=int(ACCESS_TOKEN_TIME))
+
+    atk_data = {
+        "type": "atk",
+        "sub": id,
+        "exp": atk_time
+    }
+    access_token = jwt.encode(atk_data, SECRET_KEY, ALGORITHM)
+
+    refresh_token = rd.get(id)
 
     return {"accessToken": access_token, "refreshToken": refresh_token}
