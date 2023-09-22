@@ -12,7 +12,7 @@ services:
     environment:
       - TZ=Asia/Seoul
     volumes:
-      - ./backend:/workspace
+      - ./backend/ssak3:/workspace
       - ./assets:/assets
     tty: true
 
@@ -27,6 +27,6 @@ services:
     depends_on:
       - backend
     volumes:
-      - ./frontend:/workspace
+      - ./frontend/ssak3:/workspace
       - ./assets:/assets
     tty: true
