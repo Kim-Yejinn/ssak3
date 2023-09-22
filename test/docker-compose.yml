@@ -31,9 +31,9 @@ services:
       - ./assets:/assets
     tty: true
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    build: frontend/.
-    ports:
-      - 80:80
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx
+  #   build: frontend/.
+  #   ports:
+  #     - 80:80
