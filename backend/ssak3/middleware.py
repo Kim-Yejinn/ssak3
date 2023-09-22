@@ -36,7 +36,7 @@ async def token_decode(access_token): # 토큰 암호화 풀기
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="토큰이 없다..")
     try:
         access_token = access_token.replace("Bearer ", "")
-        payload = jwt.decode(access_token, SECRET_KEY, ALGORITHM, options={"verify_signature": False, "verify_header": True})
+        payload = jwt.decode(access_token, SECRET_KEY, ALGORITHM)
     except ExpiredSignature:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="(액세스) 토큰 만료")
     except DecodeError:
