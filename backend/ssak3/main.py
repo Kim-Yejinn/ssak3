@@ -3,12 +3,13 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
 from middleware import access_control
-from api import auth # auth api가 동작할 수 있도록 main에 추가
+from api import auth # api가 동작할 수 있도록 main에 추가
 from api import test
 
 app = FastAPI()
 
-app.include_router(auth.router) # auth api가 동작할 수 있도록 main에 추가
+# api가 동작할 수 있도록 main에 추가
+app.include_router(auth.router)
 app.include_router(test.router)
 
 ALLOW_SITE = ['*']
