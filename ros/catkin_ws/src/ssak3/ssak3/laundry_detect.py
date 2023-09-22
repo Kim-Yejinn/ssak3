@@ -160,6 +160,11 @@ def cur_callback(msg):
     global is_send
     is_send = False
 
+def cal_distance(x1, y1, x2, y2):
+    # distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    distance = abs(x2 - x1) + abs(y2 - y1)
+    return distance
+
 def main(args=None):
 
     os_file_path = os.path.abspath(__file__)
@@ -205,6 +210,9 @@ def main(args=None):
 
     global RT_Lidar2Bot
     global RT_Bot2Map
+
+    publish_list = []
+    publish_cnt_list = []
 
     time.sleep(1)
     while rclpy.ok():
@@ -281,9 +289,9 @@ def main(args=None):
                         xyv = xyv[np.logical_and(xyv[:, 1] >= y, xyv[:, 1] <= y + h), :]
                         if len(xyv) == 0:
                             continue
-                        # else:
-                        #     print("xyv")
-                        #     print(xyv)
+                        else:
+                            print("xyv")
+                            print(xyv)
 
                         ostate = np.median(xyv, axis=0)
                         
@@ -314,10 +322,25 @@ def main(args=None):
                 print(detections.y)
                 print(f"temp_detection : {temp_detection}")
                 if len(temp_detection) != 0:
-                    print(f'보내기 가능? : {is_send}')
-                    if is_send == False:
-                        publisher_detect.publish(detections)
-                        is_send = True
+                    if(len(publish_list) == 0):
+                        publish_list.append([detections.x, detections.y])
+                        publish_cnt_list.append(1)
+                    else:
+                        for index, (x, y) in enumerate(publish_list):
+                            cur_distance = cal_distance(x[0], y[0], detections.x[0], detections.y[0])
+                            if cur_distance < 2:
+                                publish_cnt_list[index] += 1
+                            else:
+                                publish_list.append([detections.x, detections.y])
+                                publish_cnt_list.append(1)
+                            
+                            if len(temp_detection) != 0 and publish_cnt_list[index] >= 3:
+                                print(f'보내기 가능? : {is_send}')
+                                if is_send == False :
+                                    publisher_detect.publish(detections)
+                                    is_send = True
+                                publish_list.clear()
+                                publish_cnt_list.clear()
 
                 # if not math.isnan(detections.x[0]):
                 #     goal_pose_msg.pose.position.x = detections.x[0]
