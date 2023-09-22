@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import styles from './style.css';
 
-const SetClothes = () => {
+const Controller = () => {
     const [starIsVisible, setStarIsVisible] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const starToggleVisibility = () =>{
@@ -10,6 +11,24 @@ const SetClothes = () => {
     const toggleVisibility = () => {
         setIsVisible(!isVisible);
     };
+    const [requestDto, setRequestDto] = useState({
+        "memberId" : 1,
+        "laundry" : ["shirts", "pants"],
+        "time" : 13
+    });
+
+    const robotRequest = (e) => {
+        // e.preventDefault();
+
+        // request
+        axios.post("", requestDto)
+        .then((response) => {
+            alert("OK : ",response.data);
+        })
+        .catch((error) => {
+            alert("Error : ", error);
+        })
+    }
     return (
         <div>
             <div className="starFrame">
@@ -54,12 +73,12 @@ const SetClothes = () => {
 
                 </div>
                 
-            <div className="startBtn">
+            <button className="startBtn" onClick={robotRequest}>
                 주행하기
-            </div>
+            </button>
         </div>
     );
 
 }
 
-export default SetClothes;
+export default Controller;

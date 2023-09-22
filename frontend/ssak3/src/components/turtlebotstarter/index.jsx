@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import SetClothes from "./SetClothes.jsx";
-import Scheduler from "./scheduler";
+import Controller from "./controller.jsx";
+import Log from "./log.jsx";
 import styles from "./style.css";
 
 const TurtleBotStarter = () =>{
@@ -23,13 +23,13 @@ const TurtleBotStarter = () =>{
             <div>
                 <div className="set"><div className="menuOn">세탁물 설정</div></div>
                 <div className="schedule" onClick={toggleIsSetting}><div className="menuOff">스케줄</div></div>
-                <SetClothes />
+                <Controller />
             </div>
             :
             <div>
                 <div className="set" onClick={toggleIsSetting}><div className="menuOff">세탁물 설정</div></div>
                 <div className="schedule"><div className="menuOn">스케줄</div></div>
-                <Scheduler />
+                <Log />
             </div>
             }
         </div>
