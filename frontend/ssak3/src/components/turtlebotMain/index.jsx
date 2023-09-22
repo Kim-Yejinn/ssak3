@@ -23,7 +23,7 @@ const TurtlebotController = ( ) =>{
                     </div>
                     <div className="frameBlank" ></div>    
                     <div className="rightArrowFrame" >
-                            <div className="rightArrow" >></div>
+                            <div className="rightArrow" ></div>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@ const TurtlebotController = ( ) =>{
                     </div>
                     <div className="frameBlank" ></div>    
                     <div className="rightArrowFrame" >
-                            <div className="rightArrow" >></div>
+                            <div className="rightArrow" ></div>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@ const TurtlebotController = ( ) =>{
                     </div>
                     <div className="frameBlank"></div>    
                     <div className="rightArrowFrame" >
-                            <div className="rightArrow">></div>
+                            <div className="rightArrow"></div>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@ const TurtlebotController = ( ) =>{
                     </div>
                     <div className="frameBlank"></div>    
                     <div className="rightArrowFrame" >
-                            <div className="rightArrow">></div>
+                            <div className="rightArrow"></div>
                     </div>
                 </div>
             </div>
