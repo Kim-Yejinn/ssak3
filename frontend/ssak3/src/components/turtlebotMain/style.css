@@ -1,0 +1,183 @@
+/* 터틀봇 등록돼있는 상태 css */
+
+.controllerContainer {
+    position: absolute;
+    width: 393px;
+    height: 852px;
+    background-color: #FFFFFF;
+}
+
+.turtlebotName {
+    text-align: center;
+    width: 100%;
+    margin-top: 33px;
+
+    font-style: normal;
+    font-weight: 700px;
+    font-size: 25px;
+    line-height: 33px;
+}
+
+.turtlebotImage {
+    position: relative;
+    width: 373px;
+    height: 373px;
+    margin : 10px;
+    background-size: contain;
+    background-position: center;
+    background: url(../../../public/turtlebotImage.png);
+}
+
+/* Climate */
+.menu{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 180px;
+
+    position: relative;
+    width: 355px;
+    height: 86px;
+    left: 17px;
+
+    border-bottom: 1px solid #EDEDED;
+
+}
+/* Frame 3695 */
+.frame{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 10px;
+
+    margin: 0 auto;
+    width: 145px;
+    height: 46px;
+}
+/* Inside auto layout */
+.frameBlank{
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* Frame 3694 */
+
+.subFrame{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+
+    width: 108px;
+    height: 46px;
+}
+
+/* Inside auto layout */
+.subFrameBlank{
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* 터틀봇 제어 */
+.title{
+    width: 120px;
+    height: 24px;
+
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    /* identical to box height, or 120% */
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.38px;
+
+    color: rgba(0, 0, 0, 0.6);
+}
+/* Inside auto layout */
+.titleBlank{
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+/* 작동중 */
+.subTitle{
+    width: 140px;
+    height: 22px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 22px;
+    /* identical to box height, or 129% */
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.408px;
+
+    color: rgba(0, 0, 0, 0.3);
+}
+
+/* Inside auto layout */
+.subTitleBlank{
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+/* Right Arrow */
+.rightArrowFrame{
+    margin: 0 auto;
+    width: 44px;
+    height: 44px;
+}
+/* 􀆊 */
+.rightArrow{
+    position: relative;
+    width: 16px;
+    height: 24px;
+    left: 14px;
+    top: 10px;
+
+    font-family: 'SF Pro Display';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    /* identical to box height, or 120% */
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.38px;
+
+    color: rgba(0, 0, 0, 0.6);
+}
+
+
+/* Inside auto layout */
+.climateBlank{
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+/* Rectangle 1248 */
+.menu-border{
+    padding: 20px;
+    box-sizing: border-box;
+
+    position: relative;
+    width: 353px;
+    height: 446px;
+
+    background: #FFFFFF;
+    border-radius: 25px;
+}
