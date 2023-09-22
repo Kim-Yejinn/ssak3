@@ -22,7 +22,7 @@
 //         stage('Docker container delete') {
 //             steps {
 //                 script {
-//                     def containerNames = ['back', 'front', 'nginx']
+//                     def containerNames = ['back', 'front']
 
 //                     for (String containerName in containerNames) {
 //                         sh "docker stop ${containerName}"
@@ -35,7 +35,7 @@
 //         stage('Docker image delete') {
 //             steps {
 //                 script {
-//                     def imageNames = ['test-backend', 'test-frontend', 'nginx']
+//                     def imageNames = ['backend-ssak3', 'frontend-ssak3']
 
 //                     for (String imageName in imageNames) {
 //                         sh "docker rmi ${imageName}"
@@ -47,9 +47,7 @@
 //         stage('Deploy with Docker-Compose') {
 //             steps {
 //                 script {
-//                     dir('test') {
-//                         sh 'docker-compose up -d'
-//                     }
+//                     sh 'docker-compose up -d'
 //                 }
 //             }
 //         }

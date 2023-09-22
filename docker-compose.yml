@@ -2,10 +2,10 @@ version: "3"
 
 services:
   backend:
-    image: test-backend:latest
+    image: backend-ssak3:latest
     container_name: back
     build:
-      context: backend/.
+      context: backend/ssak3/.
       dockerfile: Dockerfile
     ports:
       - 8080:8000
@@ -17,10 +17,10 @@ services:
     tty: true
 
   frontend:
-    image: test-frontend:latest
+    image: frontend-ssak3:latest
     container_name: front
     build:
-      context: frontend/.
+      context: frontend/ssak3/.
       dockerfile: Dockerfile
     ports:
       - 3000:3000
