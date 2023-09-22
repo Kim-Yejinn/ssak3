@@ -16,11 +16,18 @@ const scheduler = () => {
                     ))}
                 </select>
             </div> */}
-            <div className="cleaningBox">
-
+            <div className="logBox">
+                <div className="proceedingTitle">YYYY-MM-DD_TASK0</div>
+                <div className="proceedingPredict">예상 시간 : 00분</div>
+                <div className="loadingGif"></div>
+                <div className="proceedingStartTime">시작 시간 HH:MM</div>
+                <div className="proceedingScore">현재까지 수거량 : 00</div>
             </div>
-            <div className="cleaningBox">
-
+            <div className="logBox">
+                <div className="logTitle">YYYY-MM-DD_TASK0</div>
+                <div className="logScore">총 수거량 : 00</div>
+                <div className="logTime">HH:MM ~ HH:MM</div>
+                
             </div>
         </div>
     );
