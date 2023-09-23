@@ -1,9 +1,7 @@
-import sqlalchemy
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
-from pydantic import BaseModel, validator, EmailStr
 
 from db.db import Base
+
 class turtlebot(Base):
     __tablename__ = "turtlebot"
 
