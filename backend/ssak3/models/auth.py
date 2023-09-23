@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from pydantic import BaseModel, validator, EmailStr
 
-from db.db import Base
+from ssak3.db.db import Base
 
 
 class auth(Base):
@@ -13,4 +13,3 @@ class auth(Base):
     name = Column(String, nullable=False)
     password = Column(String, nullable=False)
 
-    # turtlebot = relationship("turtlebot")

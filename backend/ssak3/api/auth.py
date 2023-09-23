@@ -1,6 +1,5 @@
 import os
 from datetime import datetime, timedelta
-from typing import Tuple
 
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -10,8 +9,8 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 import redis
 
-from models.auth import auth
-from db.db import get_db
+from ssak3.models.auth import auth
+from ssak3.db.db import get_db
 
 router = APIRouter(prefix="/auth")
 
