@@ -6,9 +6,9 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from starlette import status
 
-from ssak3.models.auth import auth
-from ssak3.models.tutlebot import turtlebot
-from ssak3.db.db import get_db
+from models.auth import auth
+from models.tutlebot import turtlebot
+from db.db import get_db
 
 router = APIRouter(prefix="/robot")
 @router.post("/regist", status_code=status.HTTP_200_OK)

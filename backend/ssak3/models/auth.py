@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from pydantic import BaseModel, validator, EmailStr
 
-from ssak3.db.db import Base
+from db.db import Base
 
 
 class auth(Base):

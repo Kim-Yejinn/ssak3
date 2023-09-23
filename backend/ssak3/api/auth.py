@@ -9,8 +9,8 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 import redis
 
-from ssak3.models.auth import auth
-from ssak3.db.db import get_db
+from models.auth import auth
+from db.db import get_db
 
 router = APIRouter(prefix="/auth")
 
