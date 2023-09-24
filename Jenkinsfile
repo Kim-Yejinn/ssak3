@@ -47,7 +47,7 @@ pipeline {
         stage('Run Docker Compose') {
             steps {
                 script {
-                    def workspace = pwd() // 현재 Jenkins 작업 디렉토리 확인
+                    echo pwd()
                     def projectDir = '/home/ubuntu/S09P22B201' // docker-compose가 있는 디렉토리
 
                     // 작업 디렉토리를 프로젝트 디렉토리로 변경
