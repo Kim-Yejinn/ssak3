@@ -48,7 +48,8 @@ pipeline {
             steps {
                 script {
                     echo pwd()
-                    sh 'chmod o+w /var/jenkins_home'
+                    sh 'chmod +x /var/jenkins_home/workspace/ssak3/docker-comopse.yml'
+                    }
                     sh 'docker-compose up -d'
                 }
             }
