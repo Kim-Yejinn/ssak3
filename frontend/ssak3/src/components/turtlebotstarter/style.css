@@ -475,7 +475,7 @@
     left: 5%;
     top: 70px;
     margin-bottom: 20px;
-    height: 100px;
+    height: 140px;
     border: 2px solid rgba(28, 29, 34, 0.08);
     border-radius: 10px;
 }
@@ -571,4 +571,99 @@
     font-style: normal;
     font-weight: 600;
     line-height: 100%; /* 12px */
+}
+/* Schedule Toggle */
+.scheduleToggleOn{
+    position: absolute;
+    width: 18.75px;
+    height: 18.75px;
+    right: 10%;
+    top: 10%;
+    display: flex;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+}
+
+.scheduleToggleOff{
+    position: absolute;
+    width: 18.75px;
+    height: 18.75px;
+    left: 10%;
+    top: 10%;
+    display: flex;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+}
+
+.scheduleBoxTitle{
+    position: absolute;
+    top: 18px;
+    left : 17px;
+    color: #555555;
+    font-family: Lexend;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%; /* 16px */
+}
+/* Toggle off - background */
+.scheduleToggleOnBg{
+    position: absolute;
+    width: 60px;
+    height: 25px;
+    right: 17px;
+    top: 16.02px;
+    background: #000000;
+    border-radius: 17.7358px;
+}
+
+/* Toggle off - background */
+.scheduleToggleOffBg{
+    position: absolute;
+    width: 60px;
+    height: 25px;
+    right: 17px;
+    top: 16.02px;
+    background: #D6D6D6;
+    border-radius: 17.7358px;
+}
+
+.scheduleBoxLine{
+    position: absolute;
+    border: 1px solid #EEEEEE;
+    width: 100%;
+    top: 50px;
+}
+
+.scheduleBoxTime{
+    position: absolute;
+    color: #888DA7;
+    left: 54px;
+    bottom: 40px;
+}
+.scheduleBoxTimeImage{
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 15px;
+    bottom: 43px;
+    background: url(../../../public/timer.png);
+    background-size: contain;
+}
+
+.scheduleBoxDay{
+    position: absolute;
+    color: #888DA7;
+    left: 54px;
+    bottom: 12px;
+}
+
+.scheduleBoxDayImage{
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 15px;
+    bottom: 15px;
+    background: url(../../../public/date.png);
+    background-size: contain;
 }

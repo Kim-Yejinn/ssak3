@@ -17,14 +17,14 @@ const TurtleBotStarter = () =>{
         <div className="starterContents">
             { isSetting ? 
             <div>
-                <div className="set"><div className="starterContentsOn">세탁물 설정</div></div>
-                <div className="schedule" onClick={toggleIsSetting}><div className="starterContentsOff">스케줄</div></div>
+                <div className="set"><div className="starterContentOn">세탁물 설정</div></div>
+                <div className="schedule" onClick={toggleIsSetting}><div className="starterContentOff">스케줄</div></div>
                 <Controller />
             </div>
             :
             <div>
-                <div className="set" onClick={toggleIsSetting}><div className="starterContentsOff">세탁물 설정</div></div>
-                <div className="schedule"><div className="starterContentsOn">스케줄</div></div>
+                <div className="set" onClick={toggleIsSetting}><div className="starterContentOff">세탁물 설정</div></div>
+                <div className="schedule"><div className="starterContentOn">스케줄</div></div>
                 <Scheduler />
             </div>
             }
