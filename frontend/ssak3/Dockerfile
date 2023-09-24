@@ -7,7 +7,8 @@ COPY package*.json ./
 # Install the dependencies
 RUN npm install
 # Copy the React project files
-COPY . ./
+COPY . /workspace
+# COPY . ./
 # Build the Vue project
 RUN npm run build
 
