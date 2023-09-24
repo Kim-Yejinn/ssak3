@@ -10,21 +10,21 @@ const TurtleBotStarter = () =>{
         setIsSetting(!isSetting);
     };
     return ( 
-    <div className="controlContainer">
+    <div className="container">
         <div className="nav">
-            <div className="title">터틀봇 제어</div>
+            <div className="starterTitle">터틀봇 제어</div>
         </div>
-        <div className="menu">
+        <div className="starterContents">
             { isSetting ? 
             <div>
-                <div className="set"><div className="menuOn">세탁물 설정</div></div>
-                <div className="schedule" onClick={toggleIsSetting}><div className="menuOff">스케줄</div></div>
+                <div className="set"><div className="starterContentsOn">세탁물 설정</div></div>
+                <div className="schedule" onClick={toggleIsSetting}><div className="starterContentsOff">스케줄</div></div>
                 <Controller />
             </div>
             :
             <div>
-                <div className="set" onClick={toggleIsSetting}><div className="menuOff">세탁물 설정</div></div>
-                <div className="schedule"><div className="menuOn">스케줄</div></div>
+                <div className="set" onClick={toggleIsSetting}><div className="starterContentsOff">세탁물 설정</div></div>
+                <div className="schedule"><div className="starterContentsOn">스케줄</div></div>
                 <Scheduler />
             </div>
             }

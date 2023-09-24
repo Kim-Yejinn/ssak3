@@ -11,7 +11,7 @@
     text-align: center;
     width: 100%;
     margin-top: 33px;
-
+    
     font-style: normal;
     font-weight: 700px;
     font-size: 25px;
@@ -27,7 +27,24 @@
     background-position: center;
     background: url(../../../public/turtlebotImage.png);
 }
-
+.turtlebotUnconnectedImage {
+    position: relative;
+    width: 373px;
+    height: 271px;
+    left: 10px;
+    margin-top : 40px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background: url(../../../public/unconnected.png);
+}
+.unconnectedMessage{
+    margin-top: 20px;
+    margin-bottom: 120px;
+    text-align: center;
+    font-size: 14px;
+    font-family: Lexend;
+}
 /* Climate */
 .menu{
     box-sizing: border-box;
@@ -85,13 +102,13 @@
 }
 
 /* 터틀봇 제어 */
-.title{
+.menuTitle{
     width: 120px;
     height: 24px;
 
     font-style: normal;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 24px;
     /* identical to box height, or 120% */
     display: flex;
@@ -109,7 +126,7 @@
 }
 
 /* 작동중 */
-.subTitle{
+.menuSubtitle{
     width: 140px;
     height: 22px;
 

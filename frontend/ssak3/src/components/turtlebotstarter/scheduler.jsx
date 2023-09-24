@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styles from "./style.css";
 import axios from 'axios';
 
 const Scheduler = () => {
@@ -22,7 +21,6 @@ const Scheduler = () => {
                     스케줄 추가
             </button>
             </div>
-            
         </div>
     );
 
