@@ -8,6 +8,7 @@ from api import auth # api가 동작할 수 있도록 main에 추가
 from api import test
 from api import robot
 
+
 app = FastAPI()
 
 # api가 동작할 수 있도록 main에 추가

@@ -9,4 +9,3 @@ class auth(Base):
     id = Column(String, unique=True,  nullable=False)
     name = Column(String, nullable=False)
     password = Column(String, nullable=False)
-
