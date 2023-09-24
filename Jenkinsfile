@@ -48,14 +48,7 @@ pipeline {
             steps {
                 script {
                     echo pwd()
-                    
-                    def projectDir = '/home/ubuntu/S09P22B201' // docker-compose가 있는 디렉토리
-                    sh 'docker-compose up -d'  
-                    // // 작업 디렉토리를 프로젝트 디렉토리로 변경
-                    // dir(projectDir) {
-                    //     // 여기에서 docker-compose를 실행하거나 다른 작업 수행
-                    //     sh 'docker-compose up -d'
-                    // }
+                    sh '/home/ubuntu/S09P22B201/docker-compose up -d'
                 }
             }
         }
