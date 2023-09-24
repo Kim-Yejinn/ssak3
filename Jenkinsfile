@@ -49,10 +49,10 @@ pipeline {
                 script {
                     echo pwd()
                     sh 'chmod +x /var/jenkins_home/workspace/ssak3/docker-comopse.yml'
-                    }
                     sh 'docker-compose up -d'
                 }
             }
         }
     }
 }
+
