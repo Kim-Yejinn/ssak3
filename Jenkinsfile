@@ -5,7 +5,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 sh 'echo "Clone Repository"'
-                git branch: 'env',
+                git branch: 'develop',
                     url: 'https://lab.ssafy.com/s09-mobility-smarthome-sub2/S09P22B201.git',
                     credentialsId: '69daef35-2872-44f4-8e64-396a1a04dc02'
             }
