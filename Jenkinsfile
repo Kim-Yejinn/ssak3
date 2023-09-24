@@ -49,8 +49,7 @@ pipeline {
                 script {
                     // sh "echo $pwd"
                     // 권한 설정 해야함
-                    sh 'chmod -R 777 /usr/local/bin'
-                    sh 'chmod +x /usr/local/bin/docker-compose'
+                    sh "cd /jenkins/workspace/ssak3@2"
                     sh "cd /home/ubuntu/S09P22B201"
                     sh 'docker-compose up -d'
                 }
