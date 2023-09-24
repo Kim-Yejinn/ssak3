@@ -48,6 +48,7 @@ pipeline {
             steps {
                 script {
                     sh "echo $pwd"
+                    sh "cd /home/ubuntu/S09P22B201"
                     sh 'docker-compose up -d'
                 }
             }
