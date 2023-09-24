@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     echo pwd()
-                    sh 'sudo chmod o+w /var/jenkins_home'
+                    sh 'chmod o+w /var/jenkins_home'
                     sh 'docker-compose up -d'
                 }
             }
