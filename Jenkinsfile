@@ -47,9 +47,8 @@ pipeline {
         stage('Deploy with Docker-Compose') {
             steps {
                 script {
-                    // sh "echo $pwd"
+                    sh "echo $pwd"
                     // 권한 설정 해야함
-                    sh "cd /jenkins/workspace/ssak3@2"
                     sh "cd /home/ubuntu/S09P22B201"
                     sh 'docker-compose up -d'
                 }
