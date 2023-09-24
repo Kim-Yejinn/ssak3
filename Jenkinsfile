@@ -47,6 +47,7 @@ pipeline {
         stage('Deploy with Docker-Compose') {
             steps {
                 script {
+                    sh "echo $pwd"
                     sh 'docker-compose up -d'
                 }
             }
