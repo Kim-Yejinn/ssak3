@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Controller from "./controller.jsx";
-import Log from "./log.jsx";
+import Scheduler from "./scheduler.jsx";
 import styles from "./style.css";
 
 const TurtleBotStarter = () =>{
@@ -12,11 +12,7 @@ const TurtleBotStarter = () =>{
     return ( 
     <div className="controlContainer">
         <div className="nav">
-            { isSetting ? 
             <div className="title">터틀봇 제어</div>
-            :
-            <div className="title">터틀봇 활동기록</div>
-            }
         </div>
         <div className="menu">
             { isSetting ? 
@@ -29,7 +25,7 @@ const TurtleBotStarter = () =>{
             <div>
                 <div className="set" onClick={toggleIsSetting}><div className="menuOff">세탁물 설정</div></div>
                 <div className="schedule"><div className="menuOn">스케줄</div></div>
-                <Log />
+                <Scheduler />
             </div>
             }
         </div>
