@@ -6,6 +6,11 @@ const Scheduler = () => {
     const scheduleToggleClick = () => {
         setScheduleToggle(!scheduleToggle);
     };
+    const [isModal, setIsModal] = useState(false);
+    const modalClick = () => {
+        setIsModal(!isModal);
+    };
+    let score = "T-shirt: 1 Pants: 2"
     return (
         <div>
             <div className="scheduleContainer">
@@ -28,6 +33,20 @@ const Scheduler = () => {
                     <div className="scheduleBoxTime"> 06 : 00</div>
                     <div className="scheduleBoxDayImage"></div>
                     <div className="scheduleBoxDay"> Mon, Wed, Fri, Sat</div>
+                    <div className="scheduleBoxDetail" onClick={modalClick}></div>
+                    {isModal && (
+                        <div className="modal-overlay">
+                        <div className="modal">
+                            <h2>세탁물 수거 정보</h2>
+                            <div className="detailInfo">
+                                <div className="detailInfoDate">YYYY-MM-DD</div>
+                                <div className="detailInfoTime">HH:MM:SS~HH:MM:SS</div>
+                                <p className="detailInfoScore"> {score}</p>
+                            </div>
+                            <button onClick={modalClick}>닫기</button>
+                        </div>
+                        </div>
+                    )}
                 </div>
                 <button className="addBtn">
                     스케줄 추가
