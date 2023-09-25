@@ -51,7 +51,7 @@ params_lidar = {
 params_cam = {
     "WIDTH": 320,
     "HEIGHT": 240,
-    "FOV": 90,
+    "FOV": 60,
     "localIP": "127.0.0.1",
     "localPort": 1232,
     "Block_SIZE": int(65535),
@@ -196,15 +196,18 @@ def main(args=None):
 
     subscription_turtle = g_node.create_subscription(TurtlebotStatus, '/turtlebot_status',status_callback, 10)
     subscription_img = g_node.create_subscription(CompressedImage, '/image_jpeg/compressed', img_callback, 10)
-    subscription_scan = g_node.create_subscription(LaserScan, '/scan', scan_callback, 10)
+    subscription_scan = g_node.create_subscription(LaserScan, '/scan', scan_callback, 1)
     subscription_imu = g_node.create_subscription(Imu, '/imu', imu_callback, 10)
     publisher_detect = g_node.create_publisher(Detection, "/laundry_detect", 10)
+    publisher_turtle = g_node.create_publisher(Twist, 'cmd_vel', 10)
     goal_sub = g_node.create_subscription(PoseStamped,'cur_pose',cur_callback,1)
     
     publisher_goal_pub = g_node.create_publisher(PoseStamped,'goal_pose',10)
     # a_star_instance = a_star()
     goal_pose_msg = PoseStamped()
     turtlebot_status_msg = TurtlebotStatus()
+
+    cmd_msg = Twist()
     
     l2c_trans = LIDAR2CAMTransform(params_cam, params_lidar)
 
@@ -242,8 +245,8 @@ def main(args=None):
             RT_Bot2Map = transformMTX_bot2map()
 
             info = results.pandas().xyxy[0]
-            info_result = info[info['confidence'] > 0.65].to_numpy()
-            boxes_detect = info[info['confidence'] > 0.65][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
+            info_result = info[info['confidence'] > 0.75].to_numpy()
+            boxes_detect = info[info['confidence'] > 0.75][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
             image_process = np.squeeze(results.render())
             if len(info_result) == 0:
                 pass
@@ -335,8 +338,11 @@ def main(args=None):
                                 publish_cnt_list.append(1)
                             
                             if len(temp_detection) != 0 and publish_cnt_list[index] >= 3:
-                                print(f'보내기 가능? : {is_send}')
+                                print(f'보내기 가능? : {not is_send}')
                                 if is_send == False :
+                                    cmd_msg.linear.x=0.0
+                                    publisher_turtle.publish(cmd_msg)
+                                    
                                     publisher_detect.publish(detections)
                                     is_send = True
                                 publish_list.clear()
