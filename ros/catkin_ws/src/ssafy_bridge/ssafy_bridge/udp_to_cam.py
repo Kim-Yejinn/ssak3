@@ -12,7 +12,7 @@ params_cam_0 = {
     "SOCKET_TYPE": 'JPG',
     "WIDTH": 320, # image width
     "HEIGHT": 240, # image height
-    "FOV": 90, # Field of view
+    "FOV": 60, # Field of view
     "localIP": "127.0.0.1",
     "localPort": 1232,
     "Block_SIZE": int(65535),
