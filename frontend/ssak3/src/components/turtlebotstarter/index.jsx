@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Controller from "./controller.jsx";
-import Log from "./log.jsx";
+import Scheduler from "./scheduler.jsx";
 import styles from "./style.css";
 
 const TurtleBotStarter = () =>{
@@ -10,26 +10,22 @@ const TurtleBotStarter = () =>{
         setIsSetting(!isSetting);
     };
     return ( 
-    <div className="controlContainer">
+    <div className="container">
         <div className="nav">
-            { isSetting ? 
-            <div className="title">터틀봇 제어</div>
-            :
-            <div className="title">터틀봇 활동기록</div>
-            }
+            <div className="starterTitle">터틀봇 제어</div>
         </div>
-        <div className="menu">
+        <div className="starterContents">
             { isSetting ? 
             <div>
-                <div className="set"><div className="menuOn">세탁물 설정</div></div>
-                <div className="schedule" onClick={toggleIsSetting}><div className="menuOff">스케줄</div></div>
+                <div className="set"><div className="starterContentOn">세탁물 설정</div></div>
+                <div className="schedule" onClick={toggleIsSetting}><div className="starterContentOff">스케줄</div></div>
                 <Controller />
             </div>
             :
             <div>
-                <div className="set" onClick={toggleIsSetting}><div className="menuOff">세탁물 설정</div></div>
-                <div className="schedule"><div className="menuOn">스케줄</div></div>
-                <Log />
+                <div className="set" onClick={toggleIsSetting}><div className="starterContentOff">세탁물 설정</div></div>
+                <div className="schedule"><div className="starterContentOn">스케줄</div></div>
+                <Scheduler />
             </div>
             }
         </div>
