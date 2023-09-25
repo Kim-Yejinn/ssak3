@@ -6,6 +6,8 @@ import SignUp from './pages/Auth/SignUp';
 import Login from "./pages/LogIn.jsx";
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AddSchedule from './pages/Schedule/AddSchedule';
+import AddTuttle from './pages/AddTuttle';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/" element={<TurtlebotStarter/>} />
         <Route path="login" element={<Login/>} />
         <Route path="signup" element={<SignUp/>} />
+        <Route path="addschedule" element={<AddSchedule/>} />
+        <Route path="addtuttle" element={<AddTuttle/>} />
       </Routes>
     </Router>
   </>
