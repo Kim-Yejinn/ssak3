@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Cookies } from 'react-cookie';
 
 const instance = axios.create({
-    baseURL: 'https://j9b201.p.ssafy.io:8081/',
+    baseURL: 'https://j9b201.p.ssafy.io/api',
     headers: { 'Content-type': 'application/json' },
 });
 // Before request
@@ -43,7 +43,7 @@ instance.interceptors.response.use(
             const refreshToken = cookies.get('refreshToken');
 
             if (refreshToken) {
-                const res = await axios.get('https://i9b301.p.ssafy.io/api/member/reissue', {
+                const res = await axios.get('https://i9b301.p.ssafy.io/api/auth/token', {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `${refreshToken}`,

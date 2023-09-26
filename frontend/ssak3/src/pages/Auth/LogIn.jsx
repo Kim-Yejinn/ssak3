@@ -1,14 +1,12 @@
-import React, {useState} from "react";
+import React, {useRef} from "react";
 import "./LoginStyles.css";
 import { useNavigate } from "react-router-dom";
-// import { defaultInstance as api } from '../../util/token';
+import { defaultInstance as api } from '../../util/token';
 
-const Login = ( ) =>{
+const Login = () =>{
+    const userIdRef = useRef();
+    const passwordRef = useRef();
 
-    const [formData, setFormData] = useState({
-        "id" : "",
-        "password" : ""
-    });
     const navigate = useNavigate();
 
     const GoSignUp = () => {
@@ -16,15 +14,21 @@ const Login = ( ) =>{
     };
 
 
-    // const login = () => {
-    //     api.post("/log-in", formData)
-    //    .then((res)=>{
-    //         navigate("/main");
-    //    })
-    //     .catch((err)=>{
-
-//        });
-    // }
+    const login = () => {
+        api.post("/auth/log-in", {
+            'id' : userIdRef.current.value,
+            'password' : passwordRef.current.value
+        })
+       .then((res)=>{
+            console.log(res.data);
+            localStorage.setItem('accessToken',res.data.accessToken);
+            localStorage.setItem('userId',userIdRef.current.value);
+            navigate("/main");
+       })
+        .catch((err)=>{
+            window.alert("아이디나 비밀번호를 확인해주세요.");
+       });
+    }
     return (
     <div className="container">
         <div className="main">
@@ -36,16 +40,16 @@ const Login = ( ) =>{
                 싹쓰리
             </div>
         </div>
-        <form className="formarea">
+        <div className="formarea" >
             <div className="formarea">
-                <input type="text" id="username" name="username" placeholder="ID" required/>
-                <input type="password" id="password" name="password" placeholder="Password" required/>
+                <input type="text" ref={userIdRef} placeholder="ID" required/>
+                <input type="password" ref={passwordRef} placeholder="Password" required/>
             </div>
             <div className="formsubmit">
-                <input type="submit" value="로그인"/>
+                <button className="formSubmit" onClick={login}>로그인 </button>
                 <p>계정이 없으십니까?&nbsp; <a onClick={GoSignUp}>회원가입</a></p>
             </div>
-        </form>
+        </div>
     </div>
     );
 };

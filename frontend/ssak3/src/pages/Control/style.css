@@ -5,7 +5,7 @@
     width: 100%;
     text-align: center;
     font-weight: 600;
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     top: 20px;
 }
 
@@ -65,7 +65,7 @@
     left: 24.77px;
     top: 73.6px;
 
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     font-style: normal;
     font-weight: 600;
     font-size: 15.0755px;
@@ -84,7 +84,7 @@
     left: 24.77px;
     bottom: 20.02px;
 
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     font-style: normal;
     font-weight: 500;
     font-size: 15.0755px;
@@ -102,7 +102,7 @@
     left: 24.77px;
     bottom: 20.02px;
 
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     font-style: normal;
     font-weight: 500;
     font-size: 15.0755px;
@@ -117,7 +117,7 @@
     left: 24.77px;
     bottom: 20.02px;
 
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     font-style: normal;
     font-weight: 600;
     font-size: 15.0755px;
@@ -249,7 +249,7 @@
     left: 52.74px;
     top: 235.6px;
 
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     font-style: normal;
     font-weight: 600;
     font-size: 15.0755px;
@@ -267,7 +267,7 @@
     left: 224.87px;
     top: 439.57px;
 
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     font-style: normal;
     font-weight: 600;
     font-size: 15.0755px;
@@ -339,7 +339,7 @@
     left: 24.77px;
     top: 73.6px;
 
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     font-style: normal;
     font-weight: 600;
     font-size: 15.0755px;
@@ -354,7 +354,7 @@
     left: 24.77px;
     top: 73.6px;
 
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     font-style: normal;
     font-weight: 600;
     font-size: 15.0755px;
@@ -388,7 +388,7 @@
 
 /* menuOn */
 .starterContentOn{
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     font-style: normal;
     font-weight: 600;
     font-size: 15.0755px;
@@ -399,7 +399,7 @@
 }
 /* menuOff */
 .starterContentOff{
-    font-family: 'Lexend';
+    /* font-family: 'Lexend'; */
     font-style: normal;
     font-weight: 600;
     font-size: 15.0755px;
@@ -449,7 +449,7 @@
     top: 25px;
 
     color: rgba(28, 29, 34, 0.50);
-    font-family: Lexend;
+    /* font-family: Lexend; */
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -462,7 +462,7 @@
     top: 25px;
 
     color: rgba(28, 29, 34, 0.50);
-    font-family: Lexend;
+    /* font-family: Lexend; */
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -485,7 +485,7 @@
     top: 10px;
     left : 10px;
     color: #FFA048;
-    font-family: Lexend;
+    /* font-family: Lexend; */
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
@@ -497,7 +497,7 @@
     top: 30px;
     left: 10px;
     color: rgba(28, 29, 34, 0.50);
-    font-family: Lexend;
+    /* font-family: Lexend; */
     font-size: 10px;
     font-style: normal;
     font-weight: 600;
@@ -509,7 +509,7 @@
     bottom: 10px;
     left: 10px;
     color: rgba(28, 29, 34, 0.50);
-    font-family: Lexend;
+    /* font-family: Lexend; */
     font-size: 10px;
     font-style: normal;
     font-weight: 600;
@@ -521,7 +521,7 @@
     bottom: 10px;
     right: 10px;
     color: rgba(28, 29, 34, 0.50);
-    font-family: Lexend;
+    /* font-family: Lexend; */
     font-size: 10px;
     font-style: normal;
     font-weight: 600;
@@ -542,7 +542,7 @@
     position: absolute;
     top: 10px;
     left : 10px;
-    font-family: Lexend;
+    /* font-family: Lexend; */
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
@@ -554,7 +554,7 @@
     top: 30px;
     left: 10px;
     color: rgba(28, 29, 34, 0.50);
-    font-family: Lexend;
+    /* font-family: Lexend; */
     font-size: 10px;
     font-style: normal;
     font-weight: 600;
@@ -566,7 +566,7 @@
     bottom: 10px;
     left: 10px;
     color: rgba(28, 29, 34, 0.50);
-    font-family: Lexend;
+    /* font-family: Lexend; */
     font-size: 10px;
     font-style: normal;
     font-weight: 600;
@@ -600,7 +600,7 @@
     top: 18px;
     left : 17px;
     color: #555555;
-    font-family: Lexend;
+    /* font-family: Lexend; */
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
