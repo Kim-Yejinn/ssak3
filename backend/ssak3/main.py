@@ -16,6 +16,18 @@ app.include_router(auth.router)
 app.include_router(test.router)
 app.include_router(robot.router)
 
+origins = [
+    "http://localhost:8080",
+    "http://j9b201.p.ssafy.io"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,  # cross-origin request에서 cookie를 포함할 것인지 (default=False)
+    allow_methods=["*"],     # cross-origin request에서 허용할 method들을 나타냄. (default=['GET']
+    allow_headers=["*"],     # cross-origin request에서 허용할 HTTP Header 목록
+)
+
 ALLOW_SITE = ['*']
 EXCEPTION_PATH_LIST = ['/', 'auth']
 app.add_middleware(
