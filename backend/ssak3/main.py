@@ -17,8 +17,8 @@ app.include_router(test.router)
 app.include_router(robot.router)
 
 origins = [
-    "http://localhost:8080",
-    "http://j9b201.p.ssafy.io"
+    "http://localhost:3000",
+    "https://j9b201.p.ssafy.io"
 ]
 app.add_middleware(
     CORSMiddleware,
