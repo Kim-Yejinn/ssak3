@@ -323,6 +323,9 @@ def main(args=None):
                         temp_detection.append([detections.x, detections.y])
                 print(detections.x)
                 print(detections.y)
+                print(detections.name)
+                if len(detections.name) == 0:
+                    is_send = False
                 print(f"temp_detection : {temp_detection}")
                 if len(temp_detection) != 0:
                     if(len(publish_list) == 0):
