@@ -1,6 +1,5 @@
 import os
 from datetime import datetime, timedelta
-from typing import Tuple
 
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm

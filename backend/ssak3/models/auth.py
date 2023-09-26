@@ -1,9 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
-from pydantic import BaseModel, validator, EmailStr
 
 from db.db import Base
-
 
 class auth(Base):
     __tablename__ = "auth"
@@ -12,5 +9,3 @@ class auth(Base):
     id = Column(String, unique=True,  nullable=False)
     name = Column(String, nullable=False)
     password = Column(String, nullable=False)
-
-    # turtlebot = relationship("turtlebot")
