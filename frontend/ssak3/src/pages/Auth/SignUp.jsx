@@ -5,7 +5,7 @@ import "./LoginStyles.css";
 
 const SignUp = ( ) =>{
     const instance = axios.create({
-        baseURL: 'https://j9b201.p.ssafy.io/auth',
+        baseURL: 'https://j9b201.p.ssafy.io:8080',
         headers: { 'Content-type': 'application/json' },
     });
     const navigate = useNavigate();
@@ -17,8 +17,9 @@ const SignUp = ( ) =>{
         }
     );
     const onSubmit = async (e) => {
+        console.log(e.data);
         try{
-            const res = await instance.post('/sign-up', formData);
+            const res = await instance.post('/auth/sign-up', formData);
             console.log('회원가입 성공!', res.data);
             navigate('/');
 
@@ -36,7 +37,7 @@ const SignUp = ( ) =>{
             <p className="signupTitle">회원가입</p>
             <p className="signupTitleLabel">회원정보를 입력하세요</p>
         </div>
-        <form className="signupForm" onSubmit={onSubmit}>
+        <form method="post" className="signupForm" onSubmit={onSubmit}>
             <div className="signupFormarea">
                 <div>
                     <label for="username">이름</label><br/>
@@ -53,7 +54,7 @@ const SignUp = ( ) =>{
                 </div>
             </div>
             <div className="signupFormsubmit">
-                <input type="submit" value="가입하기"/>
+                <input type="submit" value="가입하기" />
             </div>
         </form>
     </div>

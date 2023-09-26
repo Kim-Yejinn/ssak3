@@ -1,10 +1,10 @@
-import { faRunning } from '@fortawesome/free-solid-svg-icons';
+// import { faRunning } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import { func } from 'prop-types';
+// import { func } from 'prop-types';
 import { Cookies } from 'react-cookie';
 
 const instance = axios.create({
-    baseURL: 'https://j9b201.p.ssafy.io/auth/token',
+    baseURL: 'https://j9b201.p.ssafy.io:8081/',
     headers: { 'Content-type': 'application/json' },
 });
 // Before request

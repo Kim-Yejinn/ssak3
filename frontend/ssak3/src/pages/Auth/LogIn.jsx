@@ -1,14 +1,30 @@
-import React from "react";
+import React, {useState} from "react";
 import "./LoginStyles.css";
 import { useNavigate } from "react-router-dom";
+// import { defaultInstance as api } from '../../util/token';
 
 const Login = ( ) =>{
+
+    const [formData, setFormData] = useState({
+        "id" : "",
+        "password" : ""
+    });
     const navigate = useNavigate();
 
     const GoSignUp = () => {
         navigate("/signup");
     };
 
+
+    // const login = () => {
+    //     api.post("/log-in", formData)
+    //    .then((res)=>{
+    //         navigate("/main");
+    //    })
+    //     .catch((err)=>{
+
+//        });
+    // }
     return (
     <div className="container">
         <div className="main">
