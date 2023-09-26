@@ -30,7 +30,6 @@ class up_object(Node):
 
     def detect_callback(self, msg):
         detect_laundry = msg.name[0]
-        print(f'이건 언제 출력되는거야???? : {detect_laundry}')
         if detect_laundry in self.laundry_list:
             self.is_select_laundry = True
         else:
@@ -38,7 +37,6 @@ class up_object(Node):
 
 
     def timer_callback(self):
-        print(f'선택한 세탁물인가? {self.is_select_laundry}')
         if self.is_status == True and self.is_select_laundry == True:
             if self.status_msg.can_lift == True:
                 self.control_msg.control_mode = 2
