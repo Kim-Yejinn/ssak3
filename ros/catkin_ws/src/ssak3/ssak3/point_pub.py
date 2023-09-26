@@ -31,28 +31,25 @@ class PointList(Node):
 
         ''' 
         거실
-        self.grid_cell_point.append([216, 50])
-        self.grid_cell_point.append([286, 48])
-        self.grid_cell_point.append([289, 134])
-        self.grid_cell_point.append([265, 185])
-        self.grid_cell_point.append([269, 73])
-        self.grid_cell_point.append([245, 72])
-        self.grid_cell_point.append([247, 171])
-        self.grid_cell_point.append([220, 144])
-        self.grid_cell_point.append([226, 98])
+        self.grid_cell_point.append([217, 72])
+        self.grid_cell_point.append([267, 72])
+        self.grid_cell_point.append([289, 111])
+        self.grid_cell_point.append([292, 138])
+        self.grid_cell_point.append([233, 155])
+        self.grid_cell_point.append([218, 100])
         '''
         '''
         방1
         '''
-        self.grid_cell_point.append([190, 60])
-        self.grid_cell_point.append([160, 60])
-        self.grid_cell_point.append([160, 100])
-        self.grid_cell_point.append([187, 100])
-        self.grid_cell_point.append([135, 76])
-        self.grid_cell_point.append([81, 46])
-        self.grid_cell_point.append([87, 124])
-        self.grid_cell_point.append([123, 95])
-        self.grid_cell_point.append([216, 103])
+        self.grid_cell_point.append([190, 55])
+        self.grid_cell_point.append([160, 55])
+        self.grid_cell_point.append([160, 102])
+        self.grid_cell_point.append([138, 47])
+        self.grid_cell_point.append([115, 47])
+        self.grid_cell_point.append([87, 79])
+        self.grid_cell_point.append([93, 123])
+        self.grid_cell_point.append([114, 123])
+        self.grid_cell_point.append([218, 100])
         
         self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point[0])
         self.goal_pub.publish(self.goal_pose_msg)
@@ -63,6 +60,9 @@ class PointList(Node):
 
         # self.turtle_x = 0.0
         # self.turtle_y = 0.0
+
+        # 선택된 세탁물 저장
+        self.laundry_list = ['shirts']
 
 
     '''
@@ -108,7 +108,7 @@ class PointList(Node):
     세탁물 발견 좌표를 퍼블리시 한다.
     '''
     def detect_callback(self, msg):
-        if(len(msg.x) != 0):
+        if(len(msg.x) != 0) and msg.name[0] in self.laundry_list:
             # print(f'msg : {msg}')
             print(f'msg : {msg.x[0]} y: {msg.y[0]}')
             # self.grid_cell_point.insert(0, [msg.x[0], msg.y[0]])
