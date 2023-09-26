@@ -26,7 +26,7 @@ class turtlebotStatus(Node):
         self.is_weather = False
         self.envir_msg = EnviromentStatus()
 
-        time_period = 0.02
+        time_period = 0.1
         self.timer = self.create_timer(time_period, self.timer_callback)
 
     def envir_status_callback(self, msg): 
@@ -46,13 +46,12 @@ class turtlebotStatus(Node):
             temp = self.envir_msg.temperature
             weather = self.envir_msg.weather
 
-            print(month)
             today = str(month) +"/" + str(day) + "/" + str(hour) + "/" + str(minute)
-            print("==== 시뮬레이터 정보 ====")
-            print(today)
-            print(temp)
-            print(weather)
-            print("========================")
+            # print("==== 시뮬레이터 정보 ====")
+            # print(today)
+            # print(temp)
+            # print(weather)
+            # print("========================")
 
             # 소켓으로 보내기
             self.socket_day.publish(String(data = str(today)))
