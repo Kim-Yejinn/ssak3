@@ -33,7 +33,7 @@ setup(
             'laundry = ssak3.laundry_detect:main',
             'ex_calib = ssak3.ex_calib:main',
             'client = ssak3.client:main',
-            'turtlebot_status = ssak3.turtlebot_status:main'
+            'turtlebot_status = ssak3.turtlebot_status:main',
         ],
     },
 )
