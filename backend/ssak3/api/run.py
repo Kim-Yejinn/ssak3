@@ -6,9 +6,8 @@ from pydantic import BaseModel
 from typing import List
 
 from models.auth import auth
-from models.tutlebot import turtlebot
-from models.get import get
 from models.select import select
+from models.get import get
 from models.laundry import laundry
 from db.db import get_db
 
@@ -62,8 +61,8 @@ def registrun(run: Run, db: Session = Depends(get_db)):
 
     # 2. request로 들어온 laundry_id로 select에다가 넣어주기
     for laundry_id in run.laundryList:
-        select = select(get_id=get_id, laundry_id=laundry_id)
-        db.add(select)
+        select_item = select(get_id=get_id, laundry_id=laundry_id)
+        db.add(select_item)
     db.commit()
 
 
