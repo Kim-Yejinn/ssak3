@@ -36,8 +36,8 @@ class User(BaseModel):
     id: str
 
 @router.get("/exist", status_code=status.HTTP_200_OK)  # 유저에게 등록된 로봇있는지 확인
-def robotExist(user: User, db: Session = Depends(get_db)):
-    exist_user = db.query(auth).filter(auth.id == user.id).first()
+def robotExist(id: str, db: Session = Depends(get_db)):
+    exist_user = db.query(auth).filter(auth.id == id).first()
     if not (exist_user):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="존재하지 않는 사용자 입니다.")
@@ -47,8 +47,8 @@ def robotExist(user: User, db: Session = Depends(get_db)):
     return {"id" : exist_user.id, "serial_number" : exist_robot.serial_number}
 
 @router.get("/log", status_code=status.HTTP_200_OK) # 로그 전체 가져오기
-def logAll(user:User, db: Session = Depends(get_db)):
-    exist_user = db.query(auth).filter(auth.id == user.id).first()
+def logAll(id: str, db: Session = Depends(get_db)):
+    exist_user = db.query(auth).filter(auth.id == id).first()
     if not exist_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="존재하지 않는 사용자 입니다.")  # 아이디가 존재하지 않으면 예외 던지기
