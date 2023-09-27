@@ -1,7 +1,7 @@
 import React from "react";
 import EntryMain from './entryMain.jsx';
 import NonEntryMain from './nonEntryMain.jsx';
-import styles from "./style.css";
+import "./Main.css";
 
 const TurtlebotController = ( ) =>{
     let isEntry = true;

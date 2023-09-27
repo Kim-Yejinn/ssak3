@@ -1,4 +1,3 @@
-/* 터틀봇 등록돼있는 상태 css */
 
 .controllerContainer {
     position: absolute;
@@ -11,7 +10,6 @@
     text-align: center;
     width: 100%;
     margin-top: 33px;
-    
     font-style: normal;
     font-weight: 700px;
     font-size: 25px;
@@ -29,9 +27,10 @@
 }
 .turtlebotUnconnectedImage {
     position: relative;
-    width: 373px;
-    height: 271px;
-    left: 10px;
+    width: 350px;
+    height: 250px;
+    /* background-size: cover; */
+    margin-left: 10px;
     margin-top : 40px;
     background-size: contain;
     background-position: center;
@@ -43,7 +42,8 @@
     margin-bottom: 120px;
     text-align: center;
     font-size: 14px;
-    font-family: Lexend;
+    color: #838589;
+    font-family: inherit;
 }
 /* Climate */
 .menu{
@@ -198,3 +198,103 @@
     background: #FFFFFF;
     border-radius: 25px;
 }
+
+
+/* ----------------- */
+.main-container {
+    position: absolute;
+    width: 390px;
+    height: 812px;
+}
+
+.justalign-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addturtle-image{
+    width: 50%;
+    height: 100%;
+    background-image: url(../../../public/turtlebotImage.png);
+    background-size: cover;
+    margin-left: 22%;
+}
+
+.addturtle-title{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    font-size: 30px;
+    margin-bottom: 5%;
+}
+
+.addturtle-submit{
+    width: 100%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.addturtle-buttonarea{
+    width: 325px;
+    height: 30%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.addturtle-button{
+    width: 150px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ededed;
+    border-radius: 10px;
+    background-color: #fafafa;
+    color: #838589;
+    cursor: pointer;
+}
+
+.areah-60 {
+    width: 100%;
+    height: 60%;
+}
+
+.areah-50 {
+    width: 100%;
+    height: 50%;
+}
+
+.areah-45 {
+    width: 100%;
+    height: 45%;
+}
+
+.areah-40 {
+    width: 100%;
+    height: 40%;
+}
+
+.areah-30 {
+    width: 100%;
+    height: 30%;
+}
+
+.temp {
+    border: 1px solid red;
+}
+
+.nonturtle-image{
+    width: 50%;
+    height: 100%;
+    background-image: url(../../../public/unconnected.png);
+    background-size: contain;
+    background-repeat: no-repeat; /* 이미지 반복 표시 비활성화 */
+    background-position: center center; /* 이미지를 가운데로 정렬 */
+    margin-left: 25%;
+}
+
