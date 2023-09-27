@@ -6,7 +6,15 @@ from middleware import access_control
 from api import auth # api가 동작할 수 있도록 main에 추가
 from api import test
 
+import uvicorn
+from api.socketserver import sio_app
+
 app = FastAPI()
+
+
+# 소켓 연결
+app.mount("/", app=sio_app)
+
 
 # api가 동작할 수 있도록 main에 추가
 app.include_router(auth.router)
@@ -22,3 +30,6 @@ app.add_middleware(
     allow_headers=["*"]
 )
 app.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=access_control) # 미들웨어 추가
+
+if __name__ == "__main__":
+    uvicorn.run('main:app', reload=True)
