@@ -1,5 +1,6 @@
 import rclpy
 from rclpy.node import Node
+import time
 
 from ssafy_msgs.msg import TurtlebotStatus, HandControl, Detection
 # from std_msgs.msg import Int16
@@ -16,7 +17,7 @@ class up_object(Node):
         time_period=0.1
         self.timer = self.create_timer(time_period, self.timer_callback)
         
-        self.laundry_list = ['shirts']
+        self.laundry_list = ['shirts', 'pants']
 
         self.is_select_laundry = False
         
@@ -27,35 +28,53 @@ class up_object(Node):
         self.control_msg = HandControl()
         self.status_msg = TurtlebotStatus()
 
+        self.get_cnt = {'shirts': 0, 'pants':0}
+        self.control_msg.control_mode = 3
+
+    def clerar_cnt(self):
+        self.get_cnt = {'shirts': 0, 'pants':0}
+
 
     def detect_callback(self, msg):
-        detect_laundry = msg.name[0]
-        if detect_laundry in self.laundry_list:
+        self.detect_laundry_name = msg.name[0]
+        if self.detect_laundry_name in self.laundry_list:
             self.is_select_laundry = True
         else:
             self.is_select_laundry = False
 
 
     def timer_callback(self):
-        if self.is_status == True and self.is_select_laundry == True:
+        print(f'수거 개수 {self.get_cnt} 세탁물 {self.is_select_laundry} 들어올리기 {self.status_msg.can_lift}')
+    # if self.is_status == True and self.is_select_laundry == True:
+        if self.is_select_laundry == True and self.control_msg.control_mode == 3:
             if self.status_msg.can_lift == True:
                 self.control_msg.control_mode = 2
                 self.control_pub.publish(self.control_msg)
+                # print(f'들어올린다 ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ')
+                time.sleep(1)
                 # self.is_select_laundry = False
         #     else:
         #         print("들수있는 상태가 아닌데?")
         # else:
         #     print("터틀봇 상태못받아옴")
-
-        self.control_msg.control_mode = 1
         self.control_msg.put_distance = 0.0
         self.control_msg.put_height = 100.0
-        if self.status_msg.can_put == False:
-            # print(f"can put : {self.status_msg}")
+        if self.control_msg.control_mode == 2:
+            self.control_msg.control_mode = 1
             self.control_pub.publish(self.control_msg)
-
-        self.control_msg.control_mode = 3
-        self.control_pub.publish(self.control_msg)
+            count = self.get_cnt[self.detect_laundry_name]
+            self.get_cnt[self.detect_laundry_name] = count + 1
+            time.sleep(1)
+        # if self.status_msg.can_put == False:
+            # print(f"can put : {self.status_msg}")
+        # if self.control_msg.control_mode == 1:
+        #     count = self.get_cnt[self.detect_laundry_name]
+        #     self.get_cnt[self.detect_laundry_name] = count + 1
+        if self.control_msg.control_mode == 1:
+            self.control_msg.control_mode = 3
+            self.control_pub.publish(self.control_msg)
+            self.is_select_laundry = False
+            time.sleep(1)
 
 
 
