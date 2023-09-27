@@ -9,7 +9,6 @@ from std_msgs.msg import String
 import threading
 
 sio=None
-# sio = socketio.AsyncClient()
 
 class socketSub(Node):
 
@@ -89,13 +88,6 @@ async def client():
 
 
 def main(args = None):
-    # rclpy.init(args=args)
-    # socket_node = socketSub()
-
-    # # 이벤트 루프 내에서 클라이언트와 노드 실행
-    # loop = asyncio.get_event_loop()
-    # loop.create_task(client())
-    # rclpy.spin(socket_node)
 
     rclpy.init(args=None)
 
@@ -103,35 +95,14 @@ def main(args = None):
     executor = rclpy.executors.MultiThreadedExecutor()
     executor.add_node(socket_node)
 
-    # client_thread = threading.Thread(target=asyncio.run, args=(client(),))
-    # client_thread.start()  # 클라이언트 함수를 스레드로 실행
-
-
-    client_thread =threading.Thread(target=asyncio.run, args=(client(),))  # asyncio.ensure_future()를 사용하여 클라이언트 함수를 실행
+    client_thread =threading.Thread(target=asyncio.run, args=(client(),))  
     client_thread.start()
-    
     executor.spin()
-
-    # await asyncio.gather(
-    #     client(),  # client() 함수 실행
-    #     executor.spin()  # 노드 실행
-    # )
-
-    # task1 = asyncio.create_task(run(client()))
-    # task2 = asyncio.create_task(rclpy.spin(socket_node)) 
-    
-    # await asyncio.gather(task1, task2)
 
     socket_node.destroy_node()
     rclpy.shutdown()
 
 
 if __name__ == "__main__":
-    # asyncio.create_task(main())
-    # loop = asyncio.get_event_loop()
-    # loop.run_until_complete(main())
-    # t= asyncio.run(main())
-    # temp = main()
-    # start()
-    # asyncio.run(start())
+
     main()
