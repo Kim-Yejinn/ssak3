@@ -7,6 +7,8 @@ from middleware import access_control
 from api import auth # api가 동작할 수 있도록 main에 추가
 from api import test
 from api import robot
+from api import run
+from api import dib
 
 
 app = FastAPI()
@@ -15,6 +17,8 @@ app = FastAPI()
 app.include_router(auth.router)
 app.include_router(test.router)
 app.include_router(robot.router)
+app.include_router(run.router)
+app.include_router(dib.router)
 
 origins = [
     "http://localhost:8080",
