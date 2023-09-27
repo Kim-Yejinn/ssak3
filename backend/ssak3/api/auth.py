@@ -95,16 +95,16 @@ def logOut(user: User):
     rd.delete(user.id)
 
 @router.get("/retoken")
-def reToken(user: User):
+def reToken(id: str):
     atk_time = datetime.utcnow() + timedelta(minutes=int(ACCESS_TOKEN_TIME))
 
     atk_data = {
         "type": "atk",
-        "sub": user.id,
+        "sub": id,
         "exp": atk_time
     }
     access_token = jwt.encode(atk_data, SECRET_KEY, ALGORITHM)
 
-    refresh_token = rd.get(user.id)
+    refresh_token = rd.get(id)
 
     return {"accessToken": access_token, "refreshToken": refresh_token}
