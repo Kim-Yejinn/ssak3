@@ -54,9 +54,10 @@ def registrun(run: Run, db: Session = Depends(get_db)):
     # 이제 로봇이 실행중이 아니거나, 첫사용자임
 
     # 1. get만들기 사용자번호, 시작시간만 넣어주기
-    get = get(auth_id=exist_user.auth_id, start_time=datetime.now())
-    db.add(get)
+    get_item = get(auth_id=exist_user.auth_id, start_time=datetime.now())
+    db.add(get_item)
     db.commit()
+
     get_id = get.get_id
 
     # 2. request로 들어온 laundry_id로 select에다가 넣어주기
