@@ -1,24 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Cookies } from 'react-cookie';
 import { defaultInstance as api } from '../../util/token.jsx';
 import "./Main.css";
 
 const AddTuttle = () => {
     const navigate = useNavigate();
+    const [inputTurtle, setInputTurtle] = useState('');
 
     const GoMain = () => {
         navigate("/main");
     };
-
-    const [inputTurtle, setInputTurtle] = useState('');
 
     const handleInputChange = (event) => {
         setInputTurtle(event.target.value);
     };
 
     const formdata = {
-        "id" : "test1234",
+        "id" : localStorage.getItem('userId'),
         "serial_number" : inputTurtle
     }
 
@@ -26,7 +24,8 @@ const AddTuttle = () => {
         event.preventDefault();
         try {
             const response = await api.post("/robot/regist", formdata);
-            console.log('등록성공', response.data);
+            console.log('등록성공', response);
+            localStorage.setItem('turtlebot',inputTurtle);
             navigate('/main');
         } catch (error) {
             console.error(error);

@@ -22,7 +22,7 @@ function App() {
         <Route path="main" element={<TurtlebotController/>} />
         <Route path="start" element={<TurtleBotStarter/>} />
         <Route path="log" element={<TurtleBotLog/>} />
-        <Route path="hello" element={<AddSchedule/>} />
+        <Route path="schedule" element={<AddSchedule/>} />
         <Route path="addturtle" element={<AddTuttle/>} />
         <Route path="test" element={<NonEntryMain/>} />
       </Routes>
