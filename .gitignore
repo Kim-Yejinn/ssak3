@@ -33,6 +33,7 @@ ros/catkin_ws/build/*/colcon_command_prefix_setup_py.bat.env
 /backend/*.project
 /backend/src/main/generated/
 /backend/ssak3/venv
+/backend/ssak3/.env
 
 # Ignore backend generated files
 /backend/spring-configuration-metadata.json

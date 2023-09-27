@@ -8,6 +8,10 @@ from api import test
 
 import uvicorn
 from api.socketserver import sio_app
+from api import robot
+from api import run
+from api import dib
+
 
 app = FastAPI()
 
@@ -19,6 +23,21 @@ app.mount("/", app=sio_app)
 # api가 동작할 수 있도록 main에 추가
 app.include_router(auth.router)
 app.include_router(test.router)
+app.include_router(robot.router)
+app.include_router(run.router)
+app.include_router(dib.router)
+
+origins = [
+    "http://localhost:8080",
+    "http://j9b201.p.ssafy.io"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,  # cross-origin request에서 cookie를 포함할 것인지 (default=False)
+    allow_methods=["*"],     # cross-origin request에서 허용할 method들을 나타냄. (default=['GET']
+    allow_headers=["*"],     # cross-origin request에서 허용할 HTTP Header 목록
+)
 
 ALLOW_SITE = ['*']
 EXCEPTION_PATH_LIST = ['/', 'auth']
