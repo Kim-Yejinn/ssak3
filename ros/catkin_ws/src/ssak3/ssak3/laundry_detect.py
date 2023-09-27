@@ -171,7 +171,7 @@ def main(args=None):
     full_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
                                         'src\\ssak3\\yolov5')
     local_yolov5_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
-                                        'src\\ssak3\\model\\best_final.pt')
+                                        'src\\ssak3\\model\\best926.pt')
     model = torch.hub.load(full_path, 'custom', path = local_yolov5_path, source = 'local', force_reload = True)
     
     global g_node
