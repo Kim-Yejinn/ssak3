@@ -1,41 +1,37 @@
 import React from "react";
-import styles from "./style.css";
+import { useNavigate } from "react-router-dom";
+import "./Main.css";
 
 const NonEntryMain = ( ) =>{
+    const navigate = useNavigate();
+
+    const GoRegister = () => {
+        navigate("/addturtle");
+    };
+
     return (
-        <div>
-            {/* // Figma : main/More - "터틀봇 - 시리얼 넘버"
-            // ㄴ turtlebotName : 터틀봇 시리얼넘버와 이름 */}
-            <div className="turtlebotName" >TurtleBot - 미등록</div>
-            <div className="turtlebotUnconnectedImage" ></div>
-            <div className="unconnectedMessage"> 연결된 기기가 없습니다. </div>
-            <div className="menu-border">
-                <div className="menu">
-                    <div className="frame" >
-                        <div className="frameBlank"></div>
-                        <div className="subFrame" >
-                            <div className="subFrameBlank" ></div>
-                            <div className="menuTitle" >기기 등록하기</div>
-                        </div>
-                        <div className="frameBlank" ></div>    
-                        <div className="rightArrowFrame" >
-                                <div className="rightArrow" ></div>
-                        </div>
-                    </div>
+        <div className="main-container">
+            <div className = "areah-60">
+                <div className = "addturtle-title">TurtleBot - 미등록</div>
+                <div className = "areah-45">
+                    <div className = "nonturtle-image"></div>
                 </div>
-                <div className="menu" >
-                    <div className="frame" >
-                        <div className="frameBlank"></div>
-                        <div className="subFrame">
-                            <div className="subFrameBlank"></div>
-                            <div className="menuTitle" >홈으로 돌아가기</div>
-                        </div>
-                        <div className="frameBlank" ></div>    
-                        <div className="rightArrowFrame" >
-                                <div className="rightArrow" ></div>
-                        </div>
-                    </div>
+                <div className = "areah-30">
+                    <div className = "areah-50 justalign-center">연결된 기기가 없습니다.</div>
+                    <div className = "areah-50 justalign-center"></div>
                 </div>
+            </div>
+            <div className = "areah-40">
+                <div onClick={GoRegister} style={{width:'100%',height:'35%',display:'flex',justifyContent:'center',alignItems:'center',cursor:'pointer'}}>
+                    <div style={{width:'60%',height:'50%',display:'flex',justifyContent:'center',alignItems:'center',fontSize:'25px',color:'#838589'}}>기기 등록하기</div>
+                    <div style={{width:'20%',height:'50%',display:'flex',justifyContent:'center',alignItems:'center',fontSize:'25px',color:'#838589'}}>›</div>
+                </div>
+                <div style={{width:'90%',height:'1%',borderBottom:'2px solid #ededed',marginLeft:'5%'}}></div>
+                <div style={{width:'100%',height:'35%',display:'flex',justifyContent:'center',alignItems:'center'}}>
+                    <div style={{width:'60%',height:'50%',display:'flex',justifyContent:'flex-start',alignItems:'center',fontSize:'25px',color:'#838589'}}>초기화면으로 돌아가기</div>
+                    <div style={{width:'20%',height:'50%',display:'flex',justifyContent:'center',alignItems:'center',fontSize:'25px',color:'#838589'}}>›</div>
+                </div>
+                <div style={{width:'90%',height:'1%',borderBottom:'2px solid #ededed',marginLeft:'5%'}}></div>
             </div>
         </div>
     );

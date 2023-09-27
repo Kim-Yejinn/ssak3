@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./style.css";
+import "./Main.css";
 
 const EntryMain = ( ) =>{
     let name = "TurtleBot - TB230911_1";
@@ -8,8 +8,6 @@ const EntryMain = ( ) =>{
     // Figma : main - 터틀봇 등록돼있는 상태
     // ㄴ controllerContainer : UI
     <div>
-        {/* // Figma : main/More - "터틀봇 - 시리얼 넘버"
-            // ㄴ turtlebotName : 터틀봇 시리얼넘버와 이름 */}
         <div className="turtlebotName" >{ name }</div>
         <div className="turtlebotImage" ></div>
         <div className="menu-border">
