@@ -41,8 +41,9 @@ class PointList(Node):
         '''
         방1
         '''
+        self.grid_cell_point.append([189, 129])
         self.grid_cell_point.append([190, 55])
-        self.grid_cell_point.append([160, 55])
+        self.grid_cell_point.append([163, 55])
         self.grid_cell_point.append([160, 102])
         self.grid_cell_point.append([138, 47])
         self.grid_cell_point.append([115, 47])
@@ -62,7 +63,7 @@ class PointList(Node):
         # self.turtle_y = 0.0
 
         # 선택된 세탁물 저장
-        self.laundry_list = ['shirts']
+        self.laundry_list = ['shirts', 'pants']
 
 
     '''
