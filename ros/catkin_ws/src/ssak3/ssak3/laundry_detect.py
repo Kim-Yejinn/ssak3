@@ -171,7 +171,7 @@ def main(args=None):
     full_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
                                         'src\\ssak3\\yolov5')
     local_yolov5_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\laundry_detect.py', 
-                                        'src\\ssak3\\model\\best_final.pt')
+                                        'src\\ssak3\\model\\best926.pt')
     model = torch.hub.load(full_path, 'custom', path = local_yolov5_path, source = 'local', force_reload = True)
     
     global g_node
@@ -245,8 +245,8 @@ def main(args=None):
             RT_Bot2Map = transformMTX_bot2map()
 
             info = results.pandas().xyxy[0]
-            info_result = info[info['confidence'] > 0.75].to_numpy()
-            boxes_detect = info[info['confidence'] > 0.75][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
+            info_result = info[info['confidence'] > 0.55].to_numpy()
+            boxes_detect = info[info['confidence'] > 0.55][['xmin', 'ymin', 'xmax', 'ymax']].to_numpy()
             image_process = np.squeeze(results.render())
             if len(info_result) == 0:
                 pass
@@ -288,7 +288,7 @@ def main(args=None):
                         cx = int(x + (w / 2))
                         cy = int(y + (h / 2))
 
-                        xyv = xyii[np.logical_and(xyii[:, 0] >= x + (w / 3), xyii[:, 0] <= x + w - (w / 3)), :]
+                        xyv = xyii[np.logical_and(xyii[:, 0] >= x, xyii[:, 0] <= x + w), :]
                         xyv = xyv[np.logical_and(xyv[:, 1] >= y, xyv[:, 1] <= y + h), :]
                         if len(xyv) == 0:
                             continue
@@ -323,6 +323,9 @@ def main(args=None):
                         temp_detection.append([detections.x, detections.y])
                 print(detections.x)
                 print(detections.y)
+                print(detections.name)
+                if len(detections.name) == 0:
+                    is_send = False
                 print(f"temp_detection : {temp_detection}")
                 if len(temp_detection) != 0:
                     if(len(publish_list) == 0):
