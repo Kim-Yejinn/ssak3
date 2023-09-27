@@ -5,31 +5,25 @@ import "./Main.css";
 import { defaultInstance as api } from '../../util/token';
 
 const TurtlebotController = ( ) =>{
-    const [isEntry, setIsEntry] = useState(true);
+    const [isEntry, setIsEntry] = useState(false);
 
-    // const isEntry = localStorage.getItem('turtlebot');
+    const userId = localStorage.getItem('userId');
 
-    const formdata = {
-        "id" : "qwe"
-    }
-
-    // useEffect(() => {
-    //     // axios 요청을 보내고 데이터를 받아옴
-    //     try {
-    //         console.log(1)
-    //         const response = api.get("/robot/exist",formdata);
-    //         console.log(response.data)
-    //         console.log(3)
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-
-    // }, []);
+    useEffect(() => {
+        const url = "/robot/exist?id=" + userId
+        api.get(url)
+        .then(response => {
+            setIsEntry(true);
+            localStorage.setItem('turtlebot', response.data.serial_number);
+        })
+        .catch(error => {
+            console.error('에러 발생:', error);
+            setIsEntry(false);
+        });
+        
+    }, []);
     
-    // 나중에 이거 GET으로 받아오는 기능으로 변경
     return (
-    // Figma : main - 터틀봇 등록돼있는 상태
-    // ㄴ controllerContainer : UI
     <div className="controllerContainer" >
         {
             isEntry?
