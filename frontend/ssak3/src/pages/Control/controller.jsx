@@ -38,14 +38,14 @@ const Controller = () => {
                     { starIsVisible ?
                     <div>
                         <div className="starOnText">On</div>
-                        <div className="starToggleOnBg">
+                        <div className="starToggleOnBg" onClick={starToggleVisibility}>
                             <div className="starToggleOn" onClick={starToggleVisibility}></div>
                         </div>
                     </div>
                     :
                     <div>
                         <div className="offText">Off</div>
-                        <div className="starToggleOffBg">
+                        <div className="starToggleOffBg" onClick={starToggleVisibility}>
                             <div className="starToggleOff" onClick={starToggleVisibility}></div>
                         </div>
                     </div>
@@ -58,14 +58,14 @@ const Controller = () => {
                     {isVisible ?
                     <div>
                         <div className="unstarOnText">On</div>
-                        <div className="toggleOnBg">
+                        <div className="toggleOnBg" onClick={toggleVisibility}>
                             <div className="toggleOn" onClick={toggleVisibility}></div>
                         </div>
                     </div>
                     :
                     <div>
                         <div className="offText">Off</div>
-                        <div className="toggleOffBg">
+                        <div className="toggleOffBg" onClick={toggleVisibility}>
                             <div className="toggleOff" onClick={toggleVisibility}></div>
                         </div>
                     </div>

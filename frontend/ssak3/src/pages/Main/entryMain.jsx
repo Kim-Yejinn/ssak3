@@ -1,15 +1,13 @@
 import React from "react";
-import styles from "./style.css";
+import "./Main.css";
 
-const TurtlebotController = ( ) =>{
-    let name = "TurtleBot - TB230911_1"; 
+const EntryMain = ( ) =>{
+    let name = "TurtleBot - TB230911_1";
     // 나중에 이거 GET으로 받아오는 기능으로 변경
     return (
     // Figma : main - 터틀봇 등록돼있는 상태
     // ㄴ controllerContainer : UI
-    <div className="controllerContainer" >
-        {/* // Figma : main/More - "터틀봇 - 시리얼 넘버"
-            // ㄴ turtlebotName : 터틀봇 시리얼넘버와 이름 */}
+    <div>
         <div className="turtlebotName" >{ name }</div>
         <div className="turtlebotImage" ></div>
         <div className="menu-border">
@@ -18,8 +16,8 @@ const TurtlebotController = ( ) =>{
                     <div className="frameBlank"></div>
                     <div className="subFrame" >
                         <div className="subFrameBlank" ></div>
-                        <div className="title" >터틀봇 제어</div>
-                        <div className="subTitle" >작동중</div>
+                        <div className="menuTitle" >터틀봇 제어</div>
+                        <div className="menuSubtitle" >작동중</div>
                     </div>
                     <div className="frameBlank" ></div>    
                     <div className="rightArrowFrame" >
@@ -32,8 +30,8 @@ const TurtlebotController = ( ) =>{
                     <div className="frameBlank" ></div>
                     <div className="subFrame" >
                         <div className="subFrameBlank" ></div>
-                        <div className="title" >날씨 정보</div>
-                        <div className="subTitle" >실내온도 20℃</div>
+                        <div className="menuTitle" >날씨 정보</div>
+                        <div className="menuSubtitle" >실내온도 20℃</div>
                     </div>
                     <div className="frameBlank" ></div>    
                     <div className="rightArrowFrame" >
@@ -46,8 +44,8 @@ const TurtlebotController = ( ) =>{
                     <div className="frameBlank" ></div>
                     <div className="subFrame" >
                         <div className="subFrameBlank" ></div>
-                        <div className="title">사용 기록</div>
-                        <div className="subTitle">최근 사용</div>
+                        <div className="menuTitle">사용 기록</div>
+                        <div className="menuSubtitle">최근 사용</div>
                     </div>
                     <div className="frameBlank"></div>    
                     <div className="rightArrowFrame" >
@@ -60,8 +58,8 @@ const TurtlebotController = ( ) =>{
                     <div className="frameBlank"></div>
                     <div className="subFrame" >
                         <div className="subFrameBlank" ></div>
-                        <div className="title" >시간 설정</div>
-                        <div className="subTitle">예약 설정</div>
+                        <div className="menuTitle" >시간 설정</div>
+                        <div className="menuSubtitle">예약 설정</div>
                     </div>
                     <div className="frameBlank"></div>    
                     <div className="rightArrowFrame" >
@@ -74,4 +72,4 @@ const TurtlebotController = ( ) =>{
     );
 };
 
-export default TurtlebotController;
+export default EntryMain;
