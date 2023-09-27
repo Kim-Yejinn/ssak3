@@ -288,7 +288,7 @@ def main(args=None):
                         cx = int(x + (w / 2))
                         cy = int(y + (h / 2))
 
-                        xyv = xyii[np.logical_and(xyii[:, 0] >= x + (w / 3), xyii[:, 0] <= x + w - (w / 3)), :]
+                        xyv = xyii[np.logical_and(xyii[:, 0] >= x, xyii[:, 0] <= x + w), :]
                         xyv = xyv[np.logical_and(xyv[:, 1] >= y, xyv[:, 1] <= y + h), :]
                         if len(xyv) == 0:
                             continue
