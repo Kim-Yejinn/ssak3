@@ -8,6 +8,9 @@ class ControlHandler(socketio.AsyncNamespace):
 
     async def on_disconnect(self, sid):
         print("control disconnected")
+
+
+
     # 세탁물 정보 확인
     async def on_result(self, data):
         print(data)
