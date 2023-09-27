@@ -16,7 +16,7 @@ const Controller = () => {
         "laundry" : ["shirts", "pants"],
         "time" : 13
     });
-
+    
     const robotRequest = (e) => {
         // e.preventDefault();
 
