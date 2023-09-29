@@ -96,9 +96,13 @@ def updaterun(end: End, db: Session = Depends(get_db)):
                             detail="존재하지 않는 사용자 입니다.")
 
     get_item = db.query(get).filter(get.get_id == end.get_id).first()
-    if len(get_item) == 0:
+    if not (get_item):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="해당 로그가 존재하지 않습니다.")
+
+    if get_item.auth_id != exist_user.auth_id:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                            detail="로그 주행 권한이 없습니다.")
 
     if (get_item.end_time):
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
@@ -108,6 +112,7 @@ def updaterun(end: End, db: Session = Depends(get_db)):
     try:
         # laundry_cnt 변수 설정
         sum = 0
+        error_log = ""
 
         # 1. get_item end_time 저장
         current_time = datetime.now()
@@ -117,10 +122,10 @@ def updaterun(end: End, db: Session = Depends(get_db)):
 
         # 2. query로 selected 찾아서 cnt 수정
         ros_items = end.laundries
-        laundry_names: List[str]
+        laundry_names = []
 
-        for ros_name in ros_items:
-            laundry_names.append(ros_name)
+        for ros_item in ros_items:
+            laundry_names.append(ros_item.name)
 
         # join해서 get_id에 해당하는 select_id를 가져오기
         select_items = (db.query(select, laundry)
@@ -129,13 +134,13 @@ def updaterun(end: End, db: Session = Depends(get_db)):
                                laundry.laundry_ros.in_(laundry_names))
                        .all())
 
-        for ros in ros_items:
-            name = ros.name
-            cnt = ros.cnt
+        for ros_item in ros_items:
+            name = ros_item.name
+            cnt = ros_item.cnt
             select_item = next((item for item in select_items if item[1].laundry_ros == name), None)
             if not select_item:
-                raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
-                                    detail=f"{Ros.name} 세탁물은 존재하지 않는 세탁물입니다. index가 아닌 id값으로 잘 넣었는지 확인 바람")
+                error_log = name + " 세탁물은 존재하지 않는 세탁물입니다. index가 아닌 id값으로 잘 넣었는지 확인 바람"
+                raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE)
             else:
                 sum += cnt
                 select_item[0].cnt = cnt
@@ -146,9 +151,14 @@ def updaterun(end: End, db: Session = Depends(get_db)):
 
     except Exception as e:
         db.rollback()
+        if error_log:
+            raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                                detail=error_log)
+
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             detail=f"Database error: {str(e)}")
 
     finally:
         db.close()
 
+    return end.get_id
