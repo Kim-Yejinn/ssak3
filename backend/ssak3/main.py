@@ -7,7 +7,7 @@ from api import auth # api가 동작할 수 있도록 main에 추가
 from api import test
 
 import uvicorn
-# from api.socketserver import sio_app
+from api.socketserver import sio_app
 from api import robot
 from api import run
 from api import dib
@@ -17,7 +17,7 @@ app = FastAPI()
 
 
 # 소켓 연결
-# app.mount("/", app=sio_app)
+app.mount("/", app=sio_app)
 
 
 # api가 동작할 수 있도록 main에 추가
