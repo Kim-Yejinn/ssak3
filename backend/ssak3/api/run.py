@@ -28,6 +28,10 @@ def registrun(start: Start, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="존재하지 않는 사용자 입니다.")
 
+    if len(start.laundryList) == 0:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                            detail="세탁물을 한개 이상 선택해주세요.")
+
     laundry_ids = start.laundryList
     laundry_items = db.query(laundry).filter(laundry.laundry_id.in_(laundry_ids)).all()
 
@@ -73,7 +77,6 @@ def registrun(start: Start, db: Session = Depends(get_db)):
 
 
 class Ros(BaseModel):
-    index: int
     name: str
     cnt: int
 
@@ -83,37 +86,69 @@ class End(BaseModel):
     laundries: List[Ros]
 
 # 주행 완료시 모든 데이터베이스 등록
-# @router.patch("/end", status_code=status.HTTP_200_OK)
-# def updaterun(end: End, db: Session = Depends(get_db)):
-#     # 유저 확인
-#     exist_user = db.query(auth).filter(auth.id == end.id).first()
-#
-#     if not (exist_user):
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-#                             detail="존재하지 않는 사용자 입니다.")
-#
-#     # laundryList에 있는 값이 데이터 베이스에 잘 들어가 있는지 확인
-#     for ros in end.laundries:
-#         laundry_item = db.query(laundry).filter(laundry.laundry_ros == ros.name).first()
-#         if not laundry_item:
-#             raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
-#                                 detail="존재하지 않는 세탁물입니다. ros에서 받아오는 이름과 같지 않습니다.")
-#
-#     get_item = db.query(get).filter(get.get_id == end.get_id).first()
-#     if len(get_item) == 0:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-#                             detail="해당 로그가 존재하지 않습니다.")
-#
-#     if (get_item.end_time):
-#         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
-#                             detail="벌써 실행 완료 된 로그입니다. 다시 한번 확인해주세요.")
-#
-#
-#     current_time = datetime.now()
-#     formatted_time = current_time.strftime('%Y-%m-%d %H:%M:%S')
-#
-#     get_item.end_time = formatted_time
-#
+@router.patch("/end", status_code=status.HTTP_200_OK)
+def updaterun(end: End, db: Session = Depends(get_db)):
+    # 유저 확인
+    exist_user = db.query(auth).filter(auth.id == end.id).first()
 
+    if not (exist_user):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="존재하지 않는 사용자 입니다.")
 
+    get_item = db.query(get).filter(get.get_id == end.get_id).first()
+    if len(get_item) == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="해당 로그가 존재하지 않습니다.")
+
+    if (get_item.end_time):
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                            detail="벌써 실행 완료 된 로그입니다. 다시 한번 확인해주세요.")
+
+    # 저장 transaction 시작
+    try:
+        # laundry_cnt 변수 설정
+        sum = 0
+
+        # 1. get_item end_time 저장
+        current_time = datetime.now()
+        formatted_time = current_time.strftime('%Y-%m-%d %H:%M:%S')
+
+        get_item.end_time = formatted_time
+
+        # 2. query로 selected 찾아서 cnt 수정
+        ros_items = end.laundries
+        laundry_names: List[str]
+
+        for ros_name in ros_items:
+            laundry_names.append(ros_name)
+
+        # join해서 get_id에 해당하는 select_id를 가져오기
+        select_items = (db.query(select, laundry)
+                       .join(select, select.laundry_id == laundry.laundry_id)
+                       .filter(select.get_id == end.get_id,
+                               laundry.laundry_ros.in_(laundry_names))
+                       .all())
+
+        for ros in ros_items:
+            name = ros.name
+            cnt = ros.cnt
+            select_item = next((item for item in select_items if item[1].laundry_ros == name), None)
+            if not select_item:
+                raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                                    detail=f"{Ros.name} 세탁물은 존재하지 않는 세탁물입니다. index가 아닌 id값으로 잘 넣었는지 확인 바람")
+            else:
+                sum += cnt
+                select_item[0].cnt = cnt
+
+        # 3. cnt 다 합해서 get_item laundry_cnt수정
+        get_item.laundry_cnt = sum
+        db.commit()
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail=f"Database error: {str(e)}")
+
+    finally:
+        db.close()
 
