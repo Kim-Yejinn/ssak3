@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
@@ -5,19 +6,18 @@ from starlette.middleware.cors import CORSMiddleware
 from middleware import access_control
 from api import auth # api가 동작할 수 있도록 main에 추가
 from api import test
-
-import uvicorn
-from api.socketserver import sio_app
 from api import robot
 from api import run
 from api import dib
+from api import log
+from api.socketserver import sio_app
 
 
 app = FastAPI()
 
 
 # 소켓 연결
-app.mount("/", app=sio_app)
+# app.mount("/", app=sio_app)
 
 
 # api가 동작할 수 있도록 main에 추가
@@ -26,6 +26,7 @@ app.include_router(test.router)
 app.include_router(robot.router)
 app.include_router(run.router)
 app.include_router(dib.router)
+app.include_router(log.router)
 
 origins = [
     "http://localhost:8080",
