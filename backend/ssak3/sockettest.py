@@ -35,8 +35,8 @@ async def client():
 
     await sio.wait()
 
-def main(args = None):
-    asyncio.run(client())
-
-if __name__ == "__main__":
-    main()
+# def main(args = None):
+#     asyncio.run(client())
+#
+# if __name__ == "__main__":
+#     main()
