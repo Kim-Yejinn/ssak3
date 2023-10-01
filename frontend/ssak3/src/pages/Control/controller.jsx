@@ -4,6 +4,7 @@ import './style.css';
 
 const Controller = () => {
     let clothes = ["셔츠", "바지", "수건","양말", "속옷",];
+    let clothesLogo = ["shirts.png", "pants.png","towel.png","socks.png","underwear.png"];
     const [frames, setFrames] = useState([true,true,true,true,true]);
     const [toggles, setToggles] = useState([true, false,false,false,false]);
     const starSetter = (index) => {
@@ -40,7 +41,9 @@ const Controller = () => {
                 frames.map((item,index) => (
                         item ?
                         <div className="starFrame" key={index}>
-                            <div className="starLogoFrame"></div>
+                            <div className="starLogoFrame">
+                                <img className="starLogo" src={`/star-${clothesLogo[index]}`} />
+                            </div>
                             <div className="starBtn" onClick={() => starSetter(index)}></div>
                             <div className="starTitle">{clothes[index]}</div>
                             { toggles[index] ?
@@ -61,7 +64,9 @@ const Controller = () => {
                         </div>
                         :
                         <div className="unstarFrame" key={index}>
-                            <div className="logoFrame"></div>
+                            <div className="logoFrame">
+                                <img className="unstarLogo" src={`/${clothesLogo[index]}`} />
+                            </div>
                             <div className="unStarBtn" onClick={() => starSetter(index)}></div>
                             <div className="unstarTitle">{clothes[index]}</div>
                             { toggles[index] ?

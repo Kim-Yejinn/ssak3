@@ -248,38 +248,26 @@
 
 /* Star logo */
 .starLogo{
-    position: absolute;
-    width: 71.26px;
-    height: 19px;
-    left: 52.74px;
-    top: 235.6px;
-
-    /* font-family: 'Lexend'; */
-    font-style: normal;
-    font-weight: 600;
-    font-size: 15.0755px;
-    line-height: 19px;
-    /* identical to box height, or 124% */
-
-    color: #FFFFFF;
+    position: relative;
+    display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    top: 8px;
+    left: 8px;
+    width: 28px;
+    height: 25px;
 }
 
 /* Unstar logo */
 .unstarLogo{
-    position: absolute;
-    width: 95.77px;
-    height: 19px;
-    left: 224.87px;
-    top: 439.57px;
-
-    /* font-family: 'Lexend'; */
-    font-style: normal;
-    font-weight: 600;
-    font-size: 15.0755px;
-    line-height: 19px;
-    /* identical to box height, or 124% */
-
-    color: #000000;
+    position: relative;
+    display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    top: 8px;
+    left: 8px;
+    width: 28px;
+    height: 25px;
 }
 
 /* Start btn */
