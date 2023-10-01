@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import styles from './style.css';
+import './style.css';
 
 const Controller = () => {
-    const [starIsVisible, setStarIsVisible] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
-    const starToggleVisibility = () =>{
-        setStarIsVisible(!starIsVisible);
-    };
-    const toggleVisibility = () => {
-        setIsVisible(!isVisible);
+    let clothes = ["셔츠", "바지", "수건","양말", "속옷",];
+    const [frames, setFrames] = useState([true,true,true,true,true]);
+    const [toggles, setToggles] = useState([true, false,false,false,false]);
+    const starSetter = (index) => {
+        const updatedFrames = [...frames];
+        updatedFrames[index] = !updatedFrames[index];
+        setFrames(updatedFrames);
+    }
+    const toggleSetter = (index) => {
+        const updatedToggles = [...toggles];
+        updatedToggles[index] = !updatedToggles[index];
+        setToggles(updatedToggles);
     };
     const [requestDto, setRequestDto] = useState({
         "memberId" : 1,
@@ -30,48 +35,53 @@ const Controller = () => {
         })
     }
     return (
-        <div>
-            <div className="starFrame">
-                    <div className="starLogoFrame"></div>
-                    <div className="starBtn"></div>
-                    <div className="starTitle">T-shirt</div>
-                    { starIsVisible ?
-                    <div>
-                        <div className="starOnText">On</div>
-                        <div className="starToggleOnBg" onClick={starToggleVisibility}>
-                            <div className="starToggleOn" onClick={starToggleVisibility}></div>
+        <div className="frameContainer">
+            {
+                frames.map((item,index) => (
+                        item ?
+                        <div className="starFrame" key={index}>
+                            <div className="starLogoFrame"></div>
+                            <div className="starBtn" onClick={() => starSetter(index)}></div>
+                            <div className="starTitle">{clothes[index]}</div>
+                            { toggles[index] ?
+                            <div>
+                                <div className="starOnText">On</div>
+                                <div className="starToggleOnBg" onClick={() => toggleSetter(index)}>
+                                    <div className="starToggleOn" onClick={() => toggleSetter(index)}></div>
+                                </div>
+                            </div>
+                            :
+                            <div>
+                                <div className="offText">Off</div>
+                                <div className="starToggleOffBg" onClick={() => toggleSetter(index)}>
+                                    <div className="starToggleOff" onClick={() => toggleSetter(index)}></div>
+                                </div>
+                            </div>
+                            }
                         </div>
-                    </div>
-                    :
-                    <div>
-                        <div className="offText">Off</div>
-                        <div className="starToggleOffBg" onClick={starToggleVisibility}>
-                            <div className="starToggleOff" onClick={starToggleVisibility}></div>
+                        :
+                        <div className="unstarFrame" key={index}>
+                            <div className="logoFrame"></div>
+                            <div className="unStarBtn" onClick={() => starSetter(index)}></div>
+                            <div className="unstarTitle">{clothes[index]}</div>
+                            { toggles[index] ?
+                            <div>
+                                <div className="unstarOnText">On</div>
+                                <div className="toggleOnBg" onClick={() => toggleSetter(index)}>
+                                    <div className="toggleOn" onClick={() => toggleSetter(index)}></div>
+                                </div>
+                            </div>
+                            :
+                            <div>
+                                <div className="offText">Off</div>
+                                <div className="toggleOffBg" onClick={() => toggleSetter(index)}>
+                                    <div className="toggleOff" onClick={() => toggleSetter(index)}></div>
+                                </div>
+                            </div>
+                            }
                         </div>
-                    </div>
-                    }
-                </div>
-                <div className="unstarFrame">
-                    <div className="logoFrame"></div>
-                    <div className="unStarBtn"></div>
-                    <div className="unstarTitle">Pants</div>
-                    {isVisible ?
-                    <div>
-                        <div className="unstarOnText">On</div>
-                        <div className="toggleOnBg" onClick={toggleVisibility}>
-                            <div className="toggleOn" onClick={toggleVisibility}></div>
-                        </div>
-                    </div>
-                    :
-                    <div>
-                        <div className="offText">Off</div>
-                        <div className="toggleOffBg" onClick={toggleVisibility}>
-                            <div className="toggleOff" onClick={toggleVisibility}></div>
-                        </div>
-                    </div>
-                    }
-
-                </div>
+                ))
+            }
                 
             <button className="startBtn" onClick={robotRequest}>
                 주행하기
