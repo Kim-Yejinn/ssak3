@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from starlette import status
-from datetime import datetime
+from datetime import datetime, date
 from pydantic import BaseModel
 from typing import List
 
@@ -52,7 +53,11 @@ def registrun(start: Start, db: Session = Depends(get_db)):
 
     try:
         # 1. get만들기 사용자번호, 시작시간만 넣어주기
-        get_item = get(auth_id=exist_user.auth_id, start_time=datetime.now())
+        current_date = date.today().strftime('%Y.%m.%d')
+        get_by_date = db.query(get).filter(get.auth_id == exist_user.auth_id,
+                                           func.date(get.start_time) == current_date).count()
+
+        get_item = get(auth_id=exist_user.auth_id, get_name=f"{current_date}_task{get_by_date+1}", start_time=datetime.now())
         db.add(get_item)
         db.flush()
 
