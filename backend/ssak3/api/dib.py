@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from starlette import status
-from datetime import datetime
 from pydantic import BaseModel
 from typing import List
 
@@ -42,17 +41,17 @@ def registdib(info: Info, db: Session = Depends(get_db)):
     if (exist_dib):
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="프론트 탓입니다. delete로 요청보내세요")
     else:
-        dib = dib(auth_id=exist_user.auth_id, laundry_id=info.laundry_id)
-        db.add(dib)
+        dib_item = dib(auth_id=exist_user.auth_id, laundry_id=info.laundry_id)
+        db.add(dib_item)
         db.commit()
 
     db.close()
 
 # 찜 삭제
 # 찜 되어있는지 아닌지는 프론트에서 판단해서 요청 보내기
-@router.delete("/", status_code=status.HTTP_200_OK)
-def deletedib(info: Info, db:Session = Depends(get_db)):
-    exist_user = db.query(auth).filter(auth.id == info.user_id).first()
+@router.delete("/{laundry_id}", status_code=status.HTTP_200_OK)
+def deletedib(user_id:str, laundry_id:int, db:Session = Depends(get_db)):
+    exist_user = db.query(auth).filter(auth.id == user_id).first()
 
     # 아이디가 존재하지 않으면 예외 던지기
     if not (exist_user):
@@ -60,29 +59,24 @@ def deletedib(info: Info, db:Session = Depends(get_db)):
                             detail="존재하지 않는 사용자 입니다.")
 
     # 세탁물 존재 여부
-    exist_laundry = db.query(laundry).filter(laundry.laundry_id == info.laundry_id).first()
+    exist_laundry = db.query(laundry).filter(laundry.laundry_id == laundry_id).first()
 
     if not (exist_laundry):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="존재하지 않는 세탁물 입니다.")
 
     # 삭제할 찜 있는지 판단
-    dib = db.query(dib).filter(dib.auth_id == exist_user.auth_id, dib.laundry_id == exist_laundry.laundry_id).first()
-    if (dib):
-        db.delete(dib)
+    dib_item = db.query(dib).filter(dib.auth_id == exist_user.auth_id, dib.laundry_id == exist_laundry.laundry_id).first()
+    if (dib_item):
+        db.delete(dib_item)
         db.commit()
     else:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="프론트 탓입니다. post로 요청보내세요")
     db.close()
 
 
-class Laundry(BaseModel):
-    laundry_id: int
-    laundry_name: str
-    laundry_type: str
-
 # 찜 목록 전체불러오기
 # 주행페이지 이동시 찜되어있는건 프론트에서 ON 해놓기
-@router.get("/", response_model=List[Laundry], status_code=status.HTTP_200_OK)
+@router.get("/", status_code=status.HTTP_200_OK)
 def getdibs(id: str, db:Session = Depends(get_db)):
 
     exist_user = db.query(auth).filter(auth.id == id).first()
@@ -94,6 +88,9 @@ def getdibs(id: str, db:Session = Depends(get_db)):
     # 찜목록
     dibs = db.query(dib).filter(dib.auth_id == exist_user.auth_id).order_by(dib.laundry_id.asc()).all()
 
+    if len(dibs) == 0:
+        return None
+
     responses = []
     for dib_item in dibs:
         response = db.query(laundry).filter(laundry.laundry_id == dib_item.laundry_id).first()
@@ -104,7 +101,7 @@ def getdibs(id: str, db:Session = Depends(get_db)):
 
 
 # 혹시몰라서, laundry다 가져오면서 찜여부 포함해서 넣기
-@router.get("/list", response_model = List[Laundry], status_code=status.HTTP_200_OK)
+@router.get("/list", status_code=status.HTTP_200_OK)
 def getdibs(id: str, db:Session = Depends(get_db)):
 
     exist_user = db.query(auth).filter(auth.id == id).first()

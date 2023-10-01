@@ -7,4 +7,4 @@ class laundry(Base):
 
     laundry_id = Column(Integer, primary_key=True, autoincrement=True)
     laundry_name = Column(String, nullable=False)
-    laundry_type = Column(String, nullable=False)
+    laundry_ros = Column(String, nullable=False)
