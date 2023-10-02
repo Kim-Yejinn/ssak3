@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry
-from ssafy_msgs.msg import Detection
+from ssafy_msgs.msg import Detection, LaundryPose
 # 자꾸 모듈을 못가져와서 path설정 해줌
 import sys
 sys.path.append('C:/Users/SSAFY/Desktop/project/S09P22B201/ros/catkin_ws/src/ssak3')
@@ -17,7 +17,8 @@ class PointList(Node):
         self.goal_pub = self.create_publisher(PoseStamped,'goal_pose',10)
         self.goal_sub = self.create_subscription(PoseStamped,'goal_pose',self.goal_callback,1)
         self.cur_sub = self.create_subscription(PoseStamped,'cur_pose',self.cur_callback,1)
-        self.detect_sub = self.create_subscription(Detection, 'laundry_detect', self.detect_callback, 1)
+        # self.detect_sub = self.create_subscription(Detection, 'laundry_detect', self.detect_callback, 1)
+        self.detect_sub = self.create_subscription(LaundryPose, 'laundry_pose', self.detect_callback, 1)
         self.odom_msg=Odometry()
         self.a_star_instance = a_star()
 
@@ -63,7 +64,8 @@ class PointList(Node):
         # self.turtle_y = 0.0
 
         # 선택된 세탁물 저장
-        self.laundry_list = ['shirts', 'pants']
+        # self.laundry_list = ['shirts', 'pants']
+        self.laundry_list = ['shirts']
 
 
     '''
@@ -109,13 +111,15 @@ class PointList(Node):
     세탁물 발견 좌표를 퍼블리시 한다.
     '''
     def detect_callback(self, msg):
-        if(len(msg.x) != 0) and msg.name[0] in self.laundry_list:
-            # print(f'msg : {msg}')
-            print(f'msg : {msg.x[0]} y: {msg.y[0]}')
-            # self.grid_cell_point.insert(0, [msg.x[0], msg.y[0]])
-            self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = [msg.x[0], msg.y[0]]
-            self.goal_pub.publish(self.goal_pose_msg) # grid
-            # self.grid_cell_point.pop(0)
+        if(len(msg.x) != 0):
+            for i in range(len(msg.name)):
+                if msg.name[i] in self.laundry_list:
+                    # print(f'msg : {msg}')
+                    print(f'msg : {msg.x[i]} y: {msg.y[i]}')
+                    # self.grid_cell_point.insert(0, [msg.x[0], msg.y[0]])
+                    self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = [msg.x[i], msg.y[i]]
+                    self.goal_pub.publish(self.goal_pose_msg) # grid
+                    # self.grid_cell_point.pop(0)
 
     def odom_callback(self,msg):
         self.is_odom=True
@@ -133,22 +137,23 @@ class PointList(Node):
         # if len(self.a_star_instance.grid_cell_point) > 0:
             # self.a_star_instance.grid_cell_point.pop(0)
         # self.a_star_instance.point_list_pop()
-        self.pose_list_pop() # grid
-        # print('동작 gird : {}'.format(self.goal_pose_msg))
-        '''
-        goal_pose 남아있던게 있으면 이거 먼저 실행
-        '''
-        if len(self.pose_dest_point) > 0:
-            self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.pose_dest_point[0]
-            self.pose_list_pop()
-            self.goal_pub.publish(self.goal_pose_msg)
-
-        # 남아 있던게 없으면 다시 원래 루트 따라서 이동
-        else:
-            if len(self.grid_cell_point) > 0:
-                self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point[0])
+        if msg.pose.position.x != 100.0 and msg.pose.position.x != 200.0:
+            self.pose_list_pop() # grid
+            # print('동작 gird : {}'.format(self.goal_pose_msg))
+            '''
+            goal_pose 남아있던게 있으면 이거 먼저 실행
+            '''
+            if len(self.pose_dest_point) > 0:
+                self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.pose_dest_point[0]
+                self.pose_list_pop()
                 self.goal_pub.publish(self.goal_pose_msg)
-                self.grid_cell_point.pop(0)
+
+            # 남아 있던게 없으면 다시 원래 루트 따라서 이동
+            else:
+                if len(self.grid_cell_point) > 0:
+                    self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point[0])
+                    self.goal_pub.publish(self.goal_pose_msg)
+                    self.grid_cell_point.pop(0)
 
 
 

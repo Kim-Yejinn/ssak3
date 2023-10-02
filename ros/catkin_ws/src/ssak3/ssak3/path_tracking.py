@@ -1,12 +1,13 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist,Point,Point32,PoseStamped
-from ssafy_msgs.msg import TurtlebotStatus
+from ssafy_msgs.msg import TurtlebotStatus, Detection, LaundryPose
 from squaternion import Quaternion
 from nav_msgs.msg import Odometry,Path
 from math import pi,cos,sin,sqrt,atan2
 import numpy as np
 from sensor_msgs.msg import LaserScan,PointCloud
+import time
 
 # path_tracking 노드는 로봇의 위치(/odom), 로봇의 속도(/turtlebot_status), 주행 경로(/local_path)를 받아서, 주어진 경로를 따라가게 하는 제어 입력값(/cmd_vel)을 계산합니다.
 # 제어입력값은 선속도와 각속도로 두가지를 구합니다. 
@@ -32,6 +33,8 @@ class followTheCarrot(Node):
         self.path_sub = self.create_subscription(Path,'/local_path',self.path_callback,10)
         self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback,10)
         self.current_position_pub = self.create_publisher(PoseStamped, 'cur_pose', 1)
+        self.laundry_position_pub = self.create_publisher(LaundryPose, 'laundry_pose', 1)
+        self.detect_sub = self.create_subscription(Detection, 'laundry_detect', self.detect_callback, 1)
 
         # 로직 1. 제어 주기 및 타이머 설정
         time_period=0.05 
@@ -57,6 +60,19 @@ class followTheCarrot(Node):
         self.cur_pose_msg = PoseStamped()
         self.pub_flag = False
 
+        self.is_detect = False
+
+        self.detect_msg = Detection()
+
+        self.laundry_pose_msg = LaundryPose()
+
+        self.is_laundry_detect = True
+
+    def detect_callback(self, msg):
+        self.is_detect = True
+        self.detect_msg = msg
+        print(self.detect_msg)
+
     def timer_callback(self):
 
         if self.is_status and self.is_odom ==True and self.is_path==True and self.is_lidar==True:
@@ -71,7 +87,7 @@ class followTheCarrot(Node):
 
                 # 로봇이 경로에서 떨어진 거리를 나타내는 변수
                 lateral_error= sqrt(pow(self.path_msg.poses[0].pose.position.x-robot_pose_x,2)+pow(self.path_msg.poses[0].pose.position.y-robot_pose_y,2))
-                print(robot_pose_x,robot_pose_y,lateral_error)
+                # print(robot_pose_x,robot_pose_y,lateral_error)
                 self.pub_flag = True
                 '''
                 로직 4. 로봇이 주어진 경로점과 떨어진 거리(lateral_error)와 로봇의 선속도를 이용해 전방주시거리 설정
@@ -139,17 +155,51 @@ class followTheCarrot(Node):
                         self.cmd_msg.linear.x=0.0           
            
             else :
-                print("no found forward point")
+                # print("no found forward point")
                 self.cmd_msg.linear.x=0.0
                 self.cmd_msg.angular.z=0.0
                 if(self.pub_flag==True):
+                    print(f'도착')
                     self.cur_pose_msg.pose.position.x = self.odom_msg.pose.pose.position.x
                     self.cur_pose_msg.pose.position.y = self.odom_msg.pose.pose.position.y
                     self.current_position_pub.publish(self.cur_pose_msg)
                     self.pub_flag = False
-
-            
+                    self.is_laundry_detect = True
+                    
             self.cmd_pub.publish(self.cmd_msg)
+
+            if self.is_detect == True and self.is_laundry_detect == True:
+                print(f'검출되었습니다!!!!!!!!!!!!!!')
+                self.cmd_msg.linear.x = 0.0
+                # theta_laundry=-atan2(self.detect_msg.x[0], self.detect_msg.y[0])
+                # print(f'목표 : {theta_laundry} 로봇 : {self.robot_yaw}')
+                # self.cmd_msg.angular.z=theta_laundry
+                self.cmd_msg.angular.z=0.0
+                for _ in range(11000):
+                    self.cmd_pub.publish(self.cmd_msg)
+                self.cur_pose_msg.pose.position.x = 100.0
+                self.current_position_pub.publish(self.cur_pose_msg)
+                # time.sleep(1)
+                self.laundry_pose_msg.x = self.detect_msg.x
+                self.laundry_pose_msg.y = self.detect_msg.y
+                self.laundry_pose_msg.name = self.detect_msg.name
+                self.laundry_pose_msg.distance = self.detect_msg.distance
+                self.laundry_pose_msg.cx = self.detect_msg.cx
+                self.laundry_pose_msg.cy = self.detect_msg.cy
+                self.laundry_position_pub.publish(self.laundry_pose_msg)
+                # time.sleep(2)
+                # print(f'변화 후                   목표 : {theta_laundry} 로봇 : {self.robot_yaw}')
+                self.cur_pose_msg.pose.position.x = 200.0
+                self.current_position_pub.publish(self.cur_pose_msg)
+                '''
+                현재 문제 path_tracking이 계속 타이머 콜백이라 cur_pose.x 가 계속 100으로 바뀌고 퍼블리시
+                돼서 laundry_detect가 계속 실행됨 딱 한번만 실행할 수 있게끔 해야함
+                저기 위에 162번 째 줄에서 cur_pose실행하면 플래그 초기화 시켜서 해볼까? 
+                '''
+                self.is_detect = False
+                self.is_laundry_detect = False
+                # self.cmd_msg.linear.x = 0.4   
+                # self.cmd_msg.angular.z=out_rad_vel          
     def lidar_callback(self, msg):
         self.lidar_msg=msg
         if self.is_path == True and self.is_odom == True:
