@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 from models.laundry import laundry
 from models.auth import auth
-from models.tutlebot import turtlebot
+from models.turtlebot import turtlebot
 from models.get import get
 from models.select import select
 from db.db import get_db
@@ -89,36 +89,3 @@ def delete_log(log_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Log not found")
     db.close()
 
-
-@router.post("/robot/run", status_code=status.HTTP_200_OK)
-def robot_run(member_id: str, laundrys: list, time: int, db: Session = Depends(get_db)):
-    # 로봇 동작 시작
-    # 현재 로봇 아이디와, 리스트, 작동 시간을 주면 작동
-    # 여기서는 바로 작동한다고 가정했다.???
-    # 값 받아와서 로그 추가> 이미 위에서 만들어 져있는듯 한데..?
-    exist_user = db.query(auth).filter(auth.id == member_id).first()
-    current_time = datetime.now()
-    formatted_time = current_time.strftime('%Y-%m-%d %H:%M:%S')
-    log = get(auth_id=exist_user.auth_id, start_time=formatted_time)
-    db.add(log)
-    db.commit()
-
-    get_num = get_last_record_id()
-    # 선택한 세탁물도 넣어야 함.
-    for laundry_name in laundrys:
-        laundry_id = db.query(laundry).filter(laundry_name == laundry.laundry_name).first().laundry_id
-        laundry_log = select(get_id=get_num, laundry_id=laundry_id)
-        db.add(laundry_log)
-        db.commit()
-
-    db.close()
-    ControlHandler.emit_laundry_start(member_id, get_num, laundrys)
-    return {"log_id": log.id}
-
-
-def get_last_record_id(db: Session = Depends(get_db())):
-    # 가장 큰 값 찾기 => 지금 수거 번호
-    last_record = db.query(get).order_by(get.get_id.desc()).first()
-    if last_record:
-        return last_record.id
-    return None
