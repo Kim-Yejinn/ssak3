@@ -273,10 +273,10 @@
 /* Start btn */
 .startBtn{
     position: absolute;
-    width: 337px;
-    height: 50px;
-    left: 28px;
-    top: 786px;
+    width: 90vw;
+    height: 7vh;
+    left: 5vw;
+    top: 120vh;
 
     color: white;
     background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
@@ -288,10 +288,10 @@
 }
 .addBtn{
     position: absolute;
-    width: 100%;
-    height: 50px;
+    width: 90vw;
+    height: 7vh;
     
-    top: 756px;
+    top: 100vh;
     color: white;
     background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
     border-radius: 10px;
