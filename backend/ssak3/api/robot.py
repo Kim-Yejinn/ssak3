@@ -86,3 +86,4 @@ def delete_log(log_id: int, db: Session = Depends(get_db)):
     else:
         raise HTTPException(status_code=404, detail="Log not found")
     db.close()
+
