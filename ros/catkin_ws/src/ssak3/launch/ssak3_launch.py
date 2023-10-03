@@ -38,12 +38,4 @@ def generate_launch_description():
             node_executable='up_object',
             node_name='up_object'
         ),
-        '''
-        point_pub은 개별 실행
-        Node(
-            package='ssak3',
-            node_executable='point_pub',
-            node_name='PointList'
-        ),
-       '''
     ])
