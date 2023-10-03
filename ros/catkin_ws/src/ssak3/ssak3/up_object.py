@@ -18,8 +18,8 @@ class up_object(Node):
         time_period=0.1
         self.timer = self.create_timer(time_period, self.timer_callback)
         
-        # self.laundry_list = ['shirts', 'pants']
-        self.laundry_list = ['shirts']
+        self.laundry_list = ['shirts', 'pants']
+        # self.laundry_list = ['shirts']
 
         self.is_select_laundry = False
         

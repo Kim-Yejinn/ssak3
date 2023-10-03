@@ -64,8 +64,8 @@ class PointList(Node):
         # self.turtle_y = 0.0
 
         # 선택된 세탁물 저장
-        # self.laundry_list = ['shirts', 'pants']
-        self.laundry_list = ['shirts']
+        self.laundry_list = ['shirts', 'pants']
+        # self.laundry_list = ['shirts']
 
 
     '''
