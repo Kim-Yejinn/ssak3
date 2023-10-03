@@ -6,8 +6,8 @@ import { defaultInstance as api } from '../../util/token.jsx';
 const AddSchedule = () => {
     const navigate = useNavigate();
 
-    const GoMain = () => {
-        navigate("/main");
+    const GoSchedule = () => {
+        navigate("/schedule");
     };
 
     const [hourValue, setHourValue] = useState(12);
@@ -60,8 +60,8 @@ const AddSchedule = () => {
     <div className="main-container">
         <div className = "areah-20">
             <div className = "areah-40 justalign-center">
-                <div onClick={GoMain} className = "addtbackbutton">‹</div>
-                <div className = "areaw-80 justalign-center">터틀봇 제어</div>
+                <div onClick={GoSchedule} className = "addtbackbutton">‹</div>
+                <div className = "areaw-80 justalign-center">스케줄</div>
                 <div className = "areaw-20 justalign-center"></div>
             </div>
             <div className = "addttitle">
@@ -119,7 +119,7 @@ const AddSchedule = () => {
                 </div>
             </div>
             <div className = "areah-25 justalign-center">
-                <div className="addschedulebutton">스케줄 추가</div>
+                <div className="addschedulebutton">등록</div>
             </div>
         </div>
     </div>

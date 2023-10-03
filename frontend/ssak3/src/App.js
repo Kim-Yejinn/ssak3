@@ -11,6 +11,7 @@ import TurtleBotLog from './pages/Log';
 import AddSchedule from './pages/Control/AddSchedule';
 import AddTuttle from './pages/Main/AddTuttle';
 import NonEntryMain from './pages/Main/nonEntryMain';
+import Schedule from './pages/Control/scheduler';
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
         <Route path="main" element={<TurtlebotController/>} />
         <Route path="start" element={<TurtleBotStarter/>} />
         <Route path="log" element={<TurtleBotLog/>} />
-        <Route path="schedule" element={<AddSchedule/>} />
+        <Route path="addschedule" element={<AddSchedule/>} />
+        <Route path="schedule" element={<Schedule/>} />
         <Route path="addturtle" element={<AddTuttle/>} />
         <Route path="test" element={<NonEntryMain/>} />
       </Routes>

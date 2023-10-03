@@ -1,8 +1,15 @@
 import React,{ useEffect, useState } from "react";
 import "./style.css";
 import { defaultInstance as api } from '../../util/token';
+import { useNavigate } from "react-router-dom";
 
 const TurtleBotLog = () =>{
+    const navigate = useNavigate();
+
+    const GoMain = () => {
+        navigate("/main");
+    };
+
     const [log, setLog] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(()=>{
@@ -18,11 +25,15 @@ const TurtleBotLog = () =>{
             window.alert("로그를 불러오는 중 문제가 발생했습니다.");
         })
     };
-    
+    const formatLog = (value) => {
+        return value.replace("T", " ");
+    };
     return ( 
         <div className="container">
-            <div className="nav">
-                <div className="title">터틀봇 활동기록</div>
+            <div className = "areah-10 justalign-center">
+                <div onClick={GoMain} className = "addtbackbutton">‹</div>
+                <div className = "areaw-80 justalign-center">터틀봇 로그</div>
+                <div className = "areaw-20 justalign-center"></div>
             </div>
             {
                     loading ?
@@ -46,10 +57,10 @@ const TurtleBotLog = () =>{
                         {log.map((item, index) => (
                             <div className="logBox">
                                 <div className="logTitle">
-                                    {item.start_time}_TASK {item.get_id}
+                                    {formatLog(item.start_time)} TASK {item.get_id}
                                 </div>
                                 <div className="logScore">총 수거량 : {item.laundry_cnt}</div>
-                                <div className="logTime">{item.start_time} ~ {item.end_time}</div>
+                                <div className="logTime">{formatLog(item.start_time)} ~ {formatLog(item.end_time)}</div>
                             </div>
                         
                         ))}
