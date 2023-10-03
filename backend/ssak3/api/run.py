@@ -1,3 +1,5 @@
+import socketserver
+
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -12,6 +14,8 @@ from models.get import get
 from models.laundry import laundry
 from db.db import get_db
 
+# from api.sockethandler.ControlHandler import ControlHandler
+from api.socketserver import emit_laundry_start
 router = APIRouter(prefix="/run")
 
 class Start(BaseModel):
@@ -69,6 +73,13 @@ def registrun(start: Start, db: Session = Depends(get_db)):
             db.add(select_item)
 
         db.commit()
+
+        # ros로 시작 요청을 보내야 한다!
+        # start.id -> 터틀봇 번호
+        # get_id -> 나중에 완료 후 업데이트 해주기 위한 것
+        # start.laundryList -> 수거할 빨래들
+        print(start.laundryList)
+        emit_laundry_start(start.id, get_id, start.laundryList)
 
     except Exception as e:
         db.rollback()
