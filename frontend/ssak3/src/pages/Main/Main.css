@@ -1,8 +1,8 @@
 
 .controllerContainer {
     position: absolute;
-    width: 393px;
-    height: 852px;
+    width: 100vw;
+    height: 100vh;
     background-color: #FFFFFF;
 }
 
@@ -203,8 +203,8 @@
 /* ----------------- */
 .main-container {
     position: absolute;
-    width: 390px;
-    height: 812px;
+    width: 100vw;
+    height: 100vh;
 }
 
 .justalign-center{
