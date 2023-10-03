@@ -17,7 +17,6 @@ def findUser(num: int, db: Session = Depends(get_db)):
 
 class ControlHandler(socketio.AsyncNamespace):
 
-
     async def on_connect(self, sid, environ):
         print("control connected")
 
