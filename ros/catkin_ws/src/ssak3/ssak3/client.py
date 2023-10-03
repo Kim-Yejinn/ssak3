@@ -5,7 +5,8 @@ import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import String
-from ssafy_msgs.msg import Operate
+from ssafy_msgs.msg import LaundryList
+
 import threading
 
 import json
@@ -19,6 +20,9 @@ sendWeather = False
 sendTemp = False
 sendDay = False
 
+laundry_list_msg = LaundryList()
+laundry_send = False
+
 class socketSub(Node):
 
     def __init__(self):
@@ -30,7 +34,15 @@ class socketSub(Node):
         # 우선 수거 개수가 String으로 온다고 가정했음. 
         self.socket_result_pub = self.create_subscription(String, '/socket_result', self.socket_result_pub, 10)
         # 세탁물 수거 시작 시 어디로 가야 할지 여기에 publish 추가하기
-        self.socket_start_pub = self.create_publisher(Operate, '/socket_start', 30)
+        self.socket_start_pub = self.create_publisher(LaundryList, '/socket_start', 30)
+        time_period = 0.1
+        self.timer = self.create_timer(time_period, self.timer_callback)
+
+    def timer_callback(self):
+        global laundry_send
+        global laundry_list_msg
+        if laundry_send == True:
+            self.socket_start_pub.publish(laundry_list_msg)
 
     # 위의 subscription 등록 이후 각 기능을 아래에 추가하면 됩니다.
     # namespace는
@@ -99,6 +111,7 @@ class socketSub(Node):
             await sio.emit('result', obj, namespace = '/control')
             
 
+    
 async def client():
     global sio
     global connected
@@ -146,10 +159,15 @@ async def client():
         # data는 리스트로 들어오게 된다.
         global operateNo
         print('laundry', data['laundry'])
-        print('operate_id', data[op_id])
-        operateNo = data[op_id]
+        print('operate_id', data['op_id'])
+        operateNo = data['op_id']
         # 작동을 시킬 publish 추가하기!!
-        self.socket_start_pub(data['laundry'])
+        # self.socket_start_pub(data['laundry'])
+        global laundry_list_msg
+        laundry_list_msg = data['laundry']
+        laundry_send = True
+
+
 
     # 서버 연결 -> 백 올린뒤 확인 필요
     # auth_url = 'https://j9b201.p.ssafy.io/api/'
