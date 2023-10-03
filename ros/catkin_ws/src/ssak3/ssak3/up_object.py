@@ -11,6 +11,7 @@ class up_object(Node):
         super().__init__('up_object')
 
         self.status_sub = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.status_callback,10)
+        self.status_pub = self.create_publisher(TurtlebotStatus,'/turtlebot_status',10)
         self.control_pub = self.create_publisher(HandControl, 'hand_control', 10)
         self.detect_sub = self.create_subscription(Detection, 'laundry_detect', self.detect_callback, 1)
         
@@ -18,6 +19,7 @@ class up_object(Node):
         self.timer = self.create_timer(time_period, self.timer_callback)
         
         self.laundry_list = ['shirts', 'pants']
+        # self.laundry_list = ['shirts']
 
         self.is_select_laundry = False
         
@@ -30,6 +32,7 @@ class up_object(Node):
 
         self.get_cnt = {'shirts': 0, 'pants':0}
         self.control_msg.control_mode = 3
+        self.control_pub.publish(self.control_msg)
 
     def clerar_cnt(self):
         self.get_cnt = {'shirts': 0, 'pants':0}
@@ -37,6 +40,8 @@ class up_object(Node):
 
     def detect_callback(self, msg):
         self.detect_laundry_name = msg.name[0]
+        if self.detect_laundry_name == 'none':
+            self.is_select_laundry = False
         if self.detect_laundry_name in self.laundry_list:
             self.is_select_laundry = True
         else:
@@ -50,9 +55,10 @@ class up_object(Node):
             if self.status_msg.can_lift == True:
                 self.control_msg.control_mode = 2
                 self.control_pub.publish(self.control_msg)
+                return
                 # print(f'들어올린다 ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ')
-                time.sleep(1)
-                # self.is_select_laundry = False
+                # if self.get_cnt[self.detect_laundry_name] % 2 == 1:
+                #     time.sleep(2)
         #     else:
         #         print("들수있는 상태가 아닌데?")
         # else:
@@ -61,20 +67,30 @@ class up_object(Node):
         self.control_msg.put_height = 100.0
         if self.control_msg.control_mode == 2:
             self.control_msg.control_mode = 1
+            # if self.get_cnt[self.detect_laundry_name] % 2 == 1:
+            time.sleep(2)
             self.control_pub.publish(self.control_msg)
             count = self.get_cnt[self.detect_laundry_name]
             self.get_cnt[self.detect_laundry_name] = count + 1
-            time.sleep(1)
+            # self.is_select_laundry = False
+            return
+            # time.sleep(1)
         # if self.status_msg.can_put == False:
             # print(f"can put : {self.status_msg}")
         # if self.control_msg.control_mode == 1:
         #     count = self.get_cnt[self.detect_laundry_name]
         #     self.get_cnt[self.detect_laundry_name] = count + 1
-        if self.control_msg.control_mode == 1:
-            self.control_msg.control_mode = 3
-            self.control_pub.publish(self.control_msg)
-            self.is_select_laundry = False
-            time.sleep(1)
+        # if self.control_msg.control_mode == 1:
+        #     self.control_msg.control_mode = 3
+        #     self.control_pub.publish(self.control_msg)
+        #     self.is_select_laundry = False
+        #     time.sleep(1)
+        #     self.status_msg.can_lift = True
+        #     self.status_pub.publish(self.status_msg)
+        self.control_msg.control_mode = 3
+        self.control_pub.publish(self.control_msg)
+        self.status_msg.can_lift = True
+        self.status_pub.publish(self.status_msg)
 
 
 

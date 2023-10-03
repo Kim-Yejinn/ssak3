@@ -157,8 +157,9 @@ def transform_bot2map(xyz_p):
 
 def cur_callback(msg):
     print(f"msg : {msg}")
-    global is_send
-    is_send = False
+    if msg.pose.position.x != 200.0:
+        global is_send
+        is_send = False
 
 def cal_distance(x1, y1, x2, y2):
     # distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
