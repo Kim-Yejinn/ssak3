@@ -25,7 +25,7 @@ class Start(BaseModel):
 
 # 세탁물 주행시 선택되는 것들 반영해서 생성
 @router.post("/start", status_code=status.HTTP_200_OK)
-def registrun(start: Start, db: Session = Depends(get_db)):
+async def registrun(start: Start, db: Session = Depends(get_db)):
     # 유저 확인
     exist_user = db.query(auth).filter(auth.id == start.id).first()
 
@@ -79,7 +79,7 @@ def registrun(start: Start, db: Session = Depends(get_db)):
         # get_id -> 나중에 완료 후 업데이트 해주기 위한 것
         # start.laundryList -> 수거할 빨래들
         print(start.laundryList)
-        emit_laundry_start(start.id, get_id, start.laundryList)
+        await emit_laundry_start(start.id, get_id, start.laundryList)
 
     except Exception as e:
         db.rollback()
