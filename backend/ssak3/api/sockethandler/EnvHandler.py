@@ -8,13 +8,19 @@ class EnvHandler(socketio.AsyncNamespace):
     async def on_disconnect(self, sid):
         print("env disconnected")
 
-    # 시간 정보
+    # 시간 정보 -> 현재 시뮬 시간 반환함.
+    # 이건 어떻게 사용할 것인가?
+    # 계속 실시간으로 변경해줘야 하는가?
+    # 아님 요청이 들어왔을때 실행되도록 해야 하는가?
     # format : month(1~12)/day(1~31)/hour(1~12)/minute(0~60)
     async def on_turtlebot_time(self, sid, data):
-        print(data)
-
+        print(data['month'])
+        print(data['day'])
+        print(data['hour'])
+        print(data['minute'])
     # 온도 정보
     # format : String (0~100)
+
     async def on_turtlebot_temp(self, sid, data):
         print(data)
 
