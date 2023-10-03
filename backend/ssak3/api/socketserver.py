@@ -7,8 +7,6 @@ from sqlalchemy.orm import Session
 from models.turtlebot import turtlebot
 from db.db import get_db
 
-
-
 sio_server = socketio.AsyncServer(
     async_mode='asgi',
     cors_allowed_origin='*')
@@ -58,22 +56,23 @@ class AuthHandler(socketio.AsyncNamespace):
         print(type(data))
         # print(type(auth_data))
 
-        if exist_turtlebot(data):
-            print("auth success")
-
-            # 모든 namespace에 터틀봇 추가
-            # for namespace in sio_server.namespace_handlers.values():
-            #     namespace.enter_room(custom_id, data)
-
-        else:
-            print("auth fail")
-            await sio_server.disconnect(client_sid)
-            await sio_server.emit('auth_fail','fail')
+        # if exist_turtlebot(data):
+        #     print("auth success")
+        #
+        #     # 모든 namespace에 터틀봇 추가
+        #     # for namespace in sio_server.namespace_handlers.values():
+        #     #     namespace.enter_room(custom_id, data)
+        #
+        # else:
+        #     print("auth fail")
+        #     await sio_server.disconnect(client_sid)
+        #     await sio_server.emit('auth_fail', 'fail')
 
         print("finish")
 
+
 # 거북이 등록 되어있는지 확인
-def exist_turtlebot(turtlebot_no : int, db:Session = Depends(get_db)):
+def exist_turtlebot(turtlebot_no: int, db: Session = Depends(get_db)):
     log = db.query(turtlebot).filter(turtlebot.turtlebot_id == turtlebot_no).first()
 
     if log:
@@ -83,11 +82,11 @@ def exist_turtlebot(turtlebot_no : int, db:Session = Depends(get_db)):
         return False
 
 
-
 # name space 등록
 sio_server.register_namespace(EnvHandler('/env'))
 sio_server.register_namespace(ControlHandler('/control'))
 sio_server.register_namespace(AuthHandler('/auth_turtle'))
+
 
 # 나중에 보내는 코드도 이동
 async def emit_laundry_start(member_id, op_id, laundry):
