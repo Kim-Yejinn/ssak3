@@ -1,71 +1,72 @@
 import React from "react";
 import "./Main.css";
+import { useNavigate } from "react-router-dom";
 
 const EntryMain = ( ) =>{
-    let name = "TurtleBot - TB230911_1";
-    // 나중에 이거 GET으로 받아오는 기능으로 변경
+    const navigate = useNavigate();
+
+    const GoControl = () => {
+        navigate("/start");
+    };
+
+    const GoLog = () => {
+        navigate("/log");
+    };
+
+    const GoSchedule = () => {
+        navigate("/schedule");
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('userId');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('turtlebot');
+        navigate("/");
+    };
+
+    let name = localStorage.getItem('turtlebot');
+
     return (
-    // Figma : main - 터틀봇 등록돼있는 상태
-    // ㄴ controllerContainer : UI
-    <div>
-        <div className="turtlebotName" >{ name }</div>
-        <div className="turtlebotImage" ></div>
-        <div className="menu-border">
-            <div className="menu">
-                <div className="frame" >
-                    <div className="frameBlank"></div>
-                    <div className="subFrame" >
-                        <div className="subFrameBlank" ></div>
-                        <div className="menuTitle" >터틀봇 제어</div>
-                        <div className="menuSubtitle" >작동중</div>
-                    </div>
-                    <div className="frameBlank" ></div>    
-                    <div className="rightArrowFrame" >
-                            <div className="rightArrow" ></div>
-                    </div>
-                </div>
+    <div className="main-container">
+        <div className = "areah-40">
+            <div className = "turtle-title">{name}</div>
+            <div className = "areah-55">
+            <div className="addturtle-image">
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Turtle.png" alt="Turtle" width="100%" height="100%" />
             </div>
-            <div className="menu" >
-                <div className="frame" >
-                    <div className="frameBlank" ></div>
-                    <div className="subFrame" >
-                        <div className="subFrameBlank" ></div>
-                        <div className="menuTitle" >날씨 정보</div>
-                        <div className="menuSubtitle" >실내온도 20℃</div>
-                    </div>
-                    <div className="frameBlank" ></div>    
-                    <div className="rightArrowFrame" >
-                            <div className="rightArrow" ></div>
-                    </div>
-                </div>
             </div>
-            <div className="menu">
-                <div className="frame" >
-                    <div className="frameBlank" ></div>
-                    <div className="subFrame" >
-                        <div className="subFrameBlank" ></div>
-                        <div className="menuTitle">사용 기록</div>
-                        <div className="menuSubtitle">최근 사용</div>
-                    </div>
-                    <div className="frameBlank"></div>    
-                    <div className="rightArrowFrame" >
-                            <div className="rightArrow"></div>
-                    </div>
+        </div>
+        <div className="areah-60 justalign">
+            <div onClick={GoControl} className = "turtle-button justalign-center">
+                <div className = "turtle-index justalign-center">
+                    <div className = "areah-50">터틀봇 제어</div>
+                    <div className = "areah-50 turtle-buttonc">작동 상태 확인</div>
                 </div>
+                <div className = "turtle-indexb justalign-center">›</div>
             </div>
-            <div className="menu">
-                <div className="frame" >
-                    <div className="frameBlank"></div>
-                    <div className="subFrame" >
-                        <div className="subFrameBlank" ></div>
-                        <div className="menuTitle" >시간 설정</div>
-                        <div className="menuSubtitle">예약 설정</div>
-                    </div>
-                    <div className="frameBlank"></div>    
-                    <div className="rightArrowFrame" >
-                            <div className="rightArrow"></div>
-                    </div>
+            <div className = "nonturtle-underline"></div>
+            <div onClick={GoLog} className = "turtle-button justalign-center">
+                <div className = "turtle-index justalign-center">
+                    <div className = "areah-50">사용 기록</div>
+                    <div className = "areah-50 turtle-buttonc">최근 사용 목록</div>
                 </div>
+                <div className = "turtle-indexb justalign-center">›</div>
+            </div>
+            <div className = "nonturtle-underline"></div>
+            <div onClick={GoSchedule} className = "turtle-button justalign-center">
+                <div className = "turtle-index justalign-center">
+                    <div className = "areah-50">시간 설정</div>
+                    <div className = "areah-50 turtle-buttonc">시간 및 요일 설정</div>
+                </div>
+                <div className = "turtle-indexb justalign-center">›</div>
+            </div>
+            <div className = "nonturtle-underline"></div>
+            <div onClick={handleLogout} className = "turtle-button justalign-center">
+                <div className = "turtle-index justalign-center">
+                    <div className = "areah-50">초기화면으로 돌아가기</div>
+                    <div className = "areah-50 turtle-buttonc">로그아웃</div>
+                </div>
+                <div className = "turtle-indexb justalign-center">›</div>
             </div>
         </div>
     </div>
