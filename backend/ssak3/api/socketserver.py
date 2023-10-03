@@ -4,7 +4,7 @@ from api.sockethandler.ControlHandler import ControlHandler
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from models.tutlebot import turtlebot
+from models.turtlebot import turtlebot
 from db.db import get_db
 
 
@@ -82,7 +82,24 @@ def exist_turtlebot(turtlebot_no : int, db:Session = Depends(get_db)):
     else:
         return False
 
+
+
 # name space 등록
 sio_server.register_namespace(EnvHandler('/env'))
 sio_server.register_namespace(ControlHandler('/control'))
 sio_server.register_namespace(AuthHandler('/auth_turtle'))
+
+# 나중에 보내는 코드도 이동
+async def emit_laundry_start(member_id, op_id, laundry):
+    # 수거해야 할 목록도 보내야 함.
+    # db에서 언제 요청을 해야 하는가? - 요청후 바로
+    print(member_id)
+    print("==")
+    print(op_id)
+    print(laundry)
+
+    # id를 이용해서 해당 터틀봇만 작동하는 코드 추가하기
+
+    # 현재 작동 번호도 같이 보내기
+    obj = {"laundry": laundry, "op_id": op_id}
+    await sio_server.emit("laundry_start", obj)

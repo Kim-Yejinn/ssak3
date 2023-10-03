@@ -12,6 +12,7 @@ class EnvHandler(socketio.AsyncNamespace):
     # 이건 어떻게 사용할 것인가?
     # 계속 실시간으로 변경해줘야 하는가?
     # 아님 요청이 들어왔을때 실행되도록 해야 하는가?
+    # -> 일단 버림
     # format : month(1~12)/day(1~31)/hour(1~12)/minute(0~60)
     async def on_turtlebot_time(self, sid, data):
         print(data['month'])
@@ -28,3 +29,7 @@ class EnvHandler(socketio.AsyncNamespace):
     # format : String ("Sunny", "Cloudy", "Foggu", "Stormy", "Rainy", "Snowy")
     async def on_turtlebot_weather(self, sid, data):
         print(data)
+
+    # emit_weather로 요청이 들어오면 정보를 받아옴
+    async def emit_weather(self):
+        await self.emit("weather")
