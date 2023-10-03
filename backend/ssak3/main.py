@@ -17,7 +17,7 @@ app = FastAPI()
 
 
 # 소켓 연결
-# app.mount("/", app=sio_app)
+app.mount("/socket.io", app=sio_app)
 
 
 # api가 동작할 수 있도록 main에 추가
