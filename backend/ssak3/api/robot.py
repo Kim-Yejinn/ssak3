@@ -4,11 +4,11 @@ from starlette import status
 from datetime import datetime
 from pydantic import BaseModel
 
-
+from models.laundry import laundry
 from models.auth import auth
 from models.turtlebot import turtlebot
 from models.get import get
-
+from models.select import select
 from db.db import get_db
 
 router = APIRouter(prefix="/robot")
@@ -86,4 +86,3 @@ def delete_log(log_id: int, db: Session = Depends(get_db)):
     else:
         raise HTTPException(status_code=404, detail="Log not found")
     db.close()
-

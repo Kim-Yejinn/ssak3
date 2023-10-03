@@ -20,6 +20,8 @@ class ControlHandler(socketio.AsyncNamespace):
     async def on_disconnect(self, sid):
         print("control disconnected")
 
+
+
     # 세탁물 정보 확인
     async def on_result(self, sid, data):
         # 결과가 json으로 들어온다고 가정함
