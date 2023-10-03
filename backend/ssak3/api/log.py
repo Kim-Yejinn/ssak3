@@ -16,6 +16,7 @@ router = APIRouter(prefix="/log")
 
 # 로그안에 세탁물 디테일
 class Detail(BaseModel):
+    idx: int
     name: str
     cnt: int
 
@@ -87,6 +88,7 @@ def getlog(id: str, db: Session = Depends(get_db)):
 
             for select_item in select_items:
                 laundry_item = Detail(
+                    idx=select_item[1].laundry_id,
                     name=select_item[1].laundry_name,
                     cnt=select_item[0].cnt
                 )
