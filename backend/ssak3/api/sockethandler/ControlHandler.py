@@ -7,12 +7,9 @@ from db.db import get_db
 from models.turtlebot import turtlebot
 
 
-
-
 def findUser(num: int, db: Session = Depends(get_db)):
     user = db.query(turtlebot).filter(turtlebot.turtlebot_id == num).first()
     return user
-
 
 
 class ControlHandler(socketio.AsyncNamespace):

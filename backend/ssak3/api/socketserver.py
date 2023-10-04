@@ -17,6 +17,7 @@ sio_app = socketio.ASGIApp(
 )
 
 
+
 # 서버 자체 연결과 관련된 이벤트 처리
 @sio_server.event
 async def connect(sid, environ, auth=None):
