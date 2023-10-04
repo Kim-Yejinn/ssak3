@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 import time
 
-from ssafy_msgs.msg import TurtlebotStatus, HandControl, Detection
+from ssafy_msgs.msg import TurtlebotStatus, HandControl, Detection, LaundryPose
 # from std_msgs.msg import Int16
 
 
@@ -13,7 +13,8 @@ class up_object(Node):
         self.status_sub = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.status_callback,10)
         self.status_pub = self.create_publisher(TurtlebotStatus,'/turtlebot_status',10)
         self.control_pub = self.create_publisher(HandControl, 'hand_control', 10)
-        self.detect_sub = self.create_subscription(Detection, 'laundry_detect', self.detect_callback, 1)
+        # self.detect_sub = self.create_subscription(Detection, 'laundry_detect', self.detect_callback, 1)
+        self.detect_sub = self.create_subscription(LaundryPose, 'laundry_pose', self.detect_callback, 1)
         
         time_period=0.1
         self.timer = self.create_timer(time_period, self.timer_callback)
