@@ -76,8 +76,8 @@ class PointList(Node):
     def socket_callback(self, msg):
         self.laundry_list = []
         # temp_list = msg
-        print(f'소켓 : {msg}')
-        for _ in msg:
+        print(f'소켓 : {msg.laundrylist}')
+        for _ in msg.laundrylist:
             if _ == 1:
                 self.laundry_list.append('shirts')
             elif _ == 2:
@@ -132,19 +132,28 @@ class PointList(Node):
     세탁물 발견 좌표를 퍼블리시 한다.
     '''
     def detect_callback(self, msg):
-        if self.laundry_pose_cnt == 1:
-            if(len(msg.x) != 0):
-                for i in range(len(msg.name)):
-                    if msg.name[i] in self.laundry_list:
-                        # print(f'msg : {msg}')
-                        print(f'msg : {msg.x[i]} y: {msg.y[i]}')
-                        # self.grid_cell_point.insert(0, [msg.x[0], msg.y[0]])
-                        self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = [msg.x[i], msg.y[i]]
-                        self.goal_pub.publish(self.goal_pose_msg) # grid
-                        # self.grid_cell_point.pop(0)
-            self.laundry_pose_cnt = 0
-        else:
-            self.laundry_pose_cnt = 1
+        # if self.laundry_pose_cnt == 1:
+        #     if(len(msg.x) != 0):
+        #         for i in range(len(msg.name)):
+        #             if msg.name[i] in self.laundry_list:
+        #                 # print(f'msg : {msg}')
+        #                 print(f'msg : {msg.x[i]} y: {msg.y[i]}')
+        #                 # self.grid_cell_point.insert(0, [msg.x[0], msg.y[0]])
+        #                 self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = [msg.x[i], msg.y[i]]
+        #                 self.goal_pub.publish(self.goal_pose_msg) # grid
+        #                 # self.grid_cell_point.pop(0)
+        #     self.laundry_pose_cnt = 0
+        # else:
+        #     self.laundry_pose_cnt = 1
+        if(len(msg.x) != 0):
+            for i in range(len(msg.name)):
+                if msg.name[i] in self.laundry_list:
+                    # print(f'msg : {msg}')
+                    print(f'msg : {msg.x[i]} y: {msg.y[i]}')
+                    # self.grid_cell_point.insert(0, [msg.x[0], msg.y[0]])
+                    self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = [msg.x[i], msg.y[i]]
+                    self.goal_pub.publish(self.goal_pose_msg) # grid
+                    # self.grid_cell_point.pop(0)
 
     def odom_callback(self,msg):
         self.is_odom=True
