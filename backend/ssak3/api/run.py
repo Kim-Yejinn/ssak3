@@ -12,7 +12,6 @@ from models.get import get
 from models.laundry import laundry
 from db.db import get_db
 
-
 router = APIRouter(prefix="/run")
 
 class Start(BaseModel):

@@ -4,11 +4,9 @@ from starlette import status
 from datetime import datetime
 from pydantic import BaseModel
 
-
 from models.auth import auth
 from models.turtlebot import turtlebot
 from models.get import get
-
 from db.db import get_db
 
 router = APIRouter(prefix="/robot")
@@ -36,10 +34,8 @@ def robotRegist(robot: robot, db: Session = Depends(get_db)):
     finally:
         db.close()
 
-
 class User(BaseModel):
     id: str
-
 
 @router.get("/exist", status_code=status.HTTP_200_OK)  # 유저에게 등록된 로봇있는지 확인
 def robotExist(id: str, db: Session = Depends(get_db)):
@@ -73,7 +69,6 @@ def registlog(user: User, db: Session = Depends(get_db)):
     db.commit()
     db.close()
 
-
 # 로그 삭제
 @router.delete("/log/{log_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_log(log_id: int, db: Session = Depends(get_db)):
@@ -86,4 +81,3 @@ def delete_log(log_id: int, db: Session = Depends(get_db)):
     else:
         raise HTTPException(status_code=404, detail="Log not found")
     db.close()
-
