@@ -13,6 +13,7 @@ const TurtleBotStarter = () =>{
     <div className="container">
         <div className="nav">
             <div className="starterTitle">터틀봇 제어</div>
+            <div className="back"></div>
         </div>
         <div className="starterContents">
             { isSetting ? 

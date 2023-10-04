@@ -216,9 +216,8 @@
 .addturtle-image{
     width: 50%;
     height: 100%;
-    background-image: url(../../../public/turtlebotImage.png);
     background-size: cover;
-    margin-left: 22%;
+    margin-left: 25%;
 }
 
 .addturtle-title{
@@ -264,6 +263,11 @@
     height: 60%;
 }
 
+.areah-55 {
+    width: 100%;
+    height: 55%;
+}
+
 .areah-50 {
     width: 100%;
     height: 50%;
@@ -298,3 +302,64 @@
     margin-left: 25%;
 }
 
+.nonturtle-button{
+    width: 100%;
+    height: 35%;
+    cursor: pointer;
+}
+
+.nonturtle-index{
+    width: 60%;
+    height: 50%;
+    font-size: 23px;
+    color: #838589;
+}
+
+.nonturtle-indexb{
+    width: 20%;
+    height: 50%;
+    font-size: 40px;
+    color: #838589;
+}
+
+.nonturtle-underline{
+    width: 90%;
+    height: 1%;
+    border-bottom: 2px solid #ededed;
+    margin-left: 5%;
+}
+
+.turtle-button{
+    width: 100%;
+    height: 24%;
+    cursor: pointer;
+}
+.turtle-index{
+    width: 60%;
+    height: 50%;
+    font-size: 20px;
+    color: #000000;
+    flex-direction: column;
+    font-weight: bold;
+}
+.turtle-indexb{
+    width: 20%;
+    height: 50%;
+    font-size: 40px;
+    color: #838589;
+}
+
+.turtle-title{
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    font-size: 30px;
+    margin-bottom: 5%;
+}
+.turtle-buttonc{
+    font-size: 15px;
+    font-weight: normal;
+    color: #838589;
+}

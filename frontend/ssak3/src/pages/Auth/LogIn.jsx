@@ -6,13 +6,11 @@ import { defaultInstance as api } from '../../util/token';
 const Login = () =>{
     const userIdRef = useRef();
     const passwordRef = useRef();
-
     const navigate = useNavigate();
 
     const GoSignUp = () => {
         navigate("/signup");
     };
-
 
     const login = () => {
         api.post("/auth/log-in", {
@@ -29,15 +27,15 @@ const Login = () =>{
             window.alert("아이디나 비밀번호를 확인해주세요.");
        });
     }
+    
     return (
     <div className="container">
         <div className="main">
-            {/* <div className="emptySpace"></div> */}
             <div className="mainImage">
                 <div style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/tuttle.png)`,width:'100%', height: '100%',backgroundSize:'cover'}}></div>
             </div>
             <div className="mainTitle">
-                싹쓰리
+                싹쓸이
             </div>
         </div>
         <div className="formarea" >

@@ -1,109 +1,128 @@
 import React, { useState } from "react";
 import "./ScheduleStyle.css";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { defaultInstance as api } from '../../util/token.jsx';
 
 const AddSchedule = () => {
-    const [hourValue, setHourValue] = useState(12);
-    const [minuteValue, setMinuteValue] = useState(0);
-    const [meridiemValue, setMeridiemValue] = useState('PM');
+    const navigate = useNavigate();
 
-    const [isMon, setIsMon] = useState(false);
-    const [isTue, setIsTue] = useState(false);
-    const [isWed, setIsWed] = useState(false);
-    // const [isMon, setIsMon] = useState(false);
-    // const [isMon, setIsMon] = useState(false);
-    // const [isMon, setIsMon] = useState(false);
-    // const [isMon, setIsMon] = useState(false);
+    const GoMain = () => {
+        navigate("/main");
+    };
+
+    const [hourValue, setHourValue] = useState(12);
+    const [inputTitle, setInputTitle] = useState('');
 
     const formatHour = (value) => {
         return value.toLocaleString(undefined, { minimumIntegerDigits: 2 });
     };
+
+    const handleInputChange = (event) => {
+        setInputTitle(event.target.value);
+    };
+
     const addhour = (e) => {
         e.preventDefault()
-        if (hourValue == 23){
-            setHourValue(1);
+        if (hourValue == 22){
+            setHourValue(0);
         }else{
             setHourValue(hourValue + 2);
         }
     };
     const decreasehour = (e) => {
         e.preventDefault()
-        if (hourValue == 0 || hourValue == 1){
-            setHourValue(23);
+        if (hourValue == 0){
+            setHourValue(22);
         }else{
             setHourValue(hourValue - 2);
         }
     };
 
+    const formdata = {
+        "memberId" : 1,
+	    "laundry" : ["shirts", "pants"],
+	    "time" : hourValue
+    }
+
+    const sendaddschedule = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await api.post("/robot/run", formdata);
+            console.log('등록성공', response);
+            navigate('/main');
+        } catch (error) {
+            console.error(error);
+            alert("오류가 발생했습니다.");
+        }
+    };
+
     return(
-    <>
-        <div style={{position:'absolute',width:'390px', height:'812px'}}>
-            <div style={{width:'100%', height:'20%'}}>
-                <div style={{width:'100%', height:'40%', display:'flex', justifyContent:'center',alignItems:'center'}}>
-                    <div style={{width:'20%', height:'100%', display:'flex', justifyContent:'center',alignItems:'center'}}>‹</div>
-                    <div style={{width:'80%', height:'100%', display:'flex', justifyContent:'center',alignItems:'center'}}>터틀봇 제어</div>
-                    <div style={{width:'20%', height:'100%', display:'flex', justifyContent:'center',alignItems:'center'}}>🏠</div>
+    <div className="main-container">
+        <div className = "areah-20">
+            <div className = "areah-40 justalign-center">
+                <div onClick={GoMain} className = "addtbackbutton">‹</div>
+                <div className = "areaw-80 justalign-center">터틀봇 제어</div>
+                <div className = "areaw-20 justalign-center"></div>
+            </div>
+            <div className = "addttitle">
+                <div>스케줄 추가</div>
+            </div>
+        </div>
+        <div className = "areah-80">
+            <div className = "areah-75">
+                <div className = "areah-25 justalign-center">
+                    <div>
+                        <label for="title">제목</label><br/>
+                        <input type="text" id="title" value={inputTitle} onChange={handleInputChange} placeholder="title" required/>
+                    </div>
                 </div>
-                <div style={{width:'100%', height:'60%', display:'flex', justifyContent:'flex-start',alignItems:'center'}}>
-                    <div style={{marginLeft:'30px'}}>스케줄 추가</div>
+                <div className = "areah-55 justalign-center">
+                    <div>
+                        <div className="timetitle">시간</div><br/>
+                        <div className="timebox">
+                            <div className = "areaw-30">
+                                <div className="addttimea" onClick={decreasehour}>{hourValue == 0 ? 22 : formatHour(hourValue - 2)}</div>
+                                <div className="addttimeb">{formatHour(hourValue)}</div>
+                                <div className="addttimea" onClick={addhour}>{hourValue === 24 ? formatHour(0) : formatHour(hourValue + 2)}</div>
+                            </div>
+                            <div className = "areaw-10">
+                                <div className="addttimea"></div>
+                                <div className="addttimeb">:</div>
+                                <div className="addttimea"></div>
+                            </div>
+                            <div className = "areaw-30">
+                                <div className="addttimea">59</div>
+                                <div className="addttimeb">{formatHour(0)}</div>
+                                <div className="addttimea">{formatHour(1)}</div>
+                            </div>
+                            <div className = "areaw-30">
+                                <div className="addttimea">AM</div>
+                                <div className="addttimeb">PM</div>
+                                <div className="addttimea"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className = "areah-20 justalign-center">
+                    <div>
+                        <div className="daytitle">요일</div><br/>
+                        <div className="daybox">
+                            <div className = "addtdaya">Mon</div>
+                            <div className = "addtdayb">Tue</div>
+                            <div className = "addtdayb">Wed</div>
+                            <div className = "addtdaya">Thu</div>
+                            <div className = "addtdayb">Fri</div>
+                            <div className = "addtdayb">Sat</div>
+                            <div className = "addtdaya">Sun</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <form style={{width:'100%', height:'80%'}}>
-                <div style={{width:'100%', height:'75%'}}>
-                    <div style={{width:'100%', height:'25%', display:'flex', justifyContent:'center',alignItems:'center'}}>
-                        <div>
-                            <label for="title">제목</label><br/>
-                            <input type="text" id="title" name="title" placeholder="title" required/>
-                        </div>
-                    </div>
-                    <div style={{width:'100%', height:'55%', display:'flex', justifyContent:'center',alignItems:'center'}}>
-                        <div>
-                            <div style={{color:'#838589'}}>시간</div><br/>
-                            <div style={{width:'325px', height:'200px',border:'1px solid #ededed',backgroundColor:'#fafafa', borderRadius:'10px', display:'flex', justifyContent:'center',alignItems:'center'}}>
-                                <div style={{width:'30%', height:'100%'}}>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px',color:'#838589'}} onClick={decreasehour}>{hourValue == 0 || hourValue == 1 ? 23 : formatHour(hourValue - 2)}</div>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px'}}>{formatHour(hourValue)}</div>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px',color:'#838589'}} onClick={addhour}>{hourValue === 23 ? formatHour(0) : formatHour(hourValue + 2)}</div>
-                                </div>
-                                <div style={{width:'10%', height:'100%'}}>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px',color:'#838589'}}></div>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px'}}>:</div>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px',color:'#838589'}}></div>
-                                </div>
-                                <div style={{width:'30%', height:'100%'}}>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px',color:'#838589'}}>{formatHour(minuteValue) === formatHour(0) ? 59 : formatHour(minuteValue - 1)}</div>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px'}}>{formatHour(minuteValue)}</div>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px',color:'#838589'}}>{formatHour(minuteValue) === 59 ? formatHour(0) : formatHour(minuteValue + 1)}</div>
-                                </div>
-                                <div style={{width:'30%', height:'100%'}}>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px',color:'#838589'}}>{meridiemValue === 'AM' ? '' : 'AM'}</div>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px'}}>{meridiemValue}</div>
-                                    <div style={{width:'100%', height:'33%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'30px',color:'#838589'}}>{meridiemValue === 'PM' ? '' : 'PM'}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style={{width:'100%', height:'20%', display:'flex', justifyContent:'center',alignItems:'center'}}>
-                        <div>
-                            <div style={{color:'#838589',marginLeft:'20px'}}>요일</div><br/>
-                            <div style={{width:'360px', height:'50px',border:'1px solid #ededed',backgroundColor:'#fafafa', borderRadius:'10px', display:'flex', justifyContent:'space-evenly',alignItems:'center'}}>
-                                <div style={{width:'40px', height:'40px',border:'1px solid #FF9900', borderRadius:'50%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'12px',backgroundColor:'#FF9900',color:'white'}}>Mon</div>
-                                <div style={{width:'40px', height:'40px',border:'1px solid #ededed', borderRadius:'50%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'12px',backgroundColor:'#ededed',color:'#838589'}}>Tue</div>
-                                <div style={{width:'40px', height:'40px',border:'1px solid #ededed', borderRadius:'50%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'12px',backgroundColor:'#ededed',color:'#838589'}}>Wed</div>
-                                <div style={{width:'40px', height:'40px',border:'1px solid #FF9900', borderRadius:'50%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'12px',backgroundColor:'#FF9900',color:'white'}}>Thu</div>
-                                <div style={{width:'40px', height:'40px',border:'1px solid #ededed', borderRadius:'50%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'12px',backgroundColor:'#ededed',color:'#838589'}}>Fri</div>
-                                <div style={{width:'40px', height:'40px',border:'1px solid #ededed', borderRadius:'50%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'12px',backgroundColor:'#ededed',color:'#838589'}}>Sat</div>
-                                <div style={{width:'40px', height:'40px',border:'1px solid #FF9900', borderRadius:'50%', display:'flex', justifyContent:'center',alignItems:'center',fontSize:'12px',backgroundColor:'#FF9900',color:'white'}}>Sun</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style={{width:'100%', height:'25%', display:'flex', justifyContent:'center',alignItems:'center'}}>
-                    <input type="submit" value="스케줄 추가"/>
-                </div>
-            </form>
+            <div className = "areah-25 justalign-center">
+                <div className="addschedulebutton">스케줄 추가</div>
+            </div>
         </div>
-    </>
+    </div>
     );
 };
 

@@ -110,6 +110,8 @@ def timeTransition(hour:int, minute_int: int):
 
     if minute_int < 10:
         minute = f"0{minute_int}"
+    else:
+        minute = f"{minute_int}"
 
     return f"{hour} : {minute} {meridiem}"
 
