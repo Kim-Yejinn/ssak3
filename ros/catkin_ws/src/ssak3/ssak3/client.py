@@ -109,9 +109,14 @@ class socketSub(Node):
         global connected
         global operateNo
         global turtlebotNo
+<<<<<<< HEAD
 
         if sio and connected:
             obj = {"turtlebotNo":turtlebotNo, "result" : msg.result_list}
+=======
+        if sio and connected:
+            obj = {"turtlebotNo":turtlebotNo, "operateNo":operateNo, "result_cnt":msg.data}
+>>>>>>> 2037c06302e5a5898da7a84026b18def5fdbb941
             await sio.emit('result', obj, namespace = '/control')
             
 
