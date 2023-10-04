@@ -1,5 +1,3 @@
-import socketserver
-
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -14,8 +12,7 @@ from models.get import get
 from models.laundry import laundry
 from db.db import get_db
 
-# from api.sockethandler.ControlHandler import ControlHandler
-from api.socketserver import emit_laundry_start
+
 router = APIRouter(prefix="/run")
 
 class Start(BaseModel):
@@ -79,6 +76,7 @@ async def registrun(start: Start, db: Session = Depends(get_db)):
         # get_id -> 나중에 완료 후 업데이트 해주기 위한 것
         # start.laundryList -> 수거할 빨래들
         print(start.laundryList)
+        from api.socketserver import emit_laundry_start
         await emit_laundry_start(start.id, get_id, start.laundryList)
 
     except Exception as e:

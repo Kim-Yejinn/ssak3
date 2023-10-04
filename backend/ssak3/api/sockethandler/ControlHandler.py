@@ -2,29 +2,17 @@ import socketio
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from datetime import datetime
-
 from db.db import get_db
 
-from models.get import get
+from models.turtlebot import turtlebot
 
 
-def updatelog(operate_no: str, result_cnt: str, db: Session = Depends(get_db())):
-    # 애초에 작업을 시킬때 수거 번호를 저장하고 있으면 안되는 건가?
-    last_item = db.query(get).filter(operate_no == get.get_id).first()
-    last_item.laundry_cnt = result_cnt
-
-    current_time = datetime.now()
-    formatted_time = current_time.strftime('%Y-%m-%d %H:%M:%S')
-
-    last_item.end_time = formatted_time
-    # # 업데이트 한다
-    db.commit()
-    db.close()
+def findUser(num: int, db: Session = Depends(get_db)):
+    user = db.query(turtlebot).filter(turtlebot.turtlebot_id == num).first()
+    return user
 
 
 class ControlHandler(socketio.AsyncNamespace):
-
 
     async def on_connect(self, sid, environ):
         print("control connected")
@@ -35,25 +23,24 @@ class ControlHandler(socketio.AsyncNamespace):
     # 세탁물 정보 확인
     async def on_result(self, sid, data):
         # 결과가 json으로 들어온다고 가정함
+        from api.run import updaterun
+        from api.run import Ros
+        from api.run import End
+        # 총 개수와 터틀봇 번호로 들어왔다면 (String으로)
+        turtlebot_no = data['turtlebot_no']
 
-        # 총 개수와 작동 번호로 들어왔다면 (String으로)
-        result_cnt = data['result']
-        turtlebot_no = data['operateNo']
-        # 값을 업데이트 해주고
-        # updatelog(turtlebot_no, result_cnt)
-        updatelog(turtlebot_no, "1")
+        # ros 응답 형태 확인 후 수정해야 함.
+        # ros에는 name : cnt 형태로 보내야 할듯
 
-    # 세탁 시작
-    # def emit_laundry_start(self, member_id, op_id, laundry= None):
-    #     # 수거해야 할 목록도 보내야 함.
-    #     # db에서 언제 요청을 해야 하는가? - 요청후 바로
-    #     print(member_id)
-    #     print("==")
-    #     print(op_id)
-    #     print(laundry)
-    #
-    #     # id를 이용해서 해당 터틀봇만 작동하는 코드 추가하기
-    #
-    #     # 현재 작동 번호도 같이 보내기
-    #     obj = {"laundry": laundry, "op_id": op_id}
-    #     self.emit("laundry_start", obj)
+        user = findUser(turtlebot_no)
+
+        if (user):
+            end = End()
+            end.get_id = sid
+            end.id = user
+
+            # 응답 확인 후 수정
+            end.laundries.append(Ros('skirts', data['skirts']))
+            end.laundries.append(Ros('pants', data['pants']))
+
+            updaterun(end)
