@@ -32,7 +32,6 @@ const Login = () =>{
     <div className="container">
         <div className="main">
             <div className="mainImage">
-                <div style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/tuttle.png)`,width:'100%', height: '100%',backgroundSize:'cover'}}></div>
             </div>
             <div className="mainTitle">
                 싹쓸이

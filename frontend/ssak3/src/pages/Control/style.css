@@ -273,11 +273,11 @@
 /* Start btn */
 .startBtn{
     position: absolute;
-    width: 337px;
-    height: 50px;
-    left: 28px;
-    top: 786px;
-
+    width: 90vw;
+    height: 7vh;
+    left: 5vw;
+    top: 120vh;
+    cursor: pointer;
     color: white;
     background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
     border-radius: 10px;
@@ -288,10 +288,10 @@
 }
 .addBtn{
     position: absolute;
-    width: 100%;
-    height: 50px;
+    width: 90vw;
+    height: 7vh;
     
-    top: 756px;
+    top: 100vh;
     color: white;
     background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
     border-radius: 10px;
@@ -466,7 +466,7 @@
     position: relative;
     width: 90%;
     left: 5%;
-    top: 70px;
+    /* top: 70px; */
     margin-bottom: 20px;
     height: 140px;
     border: 2px solid rgba(28, 29, 34, 0.08);
@@ -723,3 +723,33 @@
     cursor: pointer;
     border-radius: 5px;
   }
+
+  
+.addtbackbutton {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    cursor: pointer;
+}
+.areah-10 {
+    width: 100%;
+    height: 10%;
+}
+.areaw-20 {
+    width: 20%;
+    height: 100%;
+}
+
+.areaw-80 {
+    width: 80%;
+    height: 100%;
+}
+
+.justalign-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

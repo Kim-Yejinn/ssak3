@@ -39,7 +39,9 @@ const AddTuttle = () => {
             <div className = "areah-60">
                 <div className = "addturtle-title">기기 등록</div>
                 <div className = "areah-45">
-                    <div className = "addturtle-image"></div>
+                    <div className = "addturtle-image">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Turtle.png" alt="Turtle" width="100%" height="100%" />
+                    </div>
                 </div>
                 <div className = "areah-30">
                     <div className = "areah-50 justalign-center">↑</div>
