@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 
 const DetailSchedule = () => {
-    const url = "http://j9b201.p.ssafy.io:8081/schedule/";
+    const url = "https://j9b201.p.ssafy.io/api/schedule/";
 
     const navigate = useNavigate();
 

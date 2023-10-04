@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import "./ScheduleStyle.css";
+import { defaultInstance as api } from '../../util/token';
 
 const Scheduler = () => {
-    const url = "http://j9b201.p.ssafy.io:8081/schedule";
+    const url = "https://j9b201.p.ssafy.io/api/schedule";
 
     const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ const Scheduler = () => {
         getSchedule();
     },[]);
 
-    const getSchedule = () => {
+    const getSchedule = async () => {
         axios.get(url+"?auth_id="+localStorage.getItem("userId"))
         .then(response => {
             console.log(response);

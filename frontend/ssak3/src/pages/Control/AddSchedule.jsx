@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const AddSchedule = () => {
-    const url = "http://j9b201.p.ssafy.io:8081/schedule";
+    const url = "https://j9b201.p.ssafy.io/api/schedule";
     const navigate = useNavigate();
 
     const GoSchedule = () => {
@@ -78,7 +78,7 @@ const AddSchedule = () => {
         "date": [0,1,2,3,4,5,6]
     }
 
-    const sendaddschedule = async (event) => {
+    const sendaddschedule = (event) => {
         event.preventDefault();
         axios.post(url, formdata)
         .then(response => {
