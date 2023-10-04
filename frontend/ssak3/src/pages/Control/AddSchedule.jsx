@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./ScheduleStyle.css";
 import { useNavigate } from "react-router-dom";
-import { defaultInstance as api } from '../../util/token.jsx';
+import axios from 'axios';
 
 const AddSchedule = () => {
     const navigate = useNavigate();
@@ -10,7 +10,11 @@ const AddSchedule = () => {
         navigate("/schedule");
     };
 
-    const [hourValue, setHourValue] = useState(12);
+    const [hourValue, setHourValue] = useState(6);
+    const [minValue, setMinValue] = useState(30);
+    const [meridiemValue, setMeridiemValue] = useState("AM");
+
+
     const [inputTitle, setInputTitle] = useState('');
 
     const formatHour = (value) => {
@@ -23,37 +27,67 @@ const AddSchedule = () => {
 
     const addhour = (e) => {
         e.preventDefault()
-        if (hourValue == 22){
-            setHourValue(0);
+        if (hourValue == 12){
+            setHourValue(1);
         }else{
-            setHourValue(hourValue + 2);
+            setHourValue(hourValue + 1);
         }
     };
     const decreasehour = (e) => {
         e.preventDefault()
-        if (hourValue == 0){
-            setHourValue(22);
+        if (hourValue == 1){
+            setHourValue(12);
         }else{
-            setHourValue(hourValue - 2);
+            setHourValue(hourValue - 1);
+        }
+    };
+
+    const addmin = (e) => {
+        e.preventDefault()
+        if (minValue == 59){
+            setMinValue(0);
+        }else{
+            setMinValue(minValue + 1);
+        }
+    };
+    const decreasemin = (e) => {
+        e.preventDefault()
+        if (minValue == 0){
+            setMinValue(59);
+        }else{
+            setMinValue(minValue - 1);
+        }
+    };
+
+    const changemeridium = (e) => {
+        e.preventDefault()
+        if (meridiemValue === "AM"){
+            setMeridiemValue("PM");
+        }else{
+            setMeridiemValue("AM");
         }
     };
 
     const formdata = {
-        "memberId" : 1,
-	    "laundry" : ["shirts", "pants"],
-	    "time" : hourValue
+        "auth_id": localStorage.getItem("userId"),
+        "title": inputTitle,
+        "meridiem": meridiemValue,
+        "hour": hourValue,
+        "minute": minValue,
+        "date": [0,1,2,3,4,5,6]
     }
 
     const sendaddschedule = async (event) => {
         event.preventDefault();
-        try {
-            const response = await api.post("/robot/run", formdata);
+        axios.post('http://j9b201.p.ssafy.io:8081/schedule', formdata)
+        .then(response => {
             console.log('등록성공', response);
-            navigate('/main');
-        } catch (error) {
+            GoSchedule();
+        })
+        .catch(error => {
             console.error(error);
             alert("오류가 발생했습니다.");
-        }
+        });
     };
 
     return(
@@ -81,9 +115,9 @@ const AddSchedule = () => {
                         <div className="timetitle">시간</div><br/>
                         <div className="timebox">
                             <div className = "areaw-30">
-                                <div className="addttimea" onClick={decreasehour}>{hourValue == 0 ? 22 : formatHour(hourValue - 2)}</div>
+                                <div className="addttimea" onClick={decreasehour}>{hourValue == 1 ? 12 : formatHour(hourValue - 1)}</div>
                                 <div className="addttimeb">{formatHour(hourValue)}</div>
-                                <div className="addttimea" onClick={addhour}>{hourValue === 24 ? formatHour(0) : formatHour(hourValue + 2)}</div>
+                                <div className="addttimea" onClick={addhour}>{hourValue === 12 ? formatHour(1) : formatHour(hourValue + 1)}</div>
                             </div>
                             <div className = "areaw-10">
                                 <div className="addttimea"></div>
@@ -91,14 +125,14 @@ const AddSchedule = () => {
                                 <div className="addttimea"></div>
                             </div>
                             <div className = "areaw-30">
-                                <div className="addttimea">59</div>
-                                <div className="addttimeb">{formatHour(0)}</div>
-                                <div className="addttimea">{formatHour(1)}</div>
+                                <div className="addttimea" onClick={decreasemin}>{minValue == 0 ? 59 : formatHour(minValue - 1)}</div>
+                                <div className="addttimeb">{formatHour(minValue)}</div>
+                                <div className="addttimea" onClick={addmin}>{minValue === 59 ? formatHour(0) : formatHour(minValue + 1)}</div>
                             </div>
                             <div className = "areaw-30">
-                                <div className="addttimea">AM</div>
-                                <div className="addttimeb">PM</div>
-                                <div className="addttimea"></div>
+                                <div onClick={changemeridium} className="addttimea">{meridiemValue === "PM" ? "AM" : " " }</div>
+                                <div className="addttimeb">{meridiemValue}</div>
+                                <div onClick={changemeridium} className="addttimea">{meridiemValue === "AM" ? "PM" : " " }</div>
                             </div>
                         </div>
                     </div>
@@ -108,18 +142,18 @@ const AddSchedule = () => {
                         <div className="daytitle">요일</div><br/>
                         <div className="daybox">
                             <div className = "addtdaya">Mon</div>
-                            <div className = "addtdayb">Tue</div>
-                            <div className = "addtdayb">Wed</div>
+                            <div className = "addtdaya">Tue</div>
+                            <div className = "addtdaya">Wed</div>
                             <div className = "addtdaya">Thu</div>
-                            <div className = "addtdayb">Fri</div>
-                            <div className = "addtdayb">Sat</div>
+                            <div className = "addtdaya">Fri</div>
+                            <div className = "addtdaya">Sat</div>
                             <div className = "addtdaya">Sun</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div className = "areah-25 justalign-center">
-                <div className="addschedulebutton">등록</div>
+                <div onClick={sendaddschedule} className="addschedulebutton">등록</div>
             </div>
         </div>
     </div>

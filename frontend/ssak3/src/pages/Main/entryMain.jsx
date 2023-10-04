@@ -61,7 +61,7 @@ const EntryMain = ( ) =>{
                 <div className = "turtle-indexb justalign-center">›</div>
             </div>
             <div className = "nonturtle-underline"></div>
-            <div onClick={handleLogout} className = "turtle-button justalign-center">
+            <div onClick={handleLogout} className = "turtle-button justalign-center" style={{color:'red'}}>
                 <div className = "turtle-index justalign-center">
                     <div className = "areah-50">초기화면으로 돌아가기</div>
                     <div className = "areah-50 turtle-buttonc">로그아웃</div>

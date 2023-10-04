@@ -1,19 +1,25 @@
 import React, {useState} from "react";
 import Controller from "./controller.jsx";
-import Scheduler from "./scheduler.jsx";
-import styles from "./style.css";
+import { useNavigate } from "react-router-dom";
+import "./style.css";
 
 const TurtleBotStarter = () =>{
     // 초기 상태
+    const navigate = useNavigate();
+
+    const GoMain = () => {
+        navigate("/main");
+    };
     const [isSetting, setIsSetting] = useState(true);
     const toggleIsSetting = () => {
         setIsSetting(!isSetting);
     };
     return ( 
     <div className="container">
-        <div className="nav">
-            <div className="starterTitle">터틀봇 제어</div>
-            <div className="back"></div>
+        <div className = "areah-10 justalign-center">
+                <div onClick={GoMain} className = "addtbackbutton">‹</div>
+                <div className = "areaw-80 justalign-center">터틀봇 제어</div>
+                <div className = "areaw-20 justalign-center"></div>
         </div>
         <div className="starterContents">
             <div>

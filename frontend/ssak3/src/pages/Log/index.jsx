@@ -32,7 +32,7 @@ const TurtleBotLog = () =>{
         <div className="container">
             <div className = "areah-10 justalign-center">
                 <div onClick={GoMain} className = "addtbackbutton">‹</div>
-                <div className = "areaw-80 justalign-center">터틀봇 로그</div>
+                <div className = "areaw-80 justalign-center">사용 기록</div>
                 <div className = "areaw-20 justalign-center"></div>
             </div>
             {
@@ -43,7 +43,7 @@ const TurtleBotLog = () =>{
                     :    
                     <div className="logContainer">
                         <div className="logCount">빨래 기록 ({log.length})</div>
-                        <div className="timeSort">Ⅴ 시간순</div>
+                        <div className="timeSort">시간순</div>
                         {/* <div className="timeSort">
                             <select value={selectedTime} onChange={handleSelectChange}>
                                 <option value="">시간을 선택하세요</option>
