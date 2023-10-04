@@ -4,6 +4,8 @@ import axios from 'axios';
 import "./ScheduleStyle.css";
 
 const Scheduler = () => {
+    const url = "http://j9b201.p.ssafy.io:8081/schedule";
+
     const navigate = useNavigate();
 
     const GoMain = () => {
@@ -26,7 +28,7 @@ const Scheduler = () => {
     },[]);
 
     const getSchedule = () => {
-        axios.get("http://j9b201.p.ssafy.io:8081/schedule?auth_id="+localStorage.getItem("userId"))
+        axios.get(url+"?auth_id="+localStorage.getItem("userId"))
         .then(response => {
             console.log(response);
             setSchedule(response.data);
