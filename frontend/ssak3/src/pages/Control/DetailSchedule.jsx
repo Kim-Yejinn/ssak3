@@ -4,6 +4,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 
 const DetailSchedule = () => {
+    let dates = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const [frames, setFrames] = useState([false, false, false, false, false, false, false]);
+
     const url = "https://j9b201.p.ssafy.io/api/schedule/";
 
     const navigate = useNavigate();
@@ -27,18 +30,29 @@ const DetailSchedule = () => {
     const getSchedule = () => {
         axios.get(url+schedule_id+"?auth_id="+localStorage.getItem("userId"))
         .then(response => {
+            const setting = [false, false, false, false, false, false, false];
             console.log(response);
             console.log(response.data);
             setHourValue(response.data.hour);
             setMinValue(response.data.minute);
             setMeridiemValue(response.data.meridiem);
             setInputTitle(response.data.title);
+            for(let i=0; i<response.data.date.length; i++) {
+                let index = response.data.date[i];
+                setting[index] = true;
+            }
+            setFrames(setting);
         })
         .catch(error => {
             window.alert("로그를 불러오는 중 문제가 발생했습니다.");
             console.error(error);
         });
     };
+    const dateSetter = (index) => {
+        const updatedFrames = [...frames];
+        updatedFrames[index] = !updatedFrames[index];
+        setFrames(updatedFrames)
+    }
 
 
     const formatHour = (value) => {
@@ -92,18 +106,21 @@ const DetailSchedule = () => {
         }
     };
 
-    const formdata = {
-        "auth_id": localStorage.getItem("userId"),
-        "title": inputTitle,
-        "meridiem": meridiemValue,
-        "hour": hourValue,
-        "minute": minValue,
-        "date": [0,1,2,3,4,5,6]
-    }
-
     const sendpatchschedule = async (event) => {
+        let list = [];
+        for (let i=0; i<7; i++) 
+            if(frames[i]) list.push(i);
+
+        console.log(list);
         event.preventDefault();
-        axios.patch(url+schedule_id, formdata)
+        axios.patch(url+schedule_id, {
+            "auth_id": localStorage.getItem("userId"),
+            "title": inputTitle,
+            "meridiem": meridiemValue,
+            "hour": hourValue,
+            "minute": minValue,
+            "date": list
+        })
         .then(response => {
             console.log('수정성공', response);
             GoSchedule();
@@ -178,13 +195,18 @@ const DetailSchedule = () => {
                     <div>
                         <div className="daytitle">요일</div><br/>
                         <div className="daybox">
-                            <div className = "addtdaya">Mon</div>
-                            <div className = "addtdaya">Tue</div>
-                            <div className = "addtdaya">Wed</div>
-                            <div className = "addtdaya">Thu</div>
-                            <div className = "addtdaya">Fri</div>
-                            <div className = "addtdaya">Sat</div>
-                            <div className = "addtdaya">Sun</div>
+                        {
+                            frames.map((item,index) => (
+                                    item ?
+                                    <div className="addtdaya" key={index} onClick={() => dateSetter(index)}>
+                                        {dates[index]}
+                                    </div>
+                                    :
+                                    <div className="addtdayb" key={index} onClick={() => dateSetter(index)}>
+                                        {dates[index]}    
+                                    </div>
+                            ))
+                        }
                         </div>
                     </div>
                 </div>
