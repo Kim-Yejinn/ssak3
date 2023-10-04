@@ -42,8 +42,8 @@ class loadMap(Node):
         self.map_size_x=350 
         self.map_size_y=350
         self.map_resolution=0.05
-        self.map_offset_x=-8-8.75-3.58
-        self.map_offset_y=-4-8.75
+        self.map_offset_x=-8-8.75+3.57996-3.526982
+        self.map_offset_y=-4-8.75+14.09928-0.1
         self.map_data = [0 for i in range(self.map_size_x*self.map_size_y)]
         
         # 2차원 행렬로 만드는 과정인 것 같다.
@@ -70,10 +70,14 @@ class loadMap(Node):
         '''
         로직 2. 맵 데이터 읽고, 2차원 행렬로 변환
         '''
-        pkg_path = os.getcwd()
-        folder_name = 'map'
-        file_name = 'map.txt'
-        full_path = os.path.join(pkg_path, folder_name, file_name)
+        # pkg_path = os.getcwd()
+        # folder_name = 'map'
+        # file_name = 'map.txt'
+        # full_path = os.path.join(pkg_path, folder_name, file_name)
+
+        os_file_path = os.path.abspath(__file__)
+        full_path = os_file_path.replace('install\\ssak3\\Lib\\site-packages\\ssak3\\load_map.py', 
+                                            'src\\ssak3\\map\\map.txt')
 
         self.f = open(full_path, 'r')
 

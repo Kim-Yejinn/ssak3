@@ -17,11 +17,11 @@ params_cam_0 = {
     "localPort": 1232,
     "Block_SIZE": int(65535),
     "UnitBlock_HEIGHT": int(30),
-    "X": 1.7, # meter
+    "X": 0, # meter
     "Y": 0,
-    "Z": 1.2,
+    "Z": 0.8,
     "YAW": 0, # deg
-    "PITCH": -5,
+    "PITCH": 40,
     "ROLL": 0
 }
 
