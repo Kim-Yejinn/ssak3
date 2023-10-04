@@ -21,6 +21,7 @@ class EnvHandler(socketio.AsyncNamespace):
         print(data['minute'])
     # 온도 정보
     # format : String (0~100)
+
     async def on_turtlebot_temp(self, sid, data):
         print(data)
 
