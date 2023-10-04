@@ -162,13 +162,13 @@ def getScheduleDetail(auth_id:str, schedule_id: int, db:Session = Depends(get_db
 
     schedule_item = db.query(schedule).filter(schedule.schedule_id == schedule_id).first()
 
-    if schedule_item.auth_id != exist_user.auth_id:
-        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
-                            detail="권한이 없습니다.")
-
     if not schedule_item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="스케줄 내역이 없습니다.")
+
+    if schedule_item.auth_id != exist_user.auth_id:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                            detail="권한이 없습니다.")
 
     # 24시 12시로
     hour = schedule_item.hour
@@ -204,3 +204,91 @@ def getScheduleDetail(auth_id:str, schedule_id: int, db:Session = Depends(get_db
     return response
 
 # 스케줄 삭제
+@router.delete("/{schedule_id}", status_code=status.HTTP_200_OK)
+def deleteSchedule(auth_id: str, schedule_id: int, db: Session = Depends(get_db)):
+    # 유저확인
+    exist_user = db.query(auth).filter(auth.id == auth_id).first()
+    if not (exist_user):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="존재하지 않는 사용자 입니다.")
+
+    schedule_item = db.query(schedule).filter(schedule.schedule_id == schedule_id).first()
+
+    if not schedule_item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="스케줄 내역이 없습니다.")
+
+    if schedule_item.auth_id != exist_user.auth_id:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                            detail="권한이 없습니다.")
+
+    try:
+        db.delete(schedule_item)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail=f"Database error: {str(e)}")
+    finally:
+        db.close()
+
+class Update(BaseModel):
+    auth_id: str
+    title: str
+    meridiem: str
+    hour: int
+    minute: int
+    date: List[int]
+
+# 스케줄 수정
+@router.patch("/{schedule_id}", status_code=status.HTTP_200_OK)
+def updateSchedule(update: Update, schedule_id:int, db: Session = Depends(get_db)):
+    # 유저확인
+    exist_user = db.query(auth).filter(auth.id == update.auth_id).first()
+    if not (exist_user):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="존재하지 않는 사용자 입니다.")
+
+    schedule_item = db.query(schedule).filter(schedule.schedule_id == schedule_id).first()
+
+    if not schedule_item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="스케줄 내역이 없습니다.")
+
+    if schedule_item.auth_id != exist_user.auth_id:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                            detail="수정 권한이 없습니다.")
+
+    try:
+        current_time = datetime.now()
+        formatted_time = current_time.strftime('%Y-%m-%d %H:%M:%S')
+        # 설정 날짜 포맷팅
+        schedule_date = ""
+
+        for day in update.date:
+            schedule_date += f"{day}"
+
+        if update.meridiem == "PM":
+            if update.hour != 12:
+                update.hour += 12
+        elif update.hour == 12:
+            update.hour -= 12
+
+        # 저장
+        schedule_item.title = update.title
+        schedule_item.created_at = formatted_time
+        schedule_item.hour = update.hour
+        schedule_item.minute = update.minute
+        schedule_item.date = schedule_date
+
+        db.commit()
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail=f"Database error: {str(e)}")
+
+    finally:
+        db.close()
+
+
