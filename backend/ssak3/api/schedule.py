@@ -15,11 +15,12 @@ router = APIRouter(prefix="/schedule")
 class Info(BaseModel):
     auth_id: str
     title: Optional[str] = "alarm"
-    meridiem: str
+    meridiem: int
     hour: int
     minute: int
     date: Optional[List[int]] = [0, 1, 2, 3, 4, 5, 6]
     # 0: 월, 1: 화, 2: 수, 3: 목, 4: 금, 5: 토, 6: 일
+    # meridiem = 0: 'AM', 1: 'PM'
 
 # 스케줄 등록
 @router.post("/", status_code=status.HTTP_200_OK)
@@ -40,7 +41,7 @@ def registSchedule(info: Info, db: Session = Depends(get_db)):
         for day in info.date:
             schedule_date += f"{day}"
 
-        if info.meridiem == "PM":
+        if info.meridiem == 1:
             if info.hour != 12:
                 info.hour += 12
         elif info.hour == 12:
@@ -235,7 +236,7 @@ def deleteSchedule(auth_id: str, schedule_id: int, db: Session = Depends(get_db)
 class Update(BaseModel):
     auth_id: str
     title: str
-    meridiem: str
+    meridiem: int
     hour: int
     minute: int
     date: List[int]
@@ -268,7 +269,7 @@ def updateSchedule(update: Update, schedule_id:int, db: Session = Depends(get_db
         for day in update.date:
             schedule_date += f"{day}"
 
-        if update.meridiem == "PM":
+        if update.meridiem == 1:
             if update.hour != 12:
                 update.hour += 12
         elif update.hour == 12:
