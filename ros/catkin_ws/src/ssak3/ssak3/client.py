@@ -106,8 +106,9 @@ class socketSub(Node):
         global sio
         global connected
         global operateNo
+        global turtlebotNo
         if sio and connected:
-            obj = {"operateNo":operateNo, "result_cnt":msg}
+            obj = {"turtlebotNo":turtlebotNo, "operateNo":operateNo, "result_cnt":msg.data}
             await sio.emit('result', obj, namespace = '/control')
             
 
@@ -170,7 +171,7 @@ async def client():
 
 
     # 서버 연결 -> 백 올린뒤 확인 필요
-    # auth_url = 'https://j9b201.p.ssafy.io/api/'
+    # auth_url = 'https://j9b201.p.ssafy.io/socketio'
     auth_url = 'http://127.0.0.1:8000/socketio'
     await sio.connect(auth_url, namespaces =['/', '/auth_turtle', '/env', '/control'])
 
