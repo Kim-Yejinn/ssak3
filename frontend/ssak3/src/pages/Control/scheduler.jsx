@@ -14,6 +14,11 @@ const Scheduler = () => {
         navigate("/addschedule");
     };
 
+    const GoDetail = (event, value) => {
+        event.preventDefault();
+        navigate("/detailschedule", { state: { schedule_id: value } });
+    };
+
     const [schedule, setSchedule] = useState([]);
 
     useEffect(()=>{
@@ -61,7 +66,7 @@ const Scheduler = () => {
                             <div className="scheduleBoxTime">{item.time}</div>
                             <div className="scheduleBoxDayImage"></div>
                             <div className="scheduleBoxDay">{item.day}</div>
-                            <div className="scheduleBoxDetail"></div>
+                            <div className="scheduleBoxDetail" onClick={(event) => GoDetail(event, item.id)}></div>
                         </div>
                     ))}
                 </div>

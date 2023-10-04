@@ -1,21 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ScheduleStyle.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 
-const AddSchedule = () => {
+const DetailSchedule = () => {
     const navigate = useNavigate();
 
     const GoSchedule = () => {
         navigate("/schedule");
     };
 
+    const location = useLocation();
+    const schedule_id = location.state.schedule_id;
+    
     const [hourValue, setHourValue] = useState(1);
     const [minValue, setMinValue] = useState(0);
     const [meridiemValue, setMeridiemValue] = useState(0);
-
-
     const [inputTitle, setInputTitle] = useState('');
+    
+    useEffect(()=>{
+        getSchedule();
+    },[]);
+
+    const getSchedule = () => {
+        axios.get("http://j9b201.p.ssafy.io:8081/schedule/"+schedule_id+"?auth_id="+localStorage.getItem("userId"))
+        .then(response => {
+            console.log(response);
+            console.log(response.data);
+            setHourValue(response.data.hour);
+            setMinValue(response.data.minute);
+            setMeridiemValue(response.data.meridiem);
+            setInputTitle(response.data.title);
+        })
+        .catch(error => {
+            window.alert("로그를 불러오는 중 문제가 발생했습니다.");
+            console.error(error);
+        });
+    };
+
 
     const formatHour = (value) => {
         return value.toLocaleString(undefined, { minimumIntegerDigits: 2 });
@@ -77,11 +99,24 @@ const AddSchedule = () => {
         "date": [0,1,2,3,4,5,6]
     }
 
-    const sendaddschedule = async (event) => {
+    const sendpatchschedule = async (event) => {
         event.preventDefault();
-        axios.post('http://j9b201.p.ssafy.io:8081/schedule', formdata)
+        axios.patch("http://j9b201.p.ssafy.io:8081/schedule/"+schedule_id, formdata)
         .then(response => {
-            console.log('등록성공', response);
+            console.log('수정성공', response);
+            GoSchedule();
+        })
+        .catch(error => {
+            console.error(error);
+            alert("오류가 발생했습니다.");
+        });
+    };
+
+    const senddeleteschedule = async (event) => {
+        event.preventDefault();
+        axios.delete("http://j9b201.p.ssafy.io:8081/schedule/"+schedule_id+"?auth_id="+localStorage.getItem("userId"))
+        .then(response => {
+            console.log('삭제성공', response);
             GoSchedule();
         })
         .catch(error => {
@@ -99,7 +134,7 @@ const AddSchedule = () => {
                 <div className = "areaw-20 justalign-center"></div>
             </div>
             <div className = "addttitle">
-                <div>스케줄 추가</div>
+                <div>스케줄 수정</div>
             </div>
         </div>
         <div className = "areah-80">
@@ -153,11 +188,12 @@ const AddSchedule = () => {
                 </div>
             </div>
             <div className = "areah-25 justalign-center">
-                <div onClick={sendaddschedule} className="addschedulebutton">등록</div>
+                <div onClick={sendpatchschedule} className="patchschedulebutton">수정</div>
+                <div onClick={senddeleteschedule} className="delschedulebutton">삭제</div>
             </div>
         </div>
     </div>
     );
 };
 
-export default AddSchedule;
+export default DetailSchedule;
