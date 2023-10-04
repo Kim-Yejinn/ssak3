@@ -1,5 +1,7 @@
 import socketio
 import asyncio
+import ssl
+import aiohttp
 
 import rclpy
 from rclpy.node import Node
@@ -23,6 +25,8 @@ sendDay = False
 laundry_list_msg = LaundryList()
 laundry_send = False
 
+
+
 class socketSub(Node):
 
     def __init__(self):
@@ -41,7 +45,6 @@ class socketSub(Node):
     def timer_callback(self):
         global laundry_send
         global laundry_list_msg
-        print(laundry_send)
         if laundry_send :
             self.socket_start_pub.publish(laundry_list_msg)
             laundry_send =False
@@ -120,11 +123,19 @@ async def client():
     global sio
     global connected
     global turtlebotNo
+    certfile_path = 'C:/Users/SSAFY/Desktop/cert.pem'
     # 클라이언트 소켓 생성
-    sio = socketio.AsyncClient()
+    # sio = socketio.AsyncClient(ssl_verify=certfile_path)
+    # sio = socketio.AsyncClient()
     # 테스트 값
     print("start")
     
+    ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+    ssl_context.load_cert_chain('C:/Users/SSAFY/Desktop/cert.pem',
+                                'C:/Users/SSAFY/Desktop/privkey.pem')
+    connector = aiohttp.TCPConnector(ssl=ssl_context)
+    http_session = aiohttp.ClientSession(connector=connector)
+    sio = socketio.AsyncClient(http_session=http_session)
 
     # 연결
     @sio.event
@@ -173,10 +184,11 @@ async def client():
 
 
     # 서버 연결 -> 백 올린뒤 확인 필요
-    # auth_url = 'https://j9b201.p.ssafy.io/socketio'
-    auth_url = 'http://127.0.0.1:8000/socketio'
-    await sio.connect(auth_url, namespaces =['/', '/auth_turtle', '/env', '/control'])
-
+    # await sio.connect('https://example.com')
+    auth_url = 'https://j9b201.p.ssafy.io/api'
+    # auth_url = 'http://127.0.0.1:8000/api/socket.io'
+    await sio.connect(auth_url, socketio_path="/api/socket.io", namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
+    print("connect")
     while not connected:
         await asyncio.sleep(0.1)
 
