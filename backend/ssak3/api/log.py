@@ -42,7 +42,7 @@ class LogList(BaseModel):
     log_in_progress: Optional[LogInProgress] = None
     log: List[Log]
 
-@router.get("/", status_code=status.HTTP_200_OK)
+@router.get("", status_code=status.HTTP_200_OK)
 def getlog(id: str, db: Session = Depends(get_db)):
 
     # 변수 초기화 ( 예상시간 )

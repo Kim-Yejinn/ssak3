@@ -19,7 +19,7 @@ class Info(BaseModel):
 
  # 사용자 찜 등록
  # 프론트에서 찜 등록 안되있으면 포스트로 보내서 등록
-@router.post("/", status_code=status.HTTP_200_OK)
+@router.post("", status_code=status.HTTP_200_OK)
 def registdib(info: Info, db: Session = Depends(get_db)):
 
 
@@ -76,7 +76,7 @@ def deletedib(user_id:str, laundry_id:int, db:Session = Depends(get_db)):
 
 # 찜 목록 전체불러오기
 # 주행페이지 이동시 찜되어있는건 프론트에서 ON 해놓기
-@router.get("/", status_code=status.HTTP_200_OK)
+@router.get("", status_code=status.HTTP_200_OK)
 def getdibs(id: str, db:Session = Depends(get_db)):
 
     exist_user = db.query(auth).filter(auth.id == id).first()

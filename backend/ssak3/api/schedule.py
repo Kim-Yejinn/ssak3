@@ -23,7 +23,7 @@ class Info(BaseModel):
     # meridiem = 0: 'AM', 1: 'PM'
 
 # 스케줄 등록
-@router.post("/", status_code=status.HTTP_200_OK)
+@router.post("", status_code=status.HTTP_200_OK)
 def registSchedule(info: Info, db: Session = Depends(get_db)):
     # 유저확인
     exist_user = db.query(auth).filter(auth.id == info.auth_id).first()
@@ -67,7 +67,7 @@ class Item(BaseModel):
     day: str
 
 # 스케줄 다 가져오기
-@router.get("/", status_code=status.HTTP_200_OK)
+@router.get("", status_code=status.HTTP_200_OK)
 def getSchedule(auth_id:str, db:Session = Depends(get_db)):
     # 유저확인
     exist_user = db.query(auth).filter(auth.id == auth_id).first()
