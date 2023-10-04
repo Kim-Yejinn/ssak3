@@ -5,7 +5,7 @@ import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import String
-from ssafy_msgs.msg import LaundryList
+from ssafy_msgs.msg import LaundryList, Result
 
 import threading
 
@@ -32,17 +32,19 @@ class socketSub(Node):
         self.socket_weather = self.create_subscription(String, '/socket_weather', self.socket_weather_pub, 10)
         # 세탁물 수거 결과 값 입력 받으면 실행할 것 -> 해당 파일에서 여기로 보내는것 추가해야 함
         # 우선 수거 개수가 String으로 온다고 가정했음. 
-        self.socket_result_pub = self.create_subscription(String, '/socket_result', self.socket_result_pub, 10)
+        self.socket_result_pub = self.create_subscription(Result, 'result_list', self.socket_result_pub, 10)
         # 세탁물 수거 시작 시 어디로 가야 할지 여기에 publish 추가하기
-        self.socket_start_pub = self.create_publisher(LaundryList, '/socket_start', 30)
+        self.socket_start_pub = self.create_publisher(LaundryList, 'socket_start', 30)
         time_period = 0.1
         self.timer = self.create_timer(time_period, self.timer_callback)
 
     def timer_callback(self):
         global laundry_send
         global laundry_list_msg
-        if laundry_send == True:
+        print(laundry_send)
+        if laundry_send :
             self.socket_start_pub.publish(laundry_list_msg)
+            laundry_send =False
 
     # 위의 subscription 등록 이후 각 기능을 아래에 추가하면 됩니다.
     # namespace는
@@ -107,8 +109,9 @@ class socketSub(Node):
         global connected
         global operateNo
         global turtlebotNo
+
         if sio and connected:
-            obj = {"turtlebotNo":turtlebotNo, "operateNo":operateNo, "result_cnt":msg.data}
+            obj = {"turtlebotNo":turtlebotNo, "result" : msg.result_list}
             await sio.emit('result', obj, namespace = '/control')
             
 
@@ -162,10 +165,9 @@ async def client():
         print('laundry', data['laundry'])
         print('operate_id', data['op_id'])
         operateNo = data['op_id']
-        # 작동을 시킬 publish 추가하기!!
-        # self.socket_start_pub(data['laundry'])
         global laundry_list_msg
-        laundry_list_msg = data['laundry']
+        global laundry_send
+        laundry_list_msg.laundrylist = data['laundry']
         laundry_send = True
 
 
