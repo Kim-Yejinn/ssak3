@@ -341,7 +341,7 @@ def main(args=None):
                                 publish_list.append([detections.x, detections.y])
                                 publish_cnt_list.append(1)
                             
-                            if len(temp_detection) != 0 and publish_cnt_list[index] >= 3:
+                            if len(temp_detection) != 0 and publish_cnt_list[index] >= 4:
                                 print(f'보내기 가능? : {not is_send}')
                                 if is_send == False :
                                     cmd_msg.linear.x=0.0
