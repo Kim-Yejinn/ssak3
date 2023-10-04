@@ -10,6 +10,7 @@ from api import robot
 from api import run
 from api import dib
 from api import log
+from api import schedule
 from api.socketserver import sio_app
 
 
@@ -27,6 +28,7 @@ app.include_router(robot.router)
 app.include_router(run.router)
 app.include_router(dib.router)
 app.include_router(log.router)
+app.include_router(schedule.router)
 
 origins = [
     "http://localhost:8080",
