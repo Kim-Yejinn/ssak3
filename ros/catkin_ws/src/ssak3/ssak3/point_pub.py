@@ -17,8 +17,8 @@ class PointList(Node):
         self.goal_pub = self.create_publisher(PoseStamped,'goal_pose',10)
         self.goal_sub = self.create_subscription(PoseStamped,'goal_pose',self.goal_callback,1)
         self.cur_sub = self.create_subscription(PoseStamped,'cur_pose',self.cur_callback,1)
-        # self.detect_sub = self.create_subscription(Detection, 'laundry_detect', self.detect_callback, 1)
-        self.detect_sub = self.create_subscription(LaundryPose, 'laundry_pose', self.detect_callback, 1)
+        self.detect_sub = self.create_subscription(Detection, 'laundry_detect', self.detect_callback, 1)
+        # self.detect_sub = self.create_subscription(LaundryPose, 'laundry_pose', self.detect_callback, 1)
         self.socket_sub = self.create_subscription(LaundryList, 'socket_start', self.socket_callback, 1)
         self.finish_pub = self.create_publisher(Finish,'is_finish',10)
         self.odom_msg=Odometry()
@@ -191,6 +191,7 @@ class PointList(Node):
                 else:
                     self.is_finish_msg.is_finish = True
                     self.finish_pub.publish(self.is_finish_msg)
+                    self.laundry_list = ['shirts']
 
 
 
