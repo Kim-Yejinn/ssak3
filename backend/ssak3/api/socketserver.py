@@ -26,7 +26,7 @@ async def connect(sid, environ, auth=None):
     print("server Connected")
     # print(sid)
     # await sio_server.emit('custom_sid', custom_sid)
-    # print(custom_sid)
+
 
 
 @sio_server.event
