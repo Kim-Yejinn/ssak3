@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 import time
 
-from ssafy_msgs.msg import TurtlebotStatus, HandControl, Detection, LaundryPose
+from ssafy_msgs.msg import TurtlebotStatus, HandControl, Detection, LaundryPose, Finish, Result
 # from std_msgs.msg import Int16
 
 
@@ -15,6 +15,8 @@ class up_object(Node):
         self.control_pub = self.create_publisher(HandControl, 'hand_control', 10)
         # self.detect_sub = self.create_subscription(Detection, 'laundry_detect', self.detect_callback, 1)
         self.detect_sub = self.create_subscription(LaundryPose, 'laundry_pose', self.detect_callback, 1)
+        self.is_finish_sub = self.create_subscription(Finish, 'is_finish', self.finish_callback, 1)
+        self.result_pub = self.create_publisher(Result,'result_list',10)
         
         time_period=0.1
         self.timer = self.create_timer(time_period, self.timer_callback)
@@ -23,6 +25,7 @@ class up_object(Node):
         # self.laundry_list = ['shirts']
 
         self.is_select_laundry = False
+        self.result_msg = Result()
         
         #이동
         # self.hand_conrtrol_msg = Int16()
@@ -34,6 +37,16 @@ class up_object(Node):
         self.get_cnt = {'shirts': 0, 'pants':0}
         self.control_msg.control_mode = 3
         self.control_pub.publish(self.control_msg)
+    def finish_callback(self, msg):
+        if msg.is_finish == True:
+            temp_list = []
+            temp_list.append(self.get_cnt['shirts'])
+            temp_list.append(self.get_cnt['pants'])
+            self.result_msg.result_list = temp_list
+            self.clerar_cnt()
+        else:
+            self.result_msg.result_list = []
+        self.result_pub.publish(self.result_msg)
 
     def clerar_cnt(self):
         self.get_cnt = {'shirts': 0, 'pants':0}
