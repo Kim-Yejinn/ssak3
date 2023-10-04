@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 
 const DetailSchedule = () => {
+    const url = "http://j9b201.p.ssafy.io:8081/schedule/";
+
     const navigate = useNavigate();
 
     const GoSchedule = () => {
@@ -23,7 +25,7 @@ const DetailSchedule = () => {
     },[]);
 
     const getSchedule = () => {
-        axios.get("http://j9b201.p.ssafy.io:8081/schedule/"+schedule_id+"?auth_id="+localStorage.getItem("userId"))
+        axios.get(url+schedule_id+"?auth_id="+localStorage.getItem("userId"))
         .then(response => {
             console.log(response);
             console.log(response.data);
@@ -101,7 +103,7 @@ const DetailSchedule = () => {
 
     const sendpatchschedule = async (event) => {
         event.preventDefault();
-        axios.patch("http://j9b201.p.ssafy.io:8081/schedule/"+schedule_id, formdata)
+        axios.patch(url+schedule_id, formdata)
         .then(response => {
             console.log('수정성공', response);
             GoSchedule();
@@ -114,7 +116,7 @@ const DetailSchedule = () => {
 
     const senddeleteschedule = async (event) => {
         event.preventDefault();
-        axios.delete("http://j9b201.p.ssafy.io:8081/schedule/"+schedule_id+"?auth_id="+localStorage.getItem("userId"))
+        axios.delete(url+schedule_id+"?auth_id="+localStorage.getItem("userId"))
         .then(response => {
             console.log('삭제성공', response);
             GoSchedule();

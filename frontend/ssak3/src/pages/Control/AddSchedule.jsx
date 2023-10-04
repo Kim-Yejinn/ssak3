@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const AddSchedule = () => {
+    const url = "http://j9b201.p.ssafy.io:8081/schedule";
     const navigate = useNavigate();
 
     const GoSchedule = () => {
@@ -79,7 +80,7 @@ const AddSchedule = () => {
 
     const sendaddschedule = async (event) => {
         event.preventDefault();
-        axios.post('http://j9b201.p.ssafy.io:8081/schedule', formdata)
+        axios.post(url, formdata)
         .then(response => {
             console.log('등록성공', response);
             GoSchedule();
