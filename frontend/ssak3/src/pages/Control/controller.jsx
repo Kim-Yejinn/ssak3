@@ -12,7 +12,7 @@ const Controller = () => {
     const userId = localStorage.getItem('userId');
 
     const starRequest = (index) => {
-        const url = "http://j9b201.p.ssafy.io:8081/dib";
+        const url = "https://j9b201.p.ssafy.io/api/dib";
         if(!frames[index]){
             axios.post(url,{
                 "user_id" : userId,
