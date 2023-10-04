@@ -3,6 +3,7 @@ from rclpy.node import Node
 
 from geometry_msgs.msg import Twist
 from ssafy_msgs.msg import TurtlebotStatus
+from std_msgs.msg import Int8MultiArray
 from sensor_msgs.msg import Imu
 
 from squaternion import Quaternion
@@ -31,6 +32,8 @@ class odom(Node):
         
         # 로직 1. publisher, subscriber, broadcaster 만들기
         self.subscription = self.create_subscription(TurtlebotStatus,'/turtlebot_status',self.listener_callback,10)
+        self.app_subscription = self.create_subscription(Int8MultiArray,'/app_status',self.envir_callback,10)
+        self.app_publisher = self.create_publisher(Int8MultiArray,'/app_control',10)
         self.imu_sub = self.create_subscription(Imu,'/imu',self.imu_callback,10)
         self.odom_publisher = self.create_publisher(Odometry, 'odom', 10)
         # 클래스를 통해서 인스턴스를 만드는 것 같다.
@@ -38,6 +41,7 @@ class odom(Node):
 
 
         # 로봇의 pose를 저장해 publish 할 메시지 변수 입니다.
+        self.app_msg = Int8MultiArray()
         self.odom_msg=Odometry()
         # Map -> base_link 좌표계에 대한 정보를 가지고 있는 변수 입니다.
         self.base_link_transform=geometry_msgs.msg.TransformStamped()
@@ -47,18 +51,24 @@ class odom(Node):
         self.is_imu=False
         self.is_calc_theta=False
         # x,y,theta는 추정한 로봇의 위치를 저장할 변수 입니다.
-        # self.x=0.0
-        self.x=-9.398
+        # self.x=-9.398 # map1
+        self.x=-5.82211 # map1
         # self.y=0.0
-        self.y=-7.701
+        # self.y=-7.701 # map1
+        self.y=6.398130 # map1
         self.theta=0.0
 
         # imu_offset은 초기 로봇의 orientation을 저장할 변수 입니다.
         self.imu_offset=0
         self.prev_time=0
 
-        # 로직 2. publish, broadcast 할 메시지 설정
+    # 데이터 배열 생성
+        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1]
 
+        # 데이터 배열을 Int8MultiArray 메시지에 할당
+        self.app_msg.data = data
+        self.app_publisher.publish(self.app_msg)
+        # 로직 2. publish, broadcast 할 메시지 설정
         self.odom_msg.header.frame_id = 'map'
         self.odom_msg.child_frame_id = 'base_link'
 
@@ -75,6 +85,10 @@ class odom(Node):
         self.laser_transform.transform.translation.y = 0.0
         self.laser_transform.transform.translation.z = 1.0
         self.laser_transform.transform.rotation.w = 1.0
+
+    def envir_callback(self, msg):
+        print('asdasd')
+        print(f"msg: {msg}")
 
     # IMU를 통해서 로봇의 헤딩을 구하는 방법
     def imu_callback(self,msg):
