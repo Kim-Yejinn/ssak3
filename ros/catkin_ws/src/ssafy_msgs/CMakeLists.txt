@@ -33,6 +33,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/LaundryList.msg"
   "msg/MapScan.msg"
   "msg/LaundryPose.msg"
+  "msg/Result.msg"
+  "msg/Finish.msg"
   DEPENDENCIES std_msgs geometry_msgs
  )
 

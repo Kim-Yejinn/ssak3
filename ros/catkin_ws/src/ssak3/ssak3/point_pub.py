@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry
-from ssafy_msgs.msg import Detection, LaundryPose
+from ssafy_msgs.msg import Detection, LaundryPose, LaundryList, Finish
 # 자꾸 모듈을 못가져와서 path설정 해줌
 import sys
 sys.path.append('C:/Users/SSAFY/Desktop/project/S09P22B201/ros/catkin_ws/src/ssak3')
@@ -19,10 +19,13 @@ class PointList(Node):
         self.cur_sub = self.create_subscription(PoseStamped,'cur_pose',self.cur_callback,1)
         # self.detect_sub = self.create_subscription(Detection, 'laundry_detect', self.detect_callback, 1)
         self.detect_sub = self.create_subscription(LaundryPose, 'laundry_pose', self.detect_callback, 1)
+        self.socket_sub = self.create_subscription(LaundryList, 'socket_start', self.socket_callback, 1)
+        self.finish_pub = self.create_publisher(Finish,'is_finish',10)
         self.odom_msg=Odometry()
         self.a_star_instance = a_star()
 
         self.goal_pose_msg = PoseStamped()
+        self.is_finish_msg = Finish()
 
         self.goal_pose_msg.header.frame_id = 'map'
         self.pose_dest_point = []
@@ -70,6 +73,18 @@ class PointList(Node):
         # self.laundry_list = ['shirts']
 
         self.laundry_pose_cnt = 0
+    def socket_callback(self, msg):
+        self.laundry_list = []
+        # temp_list = msg
+        print(f'소켓 : {msg}')
+        for _ in msg:
+            if _ == 1:
+                self.laundry_list.append('shirts')
+            elif _ == 2:
+                self.laundry_list.append('pants')
+        print(f'세탁물 리스트 : {self.laundry_list}')
+
+        # self.laundry_list = msg
 
 
     '''
@@ -83,6 +98,8 @@ class PointList(Node):
         goal_y=msg.pose.position.y
         self.pose_dest_point.insert(0, [goal_x, goal_y]) # pose
         print(f'현재 목적지 : {goal_x} , {goal_y}')
+        self.is_finish_msg.is_finish = False
+        self.finish_pub.publish(self.is_finish_msg)
     
     # def point_list_is_not_empty(self):
     #     print(f'list empty : {self.grid_dest_point}')
@@ -162,6 +179,10 @@ class PointList(Node):
                     self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point[0])
                     self.goal_pub.publish(self.goal_pose_msg)
                     self.grid_cell_point.pop(0)
+                else:
+                    self.is_finish_msg.is_finish = True
+                    self.finish_pub.publish(self.is_finish_msg)
+
 
 
 
