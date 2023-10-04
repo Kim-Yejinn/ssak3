@@ -40,7 +40,7 @@ const EntryMain = ( ) =>{
             <div onClick={GoControl} className = "turtle-button justalign-center">
                 <div className = "turtle-index justalign-center">
                     <div className = "areah-50">터틀봇 제어</div>
-                    <div className = "areah-50 turtle-buttonc">작동 상태 확인</div>
+                    <div className = "areah-50 turtle-buttonc">바로 주행</div>
                 </div>
                 <div className = "turtle-indexb justalign-center">›</div>
             </div>
@@ -55,13 +55,13 @@ const EntryMain = ( ) =>{
             <div className = "nonturtle-underline"></div>
             <div onClick={GoSchedule} className = "turtle-button justalign-center">
                 <div className = "turtle-index justalign-center">
-                    <div className = "areah-50">시간 설정</div>
-                    <div className = "areah-50 turtle-buttonc">시간 및 요일 설정</div>
+                    <div className = "areah-50">스케줄</div>
+                    <div className = "areah-50 turtle-buttonc">스케줄 확인 및 추가</div>
                 </div>
                 <div className = "turtle-indexb justalign-center">›</div>
             </div>
             <div className = "nonturtle-underline"></div>
-            <div onClick={handleLogout} className = "turtle-button justalign-center">
+            <div onClick={handleLogout} className = "turtle-button justalign-center" style={{color:'red'}}>
                 <div className = "turtle-index justalign-center">
                     <div className = "areah-50">초기화면으로 돌아가기</div>
                     <div className = "areah-50 turtle-buttonc">로그아웃</div>
