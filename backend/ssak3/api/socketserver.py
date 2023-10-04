@@ -93,7 +93,6 @@ async def emit_laundry_start(member_id, op_id, laundry):
     # 수거해야 할 목록도 보내야 함.
     # db에서 언제 요청을 해야 하는가? - 요청후 바로
     print(member_id)
-    print("==")
     print(op_id)
     print(laundry)
 
