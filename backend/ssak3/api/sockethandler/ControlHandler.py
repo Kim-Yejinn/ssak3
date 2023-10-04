@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from db.db import get_db
 
 from models.turtlebot import turtlebot
-from models.get import get
+
 
 
 
