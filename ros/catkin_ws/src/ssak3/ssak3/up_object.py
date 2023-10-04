@@ -82,7 +82,7 @@ class up_object(Node):
         if self.control_msg.control_mode == 2:
             self.control_msg.control_mode = 1
             # if self.get_cnt[self.detect_laundry_name] % 2 == 1:
-            time.sleep(2)
+            time.sleep(4)
             self.control_pub.publish(self.control_msg)
             count = self.get_cnt[self.detect_laundry_name]
             self.get_cnt[self.detect_laundry_name] = count + 1
