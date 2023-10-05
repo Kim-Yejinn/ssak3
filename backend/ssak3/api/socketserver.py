@@ -89,16 +89,12 @@ sio_server.register_namespace(ControlHandler('/control'))
 sio_server.register_namespace(AuthHandler('/auth_turtle'))
 
 
-# 나중에 보내는 코드도 이동
 async def emit_laundry_start(member_id, op_id, laundry):
-    # 수거해야 할 목록도 보내야 함.
-    # db에서 언제 요청을 해야 하는가? - 요청후 바로
-    print(member_id)
-    print(op_id)
-    print(laundry)
+    # 수거해야 할 목록과 시작 요청.
+    # 해당 작동 번호도 함께 보냄 -> 나중에 수정을 위함
 
     # id를 이용해서 해당 터틀봇만 작동하는 코드 추가하기
+    print(member_id)
 
-    # 현재 작동 번호도 같이 보내기
-    obj = {"laundry": laundry, "op_id": op_id}
+    obj = {"laundry": laundry, "op_id": int(op_id)}
     await sio_server.emit("laundry_start", obj)
