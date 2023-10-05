@@ -26,16 +26,16 @@ class Log(BaseModel):
     get_name: str
     laundry_cnt: int
     laundries: List[Detail]
-    start_time: datetime
-    end_time: datetime
-    total_time: timedelta
+    start_time: str
+    end_time: str
+    total_time: str
 
 # 진행중인 로그
 class LogInProgress(BaseModel):
     get_id: int
     get_name: str
-    expected_time: Optional[int]
-    start_time: datetime
+    expected_time: Optional[str]
+    start_time: str
 
 # 제일 큰 단위
 class LogList(BaseModel):
@@ -66,10 +66,12 @@ def getlog(id: str, db: Session = Depends(get_db)):
     for log_item in log_items:
         # 진행중인 로그가 있다면
         if not log_item.end_time:
+
+            start = log_item.start_time.strftime('%H:%M')
             response.log_in_progress = LogInProgress(
                 get_id=log_item.get_id,
                 get_name=log_item.get_name,
-                start_time=log_item.start_time
+                start_time=start
             )
         # 진행완료된 로그들
         else:
@@ -94,23 +96,57 @@ def getlog(id: str, db: Session = Depends(get_db)):
                 )
                 laundry_items.append(laundry_item)
 
+            start = log_item.start_time.strftime('%H:%M')
+            end = log_item.end_time.strftime('%H:%M')
+
+            # total_time_delta = timedelta()
+            time_delta = log_item.end_time-log_item.start_time
+            total_time_delta = int(time_delta.total_seconds())
+
             # 로그 추가
             log_instance = Log(
                 get_id=log_item.get_id,
                 get_name=log_item.get_name,
                 laundry_cnt=log_item.laundry_cnt,
                 laundries=laundry_items,
-                start_time=log_item.start_time,
-                end_time=log_item.end_time,
-                total_time=log_item.end_time-log_item.start_time
+                start_time=start,
+                end_time=end,
+                total_time=timetransition(total_time_delta)
             )
             response.log.append(log_instance)
 
     # 마지막 예상시간 반영 but 진행중인 로그가 있거나, 세탁물이 없지 않다면 추가
     if response.log_in_progress and log_cnt != 0:
-        response.log_in_progress.expected_time = log_time_sum / log_cnt;
+        expect = int(log_time_sum.total_seconds()) // log_cnt
+        response.log_in_progress.expected_time = timetransition(expect)
 
     return response
+
+def timetransition(total_time_delta: int):
+    total_time = ""
+
+    day = total_time_delta // (60 * 60 * 24)
+    total_time_delta %= 60 * 60 * 24
+    hour = total_time_delta // (60 * 60)
+    total_time_delta %= (60 * 60)
+    minute = total_time_delta // 60
+    total_time_delta %= 60
+    second = total_time_delta
+
+    if day != 0:
+        total_time += f"{day}일 "
+    if hour != 0:
+        total_time += f"{hour}시간 "
+    if minute != 0:
+        total_time += f"{minute}분 "
+    if second == 0:
+        if len(total_time) == 0:
+            total_time += f"{second}초"
+    else:
+        total_time += f"{second}초"
+
+    return total_time
+
 
 @router.delete("/{get_id}", status_code=status.HTTP_200_OK)
 def deletelog(auth_id: str, get_id: int, db: Session = Depends(get_db)):
