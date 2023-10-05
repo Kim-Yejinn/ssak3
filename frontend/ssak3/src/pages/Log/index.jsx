@@ -50,8 +50,8 @@ const TurtleBotLog = () =>{
                     <div className="areah-100 justalign-center">
                         <div className = "schdulebox">
                             <div className = "areah-10 justalign-center">
-                                <div className = "areaw-20 justalign-center fontchange">동작 기록 ({logprogress != null? log.length+1:log.length})</div>
-                                <div className = "areaw-60"></div>
+                                <div className = "areaw-30 justalign-center fontchange">동작 기록 ({logprogress != null? log.length+1:log.length})</div>
+                                <div className = "areaw-50"></div>
                                 <div className = "areaw-20 justalign-center fontchange">시간순</div>
                             </div>
 
@@ -133,12 +133,12 @@ const TurtleBotLog = () =>{
                                     {item.laundries[2]?.cnt || 0}개 {/* item.laundries[2]?.cnt가 없으면 0을 사용 */}
                                 </div>
                                 </div>
-                                <div className="areah-20 justalign-center">
-                                    <div className="areaw-40 justalign-center">
+                                <div className="areah-20 justalign-center" style={{fontSize:'small'}}>
+                                    <div className="areaw-45 justalign-center">
                                         {formatLog(item.start_time)} - {formatLog(item.end_time)}
                                     </div>
-                                    <div className="areaw-20"></div>
-                                    <div className="areaw-40 justalign-center">
+                                    <div className="areaw-10"></div>
+                                    <div className="areaw-45 justalign-center" style={{fontSize:'small'}}>
                                         총 가동시간 : {item.total_time}분
                                     </div>
                                 </div>
