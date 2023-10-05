@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 import time
 
-from ssafy_msgs.msg import TurtlebotStatus, HandControl, Detection, LaundryPose, Finish, Result
+from ssafy_msgs.msg import TurtlebotStatus, HandControl, Detection, LaundryPose, Finish, Result, LaundryList
 # from std_msgs.msg import Int16
 
 
@@ -17,6 +17,7 @@ class up_object(Node):
         # self.detect_sub = self.create_subscription(LaundryPose, 'laundry_pose', self.detect_callback, 1)
         self.is_finish_sub = self.create_subscription(Finish, 'is_finish', self.finish_callback, 1)
         self.result_pub = self.create_publisher(Result,'result_list',10)
+        self.socket_sub = self.create_subscription(LaundryList, 'socket_start', self.socket_callback, 1)
         
         time_period=0.1
         self.timer = self.create_timer(time_period, self.timer_callback)
@@ -37,11 +38,25 @@ class up_object(Node):
         self.get_cnt = {'shirts': 0, 'pants':0}
         self.control_msg.control_mode = 3
         self.control_pub.publish(self.control_msg)
+
+    def socket_callback(self, msg):
+        self.laundry_list = []
+        # temp_list = msg
+        print(f'소켓 : {msg.laundrylist}')
+        for _ in msg.laundrylist:
+            if _ == 1:
+                self.laundry_list.append('shirts')
+            elif _ == 2:
+                self.laundry_list.append('pants')
+        print(f'세탁물 리스트 : {self.laundry_list}')
+    
     def finish_callback(self, msg):
         if msg.is_finish == True:
             temp_list = []
-            temp_list.append(self.get_cnt['shirts'])
-            temp_list.append(self.get_cnt['pants'])
+            temp_list.append(1)
+            temp_list.append(1)
+            # temp_list.append(self.get_cnt['shirts'])
+            # temp_list.append(self.get_cnt['pants'])
             self.result_msg.result_list = temp_list
             self.clerar_cnt()
             self.laundry_list = ['shirts']
@@ -83,7 +98,7 @@ class up_object(Node):
         if self.control_msg.control_mode == 2:
             self.control_msg.control_mode = 1
             # if self.get_cnt[self.detect_laundry_name] % 2 == 1:
-            time.sleep(4)
+            time.sleep(3)
             self.control_pub.publish(self.control_msg)
             count = self.get_cnt[self.detect_laundry_name]
             self.get_cnt[self.detect_laundry_name] = count + 1
