@@ -17,6 +17,7 @@ sio = None
 connected = False
 turtlebotNo = 17
 operateNo = None
+
 # 나중에 turtlebot_status에서 한번만 보내도록 바꾸기
 sendWeather = False
 sendTemp = False
@@ -42,9 +43,17 @@ class socketSub(Node):
         time_period = 0.1
         self.timer = self.create_timer(time_period, self.timer_callback)
 
-    def timer_callback(self):
+    async def timer_callback(self):
         global laundry_send
         global laundry_list_msg
+
+
+        # 테스트 값
+        # result 는 msg에 숫자 리스트로 들어오게 된다.
+        # test_value = [1,2]
+        # obj = {"turtlebotNo":turtlebotNo, "result" : test_value}
+        # await sio.emit('result', obj, namespace = '/control')        
+
         if laundry_send :
             self.socket_start_pub.publish(laundry_list_msg)
             laundry_send =False
@@ -106,12 +115,13 @@ class socketSub(Node):
             await sio.emit('turtlebot_weather', msg.data, namespace = '/env')
             sendWeather = False
 
-# 만약 터틀봇 돌고난 뒤 결과가 들어 왔을 경우에 보내는 것
+# 만약 터틀봇 돌고난 뒤 결과가 들어 왔을 경우 서버로 보내기
     async def socket_result_pub(self, msg):
         global sio
         global connected
         global operateNo
         global turtlebotNo
+
 
         if sio and connected:
             obj = {"turtlebotNo":turtlebotNo, "result" : msg.result_list}
@@ -130,7 +140,9 @@ async def client():
     # 테스트 값
     print("start")
     
+    # 서버 작동 확인 후 다시 테스트
     ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+    # 이거 경로 확인
     ssl_context.load_cert_chain('C:/Users/SSAFY/Desktop/cert.pem',
                                 'C:/Users/SSAFY/Desktop/privkey.pem')
     connector = aiohttp.TCPConnector(ssl=ssl_context)
@@ -173,21 +185,32 @@ async def client():
     async def laundry_start(data):
         # data는 리스트로 들어오게 된다.
         global operateNo
-        print('laundry', data['laundry'])
-        print('operate_id', data['op_id'])
-        operateNo = data['op_id']
         global laundry_list_msg
         global laundry_send
+        
+        # 출력
+        print('laundry', data['laundry'])
+        print('operate_id', data['op_id'])
+        
         laundry_list_msg.laundrylist = data['laundry']
+        operateNo = data['op_id']
         laundry_send = True
 
 
 
     # 서버 연결 -> 백 올린뒤 확인 필요
-    # await sio.connect('https://example.com')
+    # back의 경우 경로에 /api 추가해야 함. socket의 경우 자동으로 마지막에 /socket.io가 추가됨.
+    # 따라서 직접적으로 지정 필요
+    # 아닐 경우 /socket.io 경로로 접근하여 front의 값 받아옴.
+    
+    # 서버
     auth_url = 'https://j9b201.p.ssafy.io/api'
-    # auth_url = 'http://127.0.0.1:8000/api/socket.io'
     await sio.connect(auth_url, socketio_path="/api/socket.io", namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
+    
+    # 로컬
+    # auth_url = 'http://127.0.0.1:8000/socket.io'
+    # await sio.connect(auth_url, namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
+    
     print("connect")
     while not connected:
         await asyncio.sleep(0.1)
@@ -196,9 +219,6 @@ async def client():
     print(sio.sid)
     # 터틀봇 인증
     await sio.emit('authenticate', turtlebotNo, namespace = '/auth_turtle')       
-
-    # 테스트
-    # await sio.emit('turtlebot_time', 'test0', namespace = '/env')
 
     await sio.wait()
 
