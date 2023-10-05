@@ -28,7 +28,7 @@
     width: 143.11px;
     height: 170.66px;
     left: 28px;
-    top: 162px;
+    top: 80px;
     padding: 10px;
     margin: 5px;
     background: #E4E3E3;
@@ -41,7 +41,7 @@
     width: 143.31px;
     height: 170.66px;
     left: 28px;
-    top: 162px;
+    top: 80px;
     padding: 10px;
     margin: 5px;
     background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
@@ -276,15 +276,16 @@
     width: 90vw;
     height: 7vh;
     left: 5vw;
-    top: 120vh;
+    top: 95vh;
     cursor: pointer;
     color: white;
     background: linear-gradient(180deg, #33394D 0%, #484B65 100%);
     border-radius: 10px;
-
     display: flex;
     justify-content: center; /* 수평 가운데 정렬 */
     align-items: center; /* 수직 가운데 정렬 */
+    font-family: inherit;
+    font-weight: bold;
 }
 .addBtn{
     position: absolute;
