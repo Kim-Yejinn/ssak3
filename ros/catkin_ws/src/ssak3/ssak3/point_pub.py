@@ -54,7 +54,7 @@ class PointList(Node):
                           [87, 79],
                           [93, 123],
                           [114, 123],
-                          [218, 100]]
+                          [214, 191]]
         for _ in self.room_list:
             self.grid_cell_point.append(_)
         
@@ -72,8 +72,11 @@ class PointList(Node):
         self.laundry_list = ['shirts', 'pants']
         # self.laundry_list = ['shirts']
 
+        self.is_socket_receive = False
+
         self.laundry_pose_cnt = 0
     def socket_callback(self, msg):
+        self.is_socket_receive = True
         self.laundry_list = []
         # temp_list = msg
         print(f'소켓 : {msg.laundrylist}')
@@ -83,6 +86,11 @@ class PointList(Node):
             elif _ == 2:
                 self.laundry_list.append('pants')
         print(f'세탁물 리스트 : {self.laundry_list}')
+        for _ in self.room_list:
+            self.grid_cell_point.append(_)
+        self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point[0])
+        self.goal_pub.publish(self.goal_pose_msg)
+        self.grid_cell_point.pop(0)
 
         # self.laundry_list = msg
 
