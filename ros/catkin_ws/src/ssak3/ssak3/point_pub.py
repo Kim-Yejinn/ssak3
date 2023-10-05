@@ -54,14 +54,15 @@ class PointList(Node):
                           [87, 79],
                           [93, 123],
                           [114, 123],
-                          [218, 100]]
+                          [214, 191]]
+        ''' 소켓 없이 실행 코드
         for _ in self.room_list:
             self.grid_cell_point.append(_)
         
         self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point[0])
         self.goal_pub.publish(self.goal_pose_msg)
         self.grid_cell_point.pop(0)
-
+        '''
         self.is_odom = False
         self.point_cnt = 0
 
@@ -83,6 +84,11 @@ class PointList(Node):
             elif _ == 2:
                 self.laundry_list.append('pants')
         print(f'세탁물 리스트 : {self.laundry_list}')
+        for _ in self.room_list:
+            self.grid_cell_point.append(_)
+        self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point[0])
+        self.goal_pub.publish(self.goal_pose_msg)
+        self.grid_cell_point.pop(0)
 
         # self.laundry_list = msg
 
