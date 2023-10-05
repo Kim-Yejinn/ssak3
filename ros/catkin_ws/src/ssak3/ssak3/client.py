@@ -1,11 +1,13 @@
 import socketio
 import asyncio
+import ssl
+import aiohttp
 
 import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import String
-from ssafy_msgs.msg import LaundryList
+from ssafy_msgs.msg import LaundryList, Result
 
 import threading
 
@@ -15,6 +17,7 @@ sio = None
 connected = False
 turtlebotNo = 17
 operateNo = None
+
 # 나중에 turtlebot_status에서 한번만 보내도록 바꾸기
 sendWeather = False
 sendTemp = False
@@ -22,6 +25,8 @@ sendDay = False
 
 laundry_list_msg = LaundryList()
 laundry_send = False
+
+
 
 class socketSub(Node):
 
@@ -32,17 +37,26 @@ class socketSub(Node):
         self.socket_weather = self.create_subscription(String, '/socket_weather', self.socket_weather_pub, 10)
         # 세탁물 수거 결과 값 입력 받으면 실행할 것 -> 해당 파일에서 여기로 보내는것 추가해야 함
         # 우선 수거 개수가 String으로 온다고 가정했음. 
-        self.socket_result_pub = self.create_subscription(String, '/socket_result', self.socket_result_pub, 10)
+        self.socket_result_pub = self.create_subscription(Result, 'result_list', self.socket_result_pub, 10)
         # 세탁물 수거 시작 시 어디로 가야 할지 여기에 publish 추가하기
-        self.socket_start_pub = self.create_publisher(LaundryList, '/socket_start', 30)
+        self.socket_start_pub = self.create_publisher(LaundryList, 'socket_start', 30)
         time_period = 0.1
         self.timer = self.create_timer(time_period, self.timer_callback)
 
-    def timer_callback(self):
+    async def timer_callback(self):
         global laundry_send
         global laundry_list_msg
-        if laundry_send == True:
+
+
+        # 테스트 값
+        # result 는 msg에 숫자 리스트로 들어오게 된다.
+        # test_value = [1,2]
+        # obj = {"turtlebotNo":turtlebotNo, "result" : test_value}
+        # await sio.emit('result', obj, namespace = '/control')        
+
+        if laundry_send :
             self.socket_start_pub.publish(laundry_list_msg)
+            laundry_send =False
 
     # 위의 subscription 등록 이후 각 기능을 아래에 추가하면 됩니다.
     # namespace는
@@ -101,13 +115,16 @@ class socketSub(Node):
             await sio.emit('turtlebot_weather', msg.data, namespace = '/env')
             sendWeather = False
 
-# 만약 터틀봇 돌고난 뒤 결과가 들어 왔을 경우에 보내는 것
+# 만약 터틀봇 돌고난 뒤 결과가 들어 왔을 경우 서버로 보내기
     async def socket_result_pub(self, msg):
         global sio
         global connected
         global operateNo
+        global turtlebotNo
+
+
         if sio and connected:
-            obj = {"operateNo":operateNo, "result_cnt":msg}
+            obj = {"turtlebotNo":turtlebotNo, "result" : msg.result_list}
             await sio.emit('result', obj, namespace = '/control')
             
 
@@ -116,11 +133,21 @@ async def client():
     global sio
     global connected
     global turtlebotNo
+    certfile_path = 'C:/Users/SSAFY/Desktop/cert.pem'
     # 클라이언트 소켓 생성
-    sio = socketio.AsyncClient()
+    # sio = socketio.AsyncClient(ssl_verify=certfile_path)
+    # sio = socketio.AsyncClient()
     # 테스트 값
     print("start")
     
+    # 서버 작동 확인 후 다시 테스트
+    ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+    # 이거 경로 확인
+    ssl_context.load_cert_chain('C:/Users/SSAFY/Desktop/cert.pem',
+                                'C:/Users/SSAFY/Desktop/privkey.pem')
+    connector = aiohttp.TCPConnector(ssl=ssl_context)
+    http_session = aiohttp.ClientSession(connector=connector)
+    sio = socketio.AsyncClient(http_session=http_session)
 
     # 연결
     @sio.event
@@ -158,22 +185,33 @@ async def client():
     async def laundry_start(data):
         # data는 리스트로 들어오게 된다.
         global operateNo
+        global laundry_list_msg
+        global laundry_send
+        
+        # 출력
         print('laundry', data['laundry'])
         print('operate_id', data['op_id'])
+        
+        laundry_list_msg.laundrylist = data['laundry']
         operateNo = data['op_id']
-        # 작동을 시킬 publish 추가하기!!
-        # self.socket_start_pub(data['laundry'])
-        global laundry_list_msg
-        laundry_list_msg = data['laundry']
         laundry_send = True
 
 
 
     # 서버 연결 -> 백 올린뒤 확인 필요
-    # auth_url = 'https://j9b201.p.ssafy.io/api/'
-    auth_url = 'http://127.0.0.1:8000/socketio'
-    await sio.connect(auth_url, namespaces =['/', '/auth_turtle', '/env', '/control'])
-
+    # back의 경우 경로에 /api 추가해야 함. socket의 경우 자동으로 마지막에 /socket.io가 추가됨.
+    # 따라서 직접적으로 지정 필요
+    # 아닐 경우 /socket.io 경로로 접근하여 front의 값 받아옴.
+    
+    # 서버
+    # auth_url = 'https://j9b201.p.ssafy.io/api'
+    # await sio.connect(auth_url, socketio_path="/api/socket.io", namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
+    
+    # 로컬
+    auth_url = 'http://127.0.0.1:8000/socket.io'
+    await sio.connect(auth_url, namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
+    
+    print("connect")
     while not connected:
         await asyncio.sleep(0.1)
 
@@ -181,9 +219,6 @@ async def client():
     print(sio.sid)
     # 터틀봇 인증
     await sio.emit('authenticate', turtlebotNo, namespace = '/auth_turtle')       
-
-    # 테스트
-    # await sio.emit('turtlebot_time', 'test0', namespace = '/env')
 
     await sio.wait()
 
