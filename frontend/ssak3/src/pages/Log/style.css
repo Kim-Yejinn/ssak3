@@ -57,9 +57,10 @@
     width: 90%;
     margin-left: 5%;
     margin-bottom: 20px;
-    height: 200px;
     border: 2px solid rgba(28, 29, 34, 0.08);
     border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 10px;
 }
 
 .proceedingTitle{
@@ -136,10 +137,12 @@
 .logTitle{
     position: relative;
     margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 .logsubTitle{
     position: relative;
+    padding-top: 10px;
     margin-top: 5px;
     margin-left: 20px;
     font-size: small;
@@ -256,7 +259,16 @@
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background: #838589;
+    background: #FF9900;
+    margin-bottom: 4px;
+}
+
+.unstar-logoframe{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #F4F4F7;
+    margin-bottom: 4px;
 }
 
 .colorb{
@@ -270,4 +282,20 @@
 .clothsd{
     flex-direction: column;
     color: black;
+}
+
+.backset{
+    background-color: #F4F4F7;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 10px;
+
+}
+
+.laundry{
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
