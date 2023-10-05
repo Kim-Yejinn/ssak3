@@ -46,7 +46,7 @@ class ControlHandler(socketio.AsyncNamespace):
             # url = "http://127.0.0.1:8000/run/end"
 
             # 서버
-            url = "https://https://j9b201.p.ssafy.io/api/run/end"
+            url = "https://j9b201.p.ssafy.io/api/run/end"
 
             async with httpx.AsyncClient() as client:
                 response = await client.patch(url, json = {"id":id, "get_id":operate_no, "laundries":result})
