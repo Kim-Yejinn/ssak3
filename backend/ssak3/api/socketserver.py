@@ -9,7 +9,9 @@ from db.db import get_db
 
 sio_server = socketio.AsyncServer(
     async_mode='asgi',
-    cors_allowed_origin='*')
+    cors_allowed_origin='*',
+    ping_timeout=500
+)
 
 sio_app = socketio.ASGIApp(
     socketio_server=sio_server,
