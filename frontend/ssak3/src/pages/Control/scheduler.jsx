@@ -5,7 +5,7 @@ import "./ScheduleStyle.css";
 import { defaultInstance as api } from '../../util/token';
 
 const Scheduler = () => {
-    const url = "https://j9b201.p.ssafy.io/api/schedule";
+    const url = "https://j9b201.p.ssafy.io/api/schedule/time";
 
     const navigate = useNavigate();
 
@@ -59,7 +59,7 @@ const Scheduler = () => {
                     <div className = "areah-10 justalign-center">
                         <div className = "areaw-20 justalign-center fontchange">스케줄 ({schedule.length})</div>
                         <div className = "areaw-60"></div>
-                        <div className = "areaw-20 justalign-center fontchange">등록순</div>
+                        <div className = "areaw-20 justalign-center fontchange">시간순</div>
                     </div>
                     {schedule.map((item, index) => (
                         <div className="scheduleBox">
