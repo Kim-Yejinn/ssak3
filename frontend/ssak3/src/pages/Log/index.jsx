@@ -78,7 +78,7 @@ const TurtleBotLog = () =>{
                                     </div>
                                 </div>
                             ) : null}
-                            {log.map((item, index) => (
+                            {/* {log.map((item, index) => (
                                 <div className="logBox">
                                     <div className = "areah-15 colorb logTitle">{item.get_name}</div>
                                     <div className = "areah-15 logsubTitle">총 수거량 : {item.laundry_cnt}</div>
@@ -108,6 +108,41 @@ const TurtleBotLog = () =>{
                                         <div className = "areaw-40 justalign-center">총 가동시간 : {item.total_time}분</div>
                                     </div>
                                 </div>
+                            ))} */}
+                            {log.map((item, index) => (
+                            <div className="logBox" key={index}>
+                                <div className="areah-15 colorb logTitle">{item.get_name}</div>
+                                <div className="areah-15 logsubTitle">총 수거량 : {item.laundry_cnt}</div>
+                                <div className="areah-50 justalign-center">
+                                <div className="areaw-30 justalign-center clothsd">
+                                    <div className="star-logoframe justalign-center">
+                                    <img className="star-logo" src={`/star-shirts.png`} />
+                                    </div>
+                                    {item.laundries[0]?.cnt || 0}개 {/* item.laundries[0]?.cnt가 없으면 0을 사용 */}
+                                </div>
+                                <div className="areaw-30 justalign-center clothsd">
+                                    <div className="star-logoframe justalign-center">
+                                    <img className="star-logo" src={`/star-pants.png`} />
+                                    </div>
+                                    {item.laundries[1]?.cnt || 0}개 {/* item.laundries[1]?.cnt가 없으면 0을 사용 */}
+                                </div>
+                                <div className="areaw-30 justalign-center clothsd">
+                                    <div className="star-logoframe justalign-center">
+                                    <img className="star-logo" src={`/star-towel.png`} />
+                                    </div>
+                                    {item.laundries[2]?.cnt || 0}개 {/* item.laundries[2]?.cnt가 없으면 0을 사용 */}
+                                </div>
+                                </div>
+                                <div className="areah-20 justalign-center">
+                                    <div className="areaw-40 justalign-center">
+                                        {formatLog(item.start_time)} - {formatLog(item.end_time)}
+                                    </div>
+                                    <div className="areaw-20"></div>
+                                    <div className="areaw-40 justalign-center">
+                                        총 가동시간 : {item.total_time}분
+                                    </div>
+                                </div>
+                            </div>
                             ))}
                         </div>
                     </div>
