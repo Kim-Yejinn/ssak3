@@ -106,13 +106,13 @@ def getlog(id: str, db: Session = Depends(get_db)):
             total_time = ""
 
             if total_time_delta >= (60 * 60 * 24):
-                total_time = f"약 {total_time_delta // (60 * 60 * 24)}일 "
+                total_time = f"{total_time_delta // (60 * 60 * 24)}일 "
             elif total_time_delta >= 60 * 60:
                 total_time = f"약 {total_time_delta // (60 * 60)}시간 "
             elif total_time_delta >= 0:
                 total_time = f"{total_time_delta // 60}분 "
             else:
-                total_time = f"{second}초"
+                total_time = f"{total_time_delta}초"
 
 
             # 로그 추가
