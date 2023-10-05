@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from sqlalchemy import func, text, desc
+from sqlalchemy import func, text, desc, asc
 from sqlalchemy.orm import Session
 from starlette import status
 from pydantic import BaseModel
@@ -105,7 +105,7 @@ def getSchedule(auth_id:str, db:Session = Depends(get_db)):
 
     schedule_items = (db.query(schedule)
                       .filter(schedule.auth_id == exist_user.auth_id)
-                      .order_by(desc(schedule.hour), desc(schedule.minute))
+                      .order_by(asc(schedule.hour), asc(schedule.minute))
                       .all())
     # if not schedule_items:
     #     return None
