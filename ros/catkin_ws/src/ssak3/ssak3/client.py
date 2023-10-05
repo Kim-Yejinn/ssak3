@@ -204,12 +204,12 @@ async def client():
     # 아닐 경우 /socket.io 경로로 접근하여 front의 값 받아옴.
     
     # 서버
-    auth_url = 'https://j9b201.p.ssafy.io/api'
-    await sio.connect(auth_url, socketio_path="/api/socket.io", namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
+    # auth_url = 'https://j9b201.p.ssafy.io/api'
+    # await sio.connect(auth_url, socketio_path="/api/socket.io", namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
     
     # 로컬
-    # auth_url = 'http://127.0.0.1:8000/socket.io'
-    # await sio.connect(auth_url, namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
+    auth_url = 'http://127.0.0.1:8000/socket.io'
+    await sio.connect(auth_url, namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
     
     print("connect")
     while not connected:
