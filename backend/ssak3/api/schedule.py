@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from sqlalchemy import func, text
+from sqlalchemy import func, text, desc
 from sqlalchemy.orm import Session
 from starlette import status
 from pydantic import BaseModel
@@ -78,6 +78,35 @@ def getSchedule(auth_id:str, db:Session = Depends(get_db)):
     responses = []
 
     schedule_items = db.query(schedule).filter(schedule.auth_id == exist_user.auth_id).order_by(schedule.created_at.desc()).all()
+    # if not schedule_items:
+    #     return None
+    for schedule_item in schedule_items:
+
+        response = Item(
+            id=schedule_item.schedule_id,
+            title=schedule_item.title,
+            type=schedule_item.type,
+            time=timeTransition(schedule_item.hour, schedule_item.minute),
+            day=days(schedule_item.date)
+        )
+        responses.append(response)
+
+    return responses
+
+@router.get("/time", status_code=status.HTTP_200_OK)
+def getSchedule(auth_id:str, db:Session = Depends(get_db)):
+    # 유저확인
+    exist_user = db.query(auth).filter(auth.id == auth_id).first()
+    if not (exist_user):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="존재하지 않는 사용자 입니다.")
+
+    responses = []
+
+    schedule_items = (db.query(schedule)
+                      .filter(schedule.auth_id == exist_user.auth_id)
+                      .order_by(desc(schedule.hour), desc(schedule.minute))
+                      .all())
     # if not schedule_items:
     #     return None
     for schedule_item in schedule_items:
