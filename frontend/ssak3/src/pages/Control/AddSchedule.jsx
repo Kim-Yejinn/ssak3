@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const AddSchedule = () => {
+    let dates = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const [frames, setFrames] = useState([false, false, false, false, false, false, false]);
     const url = "https://j9b201.p.ssafy.io/api/schedule";
     const navigate = useNavigate();
 
@@ -17,6 +19,12 @@ const AddSchedule = () => {
 
 
     const [inputTitle, setInputTitle] = useState('');
+
+    const dateSetter = (index) => {
+        const updatedFrames = [...frames];
+        updatedFrames[index] = !updatedFrames[index];
+        setFrames(updatedFrames)
+    }
 
     const formatHour = (value) => {
         return value.toLocaleString(undefined, { minimumIntegerDigits: 2 });
@@ -79,8 +87,21 @@ const AddSchedule = () => {
     }
 
     const sendaddschedule = (event) => {
+        let list = [];
+        for (let i=0; i<7; i++) 
+            if(frames[i]) list.push(i);
+        
+        console.log(list);
+
         event.preventDefault();
-        axios.post(url, formdata)
+        axios.post(url, {
+            "auth_id": localStorage.getItem("userId"),
+            "title": inputTitle,
+            "meridiem": meridiemValue,
+            "hour": hourValue,
+            "minute": minValue,
+            "date": list
+        })
         .then(response => {
             console.log('등록성공', response);
             GoSchedule();
@@ -142,13 +163,19 @@ const AddSchedule = () => {
                     <div>
                         <div className="daytitle">요일</div><br/>
                         <div className="daybox">
-                            <div className = "addtdaya">Mon</div>
-                            <div className = "addtdaya">Tue</div>
-                            <div className = "addtdaya">Wed</div>
-                            <div className = "addtdaya">Thu</div>
-                            <div className = "addtdaya">Fri</div>
-                            <div className = "addtdaya">Sat</div>
-                            <div className = "addtdaya">Sun</div>
+                        {
+                            frames.map((item,index) => (
+                                    item ?
+                                    <div className="addtdaya" key={index} onClick={() => dateSetter(index)}>
+                                        {dates[index]}
+                                    </div>
+                                    :
+                                    <div className="addtdayb" key={index} onClick={() => dateSetter(index)}>
+                                        {dates[index]}    
+                                    </div>
+                            ))
+                        }
+
                         </div>
                     </div>
                 </div>
