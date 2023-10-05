@@ -71,7 +71,7 @@ const TurtleBotLog = () =>{
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="areaw-30 justalign-center" style={{fontSize:'small', color: '#888DA7', marginTop: 4, paddingLeft:5}}>
+                                    <div className="areaw-80" style={{fontSize:'small', color: '#888DA7', marginTop: 4, paddingLeft:20}}>
                                         <div>시작시간:{logprogress.start_time}</div>
                                     </div>
                                 </div>
