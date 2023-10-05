@@ -15,7 +15,7 @@ import json
 
 sio = None
 connected = False
-turtlebotNo = 17
+serialNo = "17"
 operateNo = None
 
 # 나중에 turtlebot_status에서 한번만 보내도록 바꾸기
@@ -47,13 +47,6 @@ class socketSub(Node):
         global laundry_send
         global laundry_list_msg
 
-
-        # 테스트 값
-        # result 는 msg에 숫자 리스트로 들어오게 된다.
-        # test_value = [1,2]
-        # obj = {"turtlebotNo":turtlebotNo, "result" : test_value}
-        # await sio.emit('result', obj, namespace = '/control')        
-
         if laundry_send :
             self.socket_start_pub.publish(laundry_list_msg)
             laundry_send =False
@@ -74,22 +67,18 @@ class socketSub(Node):
     async def socket_day_pub(self, msg):
         global sio
         global connected
-        global turtlebotNo
+        global serialNo
         global sendDay
         if sio and connected and sendDay:
-            print(msg)
+            
             data = str(msg.data)
             date_parts = data.split("/")
+            
             if len(date_parts) == 4:
                 month = date_parts[0]
                 day = date_parts[1]
                 hour = date_parts[2]
                 minute = date_parts[3]
-
-                print("Month:", month)
-                print("Day:", day)
-                print("hour:", hour)
-                print("minute:", minute)
 
                 obj = {"month":month, "day":day, "hour": hour, "minute":minute}
                 await sio.emit('turtlebot_time', obj, namespace = '/env')
@@ -100,7 +89,7 @@ class socketSub(Node):
     async def socket_temp_pub(self, msg):
         global sio
         global connected
-        global turtlebotNo
+        global serialNo
         global sendTemp
         if sio and connected and sendTemp:
             await sio.emit('turtlebot_temp', msg.data, namespace = '/env')
@@ -109,7 +98,7 @@ class socketSub(Node):
     async def socket_weather_pub(self, msg):
         global sio
         global connected
-        global turtlebotNo
+        global serialNo
         global sendWeather
         if sio and connected and sendWeather:
             await sio.emit('turtlebot_weather', msg.data, namespace = '/env')
@@ -120,11 +109,10 @@ class socketSub(Node):
         global sio
         global connected
         global operateNo
-        global turtlebotNo
-
+        global serialNo
 
         if sio and connected:
-            obj = {"turtlebotNo":turtlebotNo, "result" : msg.result_list}
+            obj = {"serialNo":serialNo, "operateNo" : operateNo, "result" : msg.result_list}
             await sio.emit('result', obj, namespace = '/control')
             
 
@@ -132,11 +120,8 @@ class socketSub(Node):
 async def client():
     global sio
     global connected
-    global turtlebotNo
-    certfile_path = 'C:/Users/SSAFY/Desktop/cert.pem'
-    # 클라이언트 소켓 생성
-    # sio = socketio.AsyncClient(ssl_verify=certfile_path)
-    # sio = socketio.AsyncClient()
+    global serialNo
+
     # 테스트 값
     print("start")
     
@@ -153,12 +138,10 @@ async def client():
     @sio.event
     async def connect():
         global connected
-        global turtlebotNo
+        global serialNo
         print('connection established')
         # 연결할때 인증 시작
-        print(turtlebotNo)
         connected = True
-        print(sio.sid)
 
 
     @sio.event
@@ -216,9 +199,8 @@ async def client():
         await asyncio.sleep(0.1)
 
     print("connect ros")
-    print(sio.sid)
     # 터틀봇 인증
-    await sio.emit('authenticate', turtlebotNo, namespace = '/auth_turtle')       
+    await sio.emit('authenticate', serialNo, namespace = '/auth_turtle')       
 
     await sio.wait()
 
