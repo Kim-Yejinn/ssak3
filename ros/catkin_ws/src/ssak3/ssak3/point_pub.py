@@ -55,13 +55,14 @@ class PointList(Node):
                           [93, 123],
                           [114, 123],
                           [214, 191]]
+        ''' 소켓 없이 실행 코드
         for _ in self.room_list:
             self.grid_cell_point.append(_)
         
         self.goal_pose_msg.pose.position.x,self.goal_pose_msg.pose.position.y = self.a_star_instance.grid_cell_to_pose(self.grid_cell_point[0])
         self.goal_pub.publish(self.goal_pose_msg)
         self.grid_cell_point.pop(0)
-
+        '''
         self.is_odom = False
         self.point_cnt = 0
 
@@ -72,11 +73,8 @@ class PointList(Node):
         self.laundry_list = ['shirts', 'pants']
         # self.laundry_list = ['shirts']
 
-        self.is_socket_receive = False
-
         self.laundry_pose_cnt = 0
     def socket_callback(self, msg):
-        self.is_socket_receive = True
         self.laundry_list = []
         # temp_list = msg
         print(f'소켓 : {msg.laundrylist}')
