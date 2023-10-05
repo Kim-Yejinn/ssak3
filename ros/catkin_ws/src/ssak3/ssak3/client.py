@@ -111,10 +111,13 @@ class socketSub(Node):
         global operateNo
         global serialNo
 
-        if sio and connected:
-            obj = {"serialNo":serialNo, "operateNo" : operateNo, "result" : msg.result_list}
+        if sio and connected and operateNo:
+            print(list(msg.result_list))
+            # print(operateNo)
+            print(type(operateNo))
+            obj = {"serialNo":serialNo, "operateNo" : operateNo, "result" : list(msg.result_list)}
             await sio.emit('result', obj, namespace = '/control')
-            
+            operateNo = None
 
     
 async def client():
@@ -187,12 +190,12 @@ async def client():
     # 아닐 경우 /socket.io 경로로 접근하여 front의 값 받아옴.
     
     # 서버
-    # auth_url = 'https://j9b201.p.ssafy.io/api'
-    # await sio.connect(auth_url, socketio_path="/api/socket.io", namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
+    auth_url = 'https://j9b201.p.ssafy.io/api'
+    await sio.connect(auth_url, socketio_path="/api/socket.io", namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
     
     # 로컬
-    auth_url = 'http://127.0.0.1:8000/socket.io'
-    await sio.connect(auth_url, namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
+    # auth_url = 'http://127.0.0.1:8000/socket.io'
+    # await sio.connect(auth_url, namespaces =['/', '/auth_turtle', '/env', '/control'], wait_timeout = 3)
     
     print("connect")
     while not connected:

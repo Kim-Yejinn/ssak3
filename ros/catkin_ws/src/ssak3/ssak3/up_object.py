@@ -64,6 +64,13 @@ class up_object(Node):
 
 
     def timer_callback(self):
+        #테스트 코드
+        # test = Result()
+        # test.result_list.append(1)
+        # test.result_list.append(2)
+        # print(test)
+        # self.result_pub.publish(test)
+        
         print(f'수거 개수 {self.get_cnt} 세탁물 {self.is_select_laundry} 들어올리기 {self.status_msg.can_lift}')
     # if self.is_status == True and self.is_select_laundry == True:
         if self.is_select_laundry == True and self.control_msg.control_mode == 3:
