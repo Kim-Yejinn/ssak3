@@ -2,12 +2,13 @@ import socketio
 import asyncio
 import ssl
 import aiohttp
+import requests
 
 import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import String
-from ssafy_msgs.msg import LaundryList, Result
+from ssafy_msgs.msg import LaundryList, Result, Finish
 
 import threading
 
@@ -15,7 +16,7 @@ import json
 
 sio = None
 connected = False
-serialNo = "17"
+serialNo = "qwe123qwe123"
 operateNo = None
 
 # 나중에 turtlebot_status에서 한번만 보내도록 바꾸기
@@ -37,11 +38,49 @@ class socketSub(Node):
         self.socket_weather = self.create_subscription(String, '/socket_weather', self.socket_weather_pub, 10)
         # 세탁물 수거 결과 값 입력 받으면 실행할 것 -> 해당 파일에서 여기로 보내는것 추가해야 함
         # 우선 수거 개수가 String으로 온다고 가정했음. 
-        self.socket_result_pub = self.create_subscription(Result, 'result_list', self.socket_result_pub, 10)
+        self.socket_result_sub = self.create_subscription(Result, 'result_list', self.socket_result_pub, 10)
         # 세탁물 수거 시작 시 어디로 가야 할지 여기에 publish 추가하기
         self.socket_start_pub = self.create_publisher(LaundryList, 'socket_start', 30)
         time_period = 0.1
         self.timer = self.create_timer(time_period, self.timer_callback)
+        self.is_finish_sub = self.create_subscription(Finish, 'is_finish', self.finish_callback, 1)
+
+    def finish_callback(self, msg):
+        if msg.is_finish == True:
+            global sio
+            global connected
+            global operateNo
+            global serialNo
+
+            url = "https://j9b201.p.ssafy.io/api/run/end"
+
+            # Request Body 데이터
+            data = {
+                "id": "qwe123",
+                "get_id": operateNo,
+                "laundries": [
+                    {
+                        "name": "shirts",
+                        "cnt": 1
+                    },
+                    {
+                        "name": "pants",
+                        "cnt": 1
+                    }
+                ]
+            }
+
+            # PATCH 요청 보내기
+            response = requests.patch(url, json=data)
+
+            # 응답 확인
+            if response.status_code == 200:
+                print("PATCH 요청이 성공적으로 보내졌습니다.")
+                print("응답 내용:", response.text)
+            else:
+                print("PATCH 요청에 실패했습니다.")
+                print("상태 코드:", response.status_code)
+
 
     async def timer_callback(self):
         global laundry_send
@@ -106,18 +145,14 @@ class socketSub(Node):
 
 # 만약 터틀봇 돌고난 뒤 결과가 들어 왔을 경우 서버로 보내기
     async def socket_result_pub(self, msg):
-        global sio
-        global connected
-        global operateNo
-        global serialNo
-
-        if sio and connected and operateNo:
-            print(list(msg.result_list))
-            # print(operateNo)
-            print(type(operateNo))
-            obj = {"serialNo":serialNo, "operateNo" : operateNo, "result" : list(msg.result_list)}
-            await sio.emit('result', obj, namespace = '/control')
-            operateNo = None
+        pass
+        # if sio and connected and operateNo:
+        #     print(list(msg.result_list))
+        #     # print(operateNo)
+        #     print(type(operateNo))
+        #     obj = {"serialNo":serialNo, "operateNo" : operateNo, "result" : list(msg.result_list)}
+        #     await sio.emit('result', obj, namespace = '/control')
+        #     operateNo = None
 
     
 async def client():
